@@ -97,7 +97,7 @@ namespace TestApp
             //viewSourceDataMenuItem.Click += DeleteMenuItem_Click;
             //viewDeidentifiedData.Click += DeleteMenuItem_Click;
             //logMenuItem.Click += DeleteMenuItem_Click;
-            //exportMenuItem.Click += DeleteMenuItem_Click;
+            exportMenuItem.Click += ExportMenuItem_Click;
             //refreshMenuItem.Click += DeleteMenuItem_Click;
             tableContextMenu.Items.Add(configMenuItem);
             tableContextMenu.Items.Add(deIdentifyMenuItem);
@@ -130,7 +130,7 @@ namespace TestApp
             string table = selectedNode.Text;
             string project = projectName.Text;
 
-            string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Downloads\ConnectionTest\De-identification\tableColumnsConnection.py";
+            string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\tableColumnsConnection.py";
 
             if (!File.Exists(pythonScriptPath))
             {
@@ -182,13 +182,62 @@ namespace TestApp
         private void DeIdentifyMenuItem_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode parentnode = selectedNode.Parent;
             if (selectedNode != null)
             {
-                // Handle the "De-Identify" click event
-                DeIdentifyForm deIdentifyForm = new DeIdentifyForm();
-                deIdentifyForm.Show();
+                string TblName= selectedNode.Text;
+                string projectName = parentnode.Text;
+
+                string pythonResponse = SendDataToPythonandGetResponse(TblName, projectName);
+                if (pythonResponse.ToLower().Contains("success"))
+                {
+                    MessageBox.Show("Python response is" , pythonResponse);
+
+                }
+                else
+                {
+                    MessageBox.Show("Python response is not deidentified");
+                }
+                //// Handle the "De-Identify" click event
+                //DeIdentifyForm deIdentifyForm = new DeIdentifyForm();
+                //deIdentifyForm.Show();
+                
             }
         }
+
+
+        private string SendDataToPythonandGetResponse(string tableName,string projectName)
+        {
+            string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeIentificationConnection.py";
+
+            if (!File.Exists(pythonScriptPath))
+            {
+                return "Error: Python script file not found.";
+            }
+
+            var command = $"\"{pythonScriptPath}\" \"{projectName}\" \"{tableName}\"";
+
+            using (Process process = new Process())
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.CreateNoWindow = true;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.FileName = GetPythonExePath();
+                startInfo.Arguments = command;
+                startInfo.StandardOutputEncoding = Encoding.UTF8;
+
+                process.StartInfo = startInfo;
+                process.Start();
+
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                return output;
+            }
+        }
+
 
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -320,52 +369,16 @@ namespace TestApp
             }
         }
 
+        private void ExportMenuItem_Click(object sender, EventArgs e)
+        {
+             TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode parentNode = selectedNode.Parent;
+            string tablename = selectedNode.Text;
+            string projectName = parentNode.Text;
+            DeIdentifyForm deIdentifyForm = new DeIdentifyForm(tablename, projectName);
+            deIdentifyForm.ShowDialog();
 
-        //private void CreateProjectItem_Click(object sender, EventArgs e)
-        //{
-        //    // Open form to create a project
-        //    CreateProjectForm createProjectForm = new CreateProjectForm();
-        //    if (createProjectForm.ShowDialog() == DialogResult.OK)
-        //    {
-        //        // Update TreeView with the newly created project
-        //        TreeNode rootNode = treeView.Nodes[0];
-        //        TreeNode projectNode = new TreeNode(createProjectForm.ProjectName);
-        //        rootNode.Nodes.Add(projectNode);
-        //        rootNode.Expand();
-        //    }
-        //}
-
-        //private void ImportProjectItem_Click(object sender, EventArgs e)
-        //{
-        //    // Get the selected project node
-        //    TreeNode selectedNode = treeView.SelectedNode;
-
-        //    if (selectedNode != null)
-        //    {
-        //        ImportForm importForm = new ImportForm(selectedNode.Text);
-        //        if (importForm.ShowDialog() == DialogResult.OK)
-        //        {
-        //            string selectedOption = importForm.SelectedImportOption;
-        //            if (selectedOption == "CSV")
-        //            {
-        //                CSVLocationForm csvLocationForm = new CSVLocationForm(selectedNode.Text);
-        //                if (csvLocationForm.ShowDialog() == DialogResult.OK)
-        //                {
-        //                    string tableName = csvLocationForm.TableName;
-        //                    TreeNode tableNode = new TreeNode(tableName);
-        //                    selectedNode.Nodes.Add(tableNode);
-        //                    selectedNode.Expand();
-        //                }
-        //            }
-        //            else if (selectedOption == "Database")
-        //            {
-        //                // Handle database import
-        //            }
-        //        }
-        //    }
-        //}
-
-
+        }
     }
 }
     

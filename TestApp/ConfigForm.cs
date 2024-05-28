@@ -287,8 +287,8 @@ namespace TestApp
 
             // Define the file path
             //string directoryPath = @"C:\Users\Satya Pulamanthula\AppData\Roaming\DeidentificationTool\Projectname\table-name\configfiles";
-            string directoryPath = $@"C:\Users\Satya Pulamanthula\AppData\Roaming\DeidentificationTool\{project}\{table}\configfiles";
-            string filePath = Path.Combine(directoryPath, "config.json");
+            string directoryPath = $@"C:\Users\Satya Pulamanthula\AppData\Roaming\DeidentificationTool\{project}\{table}\ConfigFile";
+            string filePath = Path.Combine(directoryPath, (table+".json"));
 
             // Ensure the directory exists
             if (!Directory.Exists(directoryPath))
@@ -300,6 +300,7 @@ namespace TestApp
             File.WriteAllText(filePath, json);
 
             MessageBox.Show("JSON data has been saved to " + filePath);
+            this.Close();
         }
 
     }

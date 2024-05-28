@@ -14,11 +14,11 @@ namespace TestApp
 {
     public partial class CSVLocationForm : Form
     {
-        public string SelectedCsvFilePath { get; private set; }
-        public string SelectedDelimiter { get; private set; }
-        public string SelectedQuote { get; private set; }
-        public string EnteredText { get; private set; }
-        public string TableName { get; private set; }
+        public string SelectedCsvFilePath { get; set; }
+        public string SelectedDelimiter { get; set; }
+        public string SelectedQuote { get; set; }
+        public string EnteredText { get; set; }
+        public string TableName { get; set; }
 
         private readonly string labelName;
 
@@ -131,7 +131,7 @@ namespace TestApp
 
         private string SendDataToPython(string filePath, string projectName, string logFile, string quote, string delimiter, string noOfRows, string tableName)
         {
-            string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Downloads\ConnectionTest\De-identification\ImportConnection.py";
+            string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ImportCsvConnection.py";
 
             if (!File.Exists(pythonScriptPath))
             {

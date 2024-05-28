@@ -64,7 +64,7 @@ namespace TestApp
 
     public partial class ImportForm : Form
     {
-        public string SelectedImportOption { get; private set; }
+        public string SelectedImportOption { get; set; }
 
         public ImportForm(string projectName)
         {
