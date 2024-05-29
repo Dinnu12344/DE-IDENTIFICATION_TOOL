@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestApp.Models
+namespace DE_IDENTIFICATION_TOOL.Models
 {
     public class ProjectData
     {
