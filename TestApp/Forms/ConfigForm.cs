@@ -1,17 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace DE_IDENTIFICATION_TOOL
 {
@@ -189,7 +181,6 @@ namespace DE_IDENTIFICATION_TOOL
             string json = JsonConvert.SerializeObject(selectedData, Formatting.Indented);
 
             // Define the file path
-            //string directoryPath = @"C:\Users\Satya Pulamanthula\AppData\Roaming\DeidentificationTool\Projectname\table-name\configfiles";
             string directoryPath = $@"C:\Users\Satya Pulamanthula\AppData\Roaming\DeidentificationTool\{project}\{table}\ConfigFile";
             string filePath = Path.Combine(directoryPath, (table+".json"));
 

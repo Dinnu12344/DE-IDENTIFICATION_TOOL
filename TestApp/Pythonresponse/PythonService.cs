@@ -52,6 +52,28 @@ public class PythonService
         var command = $"\"{pythonScriptPath}\" \"{filePath}\" \"{project}\" \"{table}\"";
         return ExecutePythonScript(command);
     }
+    public string DeleteData(string project, string table, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
+        return ExecutePythonScript(command);
+    }
+
+    public string SendDataToPython(string SelectedCsvFilePath, string projectName, string TableName, string SelectedDelimiter, string SelectedQuote, string EnteredText, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{SelectedCsvFilePath}\" \"{projectName}\" \"{EnteredText}\" \"{TableName}\" \"{SelectedDelimiter}\" \"{SelectedQuote}\"";
+        return ExecutePythonScript(command);
+
+    }
 
     private string ExecutePythonScript(string command)
     {

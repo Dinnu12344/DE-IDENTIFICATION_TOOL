@@ -1,9 +1,7 @@
-﻿ using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 using DE_IDENTIFICATION_TOOL.Models;
 
@@ -95,7 +93,7 @@ namespace DE_IDENTIFICATION_TOOL
             ToolStripMenuItem refreshMenuItem = new ToolStripMenuItem("Refresh");
             configMenuItem.Click += ConfigMenuItem_Click;
             deIdentifyMenuItem.Click += DeIdentifyMenuItem_Click;
-            //deleteMenuItem.Click += DeleteMenuItem_Click;
+            deleteMenuItem.Click += DeleteMenuItem_Click;
             //viewSourceDataMenuItem.Click += DeleteMenuItem_Click;
             //viewDeidentifiedData.Click += DeleteMenuItem_Click;
             //logMenuItem.Click += DeleteMenuItem_Click;
@@ -119,17 +117,13 @@ namespace DE_IDENTIFICATION_TOOL
                 TreeNode parentNode = selectedNode.Parent;
                 //var pythonResponse = SendDataToPython(selectedNode, parentNode);
 
-                //
-                //string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Downloads\ConnectionTest\De-identification\SaveJsonDataConnection.py";
                 string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\tableColumnsConnection.py";
                 string pythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentNode.Text, pythonScriptPath);
                 ///
 
                 // Handle the "Config" click event
-                //ConfigForm configForm = new ConfigForm(Form1 homeForm,pythonResponse);
                 ConfigForm configForm = new ConfigForm(this, pythonResponse, selectedNode, parentNode);
                 configForm.Show();
-                // Add your config logic pythonResponse
             }
         }
 
@@ -139,16 +133,6 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode parentnode = selectedNode.Parent;
             if (selectedNode != null)
             {
-                //string TblName= selectedNode.Text;
-                //string projectName = parentnode.Text;
-
-                //string pythonResponse = SendDataToPythonandGetResponse(TblName, projectName);
-
-                //// Handle the "De-Identify" click event
-                //DeIdentifyForm deIdentifyForm = new DeIdentifyForm();
-                //deIdentifyForm.Show();
-
-                //string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeIentificationConnection.py";
                 string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeIentificationConnection.py";
                 string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
                 if (getpythonResponse.ToLower().Contains("success"))
@@ -163,40 +147,6 @@ namespace DE_IDENTIFICATION_TOOL
 
             }
         }
-
-
-        //private string SendDataToPythonandGetResponse(string tableName,string projectName)
-        //{
-        //    string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeIentificationConnection.py";
-
-        //    if (!File.Exists(pythonScriptPath))
-        //    {
-        //        return "Error: Python script file not found.";
-        //    }
-
-        //    var command = $"\"{pythonScriptPath}\" \"{projectName}\" \"{tableName}\"";
-
-        //    using (Process process = new Process())
-        //    {
-        //        ProcessStartInfo startInfo = new ProcessStartInfo();
-        //        startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        //        startInfo.CreateNoWindow = true;
-        //        startInfo.UseShellExecute = false;
-        //        startInfo.RedirectStandardOutput = true;
-        //        startInfo.FileName = GetPythonExePath();
-        //        startInfo.Arguments = command;
-        //        startInfo.StandardOutputEncoding = Encoding.UTF8;
-
-        //        process.StartInfo = startInfo;
-        //        process.Start();
-
-        //        string output = process.StandardOutput.ReadToEnd();
-        //        process.WaitForExit();
-
-        //        return output;
-        //    }
-        //}
-
 
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -313,19 +263,73 @@ namespace DE_IDENTIFICATION_TOOL
             // Implement refresh functionality
             MessageBox.Show("Refreshing...");
         }
-        private void DeleteProjectItem_Click(object sender, EventArgs e)
+        //private void DeleteProjectItem_Click(object sender, EventArgs e)
+        //{
+        //    TreeNode selectedNode = treeView.SelectedNode;
+        //    if (selectedNode != null && selectedNode.Parent != null && selectedNode.Parent.Text == "Projects")
+        //    {
+        //        var project = projectData.Find(p => p.Name == selectedNode.Text);
+        //        if (project != null)
+        //        {
+        //            projectData.Remove(project);
+        //            SaveProjectData();
+        //            PopulateTreeView();
+        //        }
+        //    }
+        //}
+
+        private void DeleteSelectedNode()
         {
             TreeNode selectedNode = treeView.SelectedNode;
-            if (selectedNode != null && selectedNode.Parent != null && selectedNode.Parent.Text == "Projects")
+
+            if (selectedNode == null) return;
+
+            if (selectedNode.Parent != null && selectedNode.Parent.Text == "Projects")
             {
+                // Delete Project
                 var project = projectData.Find(p => p.Name == selectedNode.Text);
                 if (project != null)
                 {
                     projectData.Remove(project);
-                    SaveProjectData();
-                    PopulateTreeView();
                 }
             }
+            else if (selectedNode.Parent != null && selectedNode.Parent.Parent != null && selectedNode.Parent.Parent.Text == "Projects")
+            {
+                // Delete Table
+                var project = projectData.Find(p => p.Name == selectedNode.Parent.Text);
+                if (project != null)
+                {
+                    string projecrtname = selectedNode.Parent.Text;
+                    string tablename = selectedNode.Text;
+                    string pythonfile = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeleteConnection.py";
+                    string pythonResponse = pythonService.DeleteData(projecrtname, tablename, pythonfile);
+                    if (pythonResponse.ToLower().Contains("success"))
+                    {
+                        MessageBox.Show("Python response is", pythonResponse);
+                        project.Tables.Remove(selectedNode.Text);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Python response is not deidentified :", pythonResponse);
+                    }
+
+                    
+                }
+            }
+
+            SaveProjectData();
+            PopulateTreeView();
+        }
+
+        private void DeleteProjectItem_Click(object sender, EventArgs e)
+        {
+            DeleteSelectedNode();
+        }
+
+        private void DeleteMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteSelectedNode();
         }
 
         private void ExportMenuItem_Click(object sender, EventArgs e)

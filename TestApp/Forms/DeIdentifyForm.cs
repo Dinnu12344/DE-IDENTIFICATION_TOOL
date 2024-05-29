@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
@@ -44,7 +35,6 @@ namespace DE_IDENTIFICATION_TOOL
                         string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
                         // Add your code here to export the data to the selected folder path
-                        //string response = ExportDataToCsv(selectedFolderPath, projectName, tablename);
                         string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ExportCsvConnection.py";
                         string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tablename, pythonScriptPath);
                         MessageBox.Show("The exported path is : ", pythonResponse);
@@ -61,58 +51,5 @@ namespace DE_IDENTIFICATION_TOOL
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
-
-
-        //private string ExportDataToCsv(string filePath, string projectName, string tablename)
-        //{ // Path to the Python executable
-            
-
-        //        string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ExportCsvConnection.py";
-
-        //        if (!File.Exists(pythonScriptPath))
-        //        {
-        //            return "Error: Python script file not found.";
-        //        }
-
-        //        var command = $"\"{pythonScriptPath}\" \"{filePath}\" \"{projectName}\" \"{tablename}\"";
-
-        //        using (Process process = new Process())
-        //        {
-        //            ProcessStartInfo startInfo = new ProcessStartInfo();
-        //            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        //            startInfo.CreateNoWindow = true;
-        //            startInfo.UseShellExecute = false;
-        //            startInfo.RedirectStandardOutput = true;
-        //            startInfo.FileName = GetPythonExePath();
-        //            startInfo.Arguments = command;
-        //            startInfo.StandardOutputEncoding = Encoding.UTF8;
-
-        //            process.StartInfo = startInfo;
-        //            process.Start();
-
-        //            string output = process.StandardOutput.ReadToEnd();
-        //            process.WaitForExit();
-
-        //            return output;
-        //        }
-        //}
-        //private string GetPythonExePath()
-        //{
-        //    string pythonExeName = "python.exe";
-        //    string pythonExePath = null;
-
-        //    string[] paths = Environment.GetEnvironmentVariable("PATH").Split(';');
-        //    foreach (string path in paths)
-        //    {
-        //        string fullPath = Path.Combine(path, pythonExeName);
-        //        if (File.Exists(fullPath))
-        //        {
-        //            pythonExePath = fullPath;
-        //            break;
-        //        }
-        //    }
-
-        //    return pythonExePath;
-        //}
     }
 }

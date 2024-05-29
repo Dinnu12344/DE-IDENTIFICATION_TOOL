@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
 {
     public partial class CSVLocationForm : Form
     {
+
         public string SelectedCsvFilePath { get; set; }
         public string SelectedDelimiter { get; set; }
         public string SelectedQuote { get; set; }
@@ -21,10 +16,12 @@ namespace DE_IDENTIFICATION_TOOL
         public string TableName { get; set; }
 
         private readonly string labelName;
+        private PythonService pythonService;
 
         public CSVLocationForm(string labelName)
         {
             InitializeComponent();
+            pythonService = new PythonService();
             // Initialize controls visibility and other settings
             delimiterLabel.Visible = false;
             DelimeterComboBox.Visible = false;
@@ -113,7 +110,8 @@ namespace DE_IDENTIFICATION_TOOL
             if (!string.IsNullOrEmpty(SelectedCsvFilePath))
             {
                 // Simulate sending data to Python script
-                string pythonResponse = SendDataToPython(SelectedCsvFilePath, projectName, "deIdLogfile", SelectedQuote, SelectedDelimiter, EnteredText, TableName);
+                string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ImportCsvConnection.py";
+                string pythonResponse = pythonService.SendDataToPython(SelectedCsvFilePath, projectName, TableName,SelectedDelimiter, SelectedQuote, EnteredText, pythonScriptPath);
                 
                 // Check the response from the Python script
                 if (pythonResponse.ToLower().Contains("success"))
@@ -127,57 +125,6 @@ namespace DE_IDENTIFICATION_TOOL
                     MessageBox.Show("The CSV file is not valid. Error: " + pythonResponse, "Error");
                 }
             }
-        }
-
-        private string SendDataToPython(string filePath, string projectName, string logFile, string quote, string delimiter, string noOfRows, string tableName)
-        {
-            string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ImportCsvConnection.py";
-
-            if (!File.Exists(pythonScriptPath))
-            {
-                return "Error: Python script file not found.";
-            }
-
-            var command = $"\"{pythonScriptPath}\" \"{filePath}\" \"{projectName}\" \"{noOfRows}\" \"{tableName}\" \"{delimiter}\" \"{quote}\"";
-
-            using (Process process = new Process())
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.CreateNoWindow = true;
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.FileName = GetPythonExePath();
-                startInfo.Arguments = command;
-                startInfo.StandardOutputEncoding = Encoding.UTF8;
-
-                process.StartInfo = startInfo;
-                process.Start();
-
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-
-                return output;
-            }
-        }
-
-        private string GetPythonExePath()
-        {
-            string pythonExeName = "python.exe";
-            string pythonExePath = null;
-
-            string[] paths = Environment.GetEnvironmentVariable("PATH").Split(';');
-            foreach (string path in paths)
-            {
-                string fullPath = Path.Combine(path, pythonExeName);
-                if (File.Exists(fullPath))
-                {
-                    pythonExePath = fullPath;
-                    break;
-                }
-            }
-
-            return pythonExePath;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
