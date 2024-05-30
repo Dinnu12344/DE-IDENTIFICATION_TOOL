@@ -77,27 +77,6 @@ public class PythonService
 
     private string ExecutePythonScript(string command)
     {
-        //using (Process process = new Process())
-        //{
-        //    ProcessStartInfo startInfo = new ProcessStartInfo
-        //    {
-        //        WindowStyle = ProcessWindowStyle.Hidden,
-        //        CreateNoWindow = true,
-        //        UseShellExecute = false,
-        //        RedirectStandardOutput = true,
-        //        FileName = pythonExePath,
-        //        Arguments = command,
-        //        StandardOutputEncoding = Encoding.UTF8
-        //    };
-
-        //    process.StartInfo = startInfo;
-        //    process.Start();
-
-        //    string output = process.StandardOutput.ReadToEnd();
-        //    process.WaitForExit();
-
-        //    return output;
-        //}
         using (Process process = new Process())
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();

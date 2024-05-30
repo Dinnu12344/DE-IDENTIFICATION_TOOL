@@ -101,17 +101,23 @@
     <Compile Include="Forms\De-IdentificationHomeForm.Designer.cs">
       <DependentUpon>De-IdentificationHomeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DeIdentifyForm.cs">
+    <Compile Include="Forms\ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\DeIdentifyForm.Designer.cs">
-      <DependentUpon>DeIdentifyForm.cs</DependentUpon>
+    <Compile Include="Forms\ExportForm.Designer.cs">
+      <DependentUpon>ExportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ImportForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ImportForm.Designer.cs">
       <DependentUpon>ImportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewSourceDeIdentifyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewSourceDeIdentifyForm.Designer.cs">
+      <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ProjectData.cs" />
     <Compile Include="Program.cs" />
@@ -129,8 +135,8 @@
     <EmbeddedResource Include="Forms\De-IdentificationHomeForm.resx">
       <DependentUpon>De-IdentificationHomeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DeIdentifyForm.resx">
-      <DependentUpon>DeIdentifyForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ExportForm.resx">
+      <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportForm.resx">
       <DependentUpon>ImportForm.cs</DependentUpon>
@@ -159,8 +165,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

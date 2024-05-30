@@ -111,7 +111,7 @@ namespace DE_IDENTIFICATION_TOOL
             {
                 // Simulate sending data to Python script
                 string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ImportCsvConnection.py";
-                string pythonResponse = pythonService.SendDataToPython(SelectedCsvFilePath, projectName, TableName,SelectedDelimiter, SelectedQuote, EnteredText, pythonScriptPath);
+                 string pythonResponse = pythonService.SendDataToPython(SelectedCsvFilePath, projectName, TableName,SelectedDelimiter, SelectedQuote, EnteredText, pythonScriptPath);
                 
                 // Check the response from the Python script
                 if (pythonResponse.ToLower().Contains("success"))

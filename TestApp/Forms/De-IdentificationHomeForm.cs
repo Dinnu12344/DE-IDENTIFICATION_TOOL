@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using DE_IDENTIFICATION_TOOL.Models;
+using DE_IDENTIFICATION_TOOL.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
 {
@@ -94,8 +95,8 @@ namespace DE_IDENTIFICATION_TOOL
             configMenuItem.Click += ConfigMenuItem_Click;
             deIdentifyMenuItem.Click += DeIdentifyMenuItem_Click;
             deleteMenuItem.Click += DeleteMenuItem_Click;
-            //viewSourceDataMenuItem.Click += DeleteMenuItem_Click;
-            //viewDeidentifiedData.Click += DeleteMenuItem_Click;
+            viewSourceDataMenuItem.Click += ViewSourceMenuItem_Click;
+            viewDeidentifiedData.Click += ViewSourceMenuItem_Click;
             //logMenuItem.Click += DeleteMenuItem_Click;
             exportMenuItem.Click += ExportMenuItem_Click;
             //refreshMenuItem.Click += DeleteMenuItem_Click;
@@ -133,12 +134,55 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode parentnode = selectedNode.Parent;
             if (selectedNode != null)
             {
-                string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeIentificationConnection.py";
+
+                // Get the base directory of the application
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+                // Combine the base directory with the relative path to the Python script
+                string pythonScriptPath = Path.Combine(baseDirectory, "PythonScriptsGit", "ConnectionTestRepo", "DeIentificationConnection.py");
+
+
+                //string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeIentificationConnection.py";
                 string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
                 if (getpythonResponse.ToLower().Contains("success"))
                 {
-                    MessageBox.Show("Python response is", getpythonResponse);
+                    MessageBox.Show(selectedNode.Text + " has successfully Deidentified");
+                }
+                else
+                {
+                    MessageBox.Show("Python response is not deidentified : " +  getpythonResponse);
+                }
 
+            }
+        }
+        private void ViewSourceMenuItem_Click(object sender, EventArgs e)
+        {
+            //TreeNode selectedNode = treeView.SelectedNode;
+            //if (selectedNode != null)
+            //{
+            //    TreeNode parentNode = selectedNode.Parent;
+            //    //var pythonResponse = SendDataToPython(selectedNode, parentNode);
+            //    //string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Downloads\ConnectionTest\De-identification\SaveJsonDataConnection.py";
+            //    string pythonScriptPath = @"C:\Users\Pavan Kaniganti\source\repos\pythonScripts\ConnectionTestRepo\tableColumnsConnection.py"; string pythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentNode.Text, pythonScriptPath);
+            //    ///
+
+            //    // Handle the "Config" click event
+            //    //ConfigForm configForm = new ConfigForm(Form1 homeForm,pythonResponse);
+            //    ViewSourceDeIdentifyForm viewData = new ViewSourceDeIdentifyForm(this,);
+            //    viewData.Show();
+            //    // Add your config logic pythonResponse
+            //}
+            //pythonService.PythonViewSource();
+            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode parentnode = selectedNode.Parent;
+            if (selectedNode != null)
+            {
+                string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\bin\Debug\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\ViewDeidentifiedDataConnection.py";
+                string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
+                if (getpythonResponse.ToLower().Contains("success"))
+                {
+                    ViewSourceDeIdentifyForm viewData = new ViewSourceDeIdentifyForm(this, getpythonResponse);
+                    viewData.Show();
                 }
                 else
                 {
@@ -305,13 +349,13 @@ namespace DE_IDENTIFICATION_TOOL
                     string pythonResponse = pythonService.DeleteData(projecrtname, tablename, pythonfile);
                     if (pythonResponse.ToLower().Contains("success"))
                     {
-                        MessageBox.Show("Python response is", pythonResponse);
+                        MessageBox.Show("Python response is"+ pythonResponse);
                         project.Tables.Remove(selectedNode.Text);
 
                     }
                     else
                     {
-                        MessageBox.Show("Python response is not deidentified :", pythonResponse);
+                        MessageBox.Show("Python response is not deidentified :"+ pythonResponse);
                     }
 
                     
@@ -338,7 +382,7 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode parentNode = selectedNode.Parent;
             string tablename = selectedNode.Text;
             string projectName = parentNode.Text;
-            DeIdentifyForm deIdentifyForm = new DeIdentifyForm(tablename, projectName);
+            ExportForm deIdentifyForm = new ExportForm(tablename, projectName);
             deIdentifyForm.ShowDialog();
 
         }

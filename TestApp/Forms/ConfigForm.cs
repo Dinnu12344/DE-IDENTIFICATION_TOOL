@@ -131,7 +131,6 @@ namespace DE_IDENTIFICATION_TOOL
         {
             // Simulated method to fetch columns from Python backend
             // Replace this with actual implementation to fetch columns dynamically
-            //return new List<string>() { pythonResponse };
             string response = pythonResponse.Replace("'", "\""); // Replace single quotes with double quotes
 
             // Now parse the JSON-like string to get the list of column names
@@ -179,9 +178,10 @@ namespace DE_IDENTIFICATION_TOOL
 
             // Convert the selected data to JSON format
             string json = JsonConvert.SerializeObject(selectedData, Formatting.Indented);
+            string userName = Environment.UserName;
 
             // Define the file path
-            string directoryPath = $@"C:\Users\Satya Pulamanthula\AppData\Roaming\DeidentificationTool\{project}\{table}\ConfigFile";
+            string directoryPath = $@"C:\Users\{userName}\AppData\Roaming\DeidentificationTool\{project}\{table}\ConfigFile";
             string filePath = Path.Combine(directoryPath, (table+".json"));
 
             // Ensure the directory exists

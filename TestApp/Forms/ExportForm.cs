@@ -3,13 +3,13 @@ using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
 {
-    public partial class DeIdentifyForm : Form
+    public partial class ExportForm : Form
     {
         private string tablename;
         private string projectName;
         private PythonService pythonService;
 
-        public DeIdentifyForm(string tablename, string projectName)
+        public ExportForm(string tablename, string projectName)
         {
             InitializeComponent();
             pythonService = new PythonService();
@@ -35,9 +35,9 @@ namespace DE_IDENTIFICATION_TOOL
                         string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
                         // Add your code here to export the data to the selected folder path
-                        string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ExportCsvConnection.py";
+                        string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\ExportCsvConnection.py";
                         string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tablename, pythonScriptPath);
-                        MessageBox.Show("The exported path is : ", pythonResponse);
+                        MessageBox.Show("The exported path is : " + pythonResponse);
                         this.Close();
                     }
                 }
