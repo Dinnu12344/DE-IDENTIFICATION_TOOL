@@ -161,6 +161,26 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="PythonScripts\DeIentificationConnection.py" />
+    <None Include="PythonScripts\Delete.py" />
+    <None Include="PythonScripts\DeleteProjectConnection.py" />
+    <None Include="PythonScripts\DeleteTableConnection.py" />
+    <None Include="PythonScripts\De_Identification.py" />
+    <None Include="PythonScripts\DynamicPaths.py" />
+    <None Include="PythonScripts\Export.py" />
+    <None Include="PythonScripts\ExportCsvConnection.py" />
+    <None Include="PythonScripts\Import.py" />
+    <None Include="PythonScripts\ImportCsvConnection.py" />
+    <None Include="PythonScripts\LogFile.py" />
+    <None Include="PythonScripts\Main.py" />
+    <None Include="PythonScripts\Miscellaneous_Functions.py" />
+    <None Include="PythonScripts\tableColumnsConnection.py" />
+    <None Include="PythonScripts\Test.py" />
+    <None Include="PythonScripts\Test1.py" />
+    <None Include="PythonScripts\Test2.py" />
+    <None Include="PythonScripts\Test3.py" />
+    <None Include="PythonScripts\ViewDeidentifiedDataConnection.py" />
+    <None Include="PythonScripts\ViewScourceDataConnection.py" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
