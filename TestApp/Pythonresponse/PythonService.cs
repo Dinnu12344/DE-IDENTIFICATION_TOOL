@@ -46,7 +46,7 @@ public class PythonService
     {
         if (!File.Exists(pythonScriptPath))
         {
-            return "Error: Python script file not found.";
+               return "Error: Python script file not found.";
         }
 
         var command = $"\"{pythonScriptPath}\" \"{filePath}\" \"{project}\" \"{table}\"";
@@ -60,6 +60,17 @@ public class PythonService
         }
 
         var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
+        return ExecutePythonScript(command);
+    }
+
+    public string DeleteProjectData(string project, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{project}\"";
         return ExecutePythonScript(command);
     }
 

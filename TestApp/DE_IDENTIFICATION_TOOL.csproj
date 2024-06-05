@@ -95,6 +95,12 @@
     <Compile Include="Forms\CSVLocationForm.Designer.cs">
       <DependentUpon>CSVLocationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DBLocationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DBLocationForm.Designer.cs">
+      <DependentUpon>DBLocationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\De-IdentificationHomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +125,7 @@
     <Compile Include="Forms\ViewSourceDeIdentifyForm.Designer.cs">
       <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\CSVLocationFormModel.cs" />
     <Compile Include="Models\ProjectData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

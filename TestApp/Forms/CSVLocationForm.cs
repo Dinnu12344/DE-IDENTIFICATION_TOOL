@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DE_IDENTIFICATION_TOOL.Models;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -8,19 +9,17 @@ namespace DE_IDENTIFICATION_TOOL
 {
     public partial class CSVLocationForm : Form
     {
-        public string SelectedCsvFilePath { get; set; }
-        public string SelectedDelimiter { get; set; }
-        public string SelectedQuote { get; set; }
-        public string EnteredText { get; set; }
-        public string TableName { get; set; }
-
         private readonly string labelName;
         private PythonService pythonService;
+        public readonly CSVLocationFormModel csvLocationFormModel;
+        private readonly string pythonScriptsDirectory;
 
         public CSVLocationForm(string labelName)
         {
             InitializeComponent();
             pythonService = new PythonService();
+            //pythonService = new PythonService();
+            csvLocationFormModel = new CSVLocationFormModel();
             delimiterLabel.Visible = false;
             DelimeterComboBox.Visible = false;
             QuoteLabel.Visible = false;
@@ -32,6 +31,8 @@ namespace DE_IDENTIFICATION_TOOL
             txtForTblName.Visible = false;
 
             this.labelName = labelName;
+            pythonScriptsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PythonScripts");
+
         }
 
         private void LocationBrowsebtn_Click(object sender, EventArgs e)
@@ -43,8 +44,11 @@ namespace DE_IDENTIFICATION_TOOL
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                SelectedCsvFilePath = openFileDialog.FileName;
-                textBoxForHoldingFilePath.Text = SelectedCsvFilePath;
+                // Update the model with the selected file path
+                csvLocationFormModel.SelectedCsvFilePath = openFileDialog.FileName;
+                textBoxForHoldingFilePath.Text = csvLocationFormModel.SelectedCsvFilePath;
+
+                // Show other controls
                 delimiterLabel.Visible = true;
                 DelimeterComboBox.Visible = true;
                 QuoteLabel.Visible = true;
@@ -57,12 +61,12 @@ namespace DE_IDENTIFICATION_TOOL
         }
         private void DelimeterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedDelimiter = DelimeterComboBox.SelectedItem?.ToString();
+            csvLocationFormModel.SelectedDelimiter = DelimeterComboBox.SelectedItem?.ToString();
             UpdateFinishButtonVisibility();
         }
         private void QuoteComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedQuote = QuoteComboBox.SelectedItem?.ToString();
+            csvLocationFormModel.SelectedQuote = QuoteComboBox.SelectedItem?.ToString();
             UpdateFinishButtonVisibility();
         }
         private void TxtForNoofColumns_TextChanged(object sender, EventArgs e)
@@ -80,29 +84,31 @@ namespace DE_IDENTIFICATION_TOOL
                 txtForNoofColumns.Text = ""; // Clear the text box
             }
 
-            EnteredText = txtForNoofColumns.Text;
+            csvLocationFormModel.EnteredText = txtForNoofColumns.Text;
             UpdateFinishButtonVisibility();
         }
         private void TxtForTblName_TextChanged(object sender, EventArgs e)
         {
-            TableName = txtForTblName.Text;
+            csvLocationFormModel.TableName = txtForTblName.Text;
             UpdateFinishButtonVisibility();
         }
         private void UpdateFinishButtonVisibility()
         {
-            finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(SelectedDelimiter) &&
-                                                      !string.IsNullOrEmpty(SelectedQuote) &&
-                                                      !string.IsNullOrEmpty(EnteredText) &&
-                                                      !string.IsNullOrEmpty(TableName);
+            finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(csvLocationFormModel.SelectedDelimiter) &&
+                                                      !string.IsNullOrEmpty(csvLocationFormModel.SelectedQuote) &&
+                                                      !string.IsNullOrEmpty(csvLocationFormModel.EnteredText) &&
+                                                      !string.IsNullOrEmpty(csvLocationFormModel.TableName);
         }
         private void FinishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
         {
             string projectName = labelName;
 
-            if (!string.IsNullOrEmpty(SelectedCsvFilePath))
+            if (!string.IsNullOrEmpty(csvLocationFormModel.SelectedCsvFilePath))
             {
-                string pythonScriptPath = @"Add Path of ImportCSVConnection"; 
-                string pythonResponse = pythonService.SendDataToPython(SelectedCsvFilePath, projectName, TableName,SelectedDelimiter, SelectedQuote, EnteredText, pythonScriptPath);
+                string dirName = Path.Combine(pythonScriptsDirectory, "ImportCsvConnection.py");
+                string pythonScriptPath = Path.Combine(dirName, "ImportCsvConnection.py");
+                string pythonResponse = pythonService.SendDataToPython(csvLocationFormModel.SelectedCsvFilePath, projectName, csvLocationFormModel.TableName,csvLocationFormModel.SelectedDelimiter, csvLocationFormModel.SelectedQuote, csvLocationFormModel.EnteredText, pythonScriptPath);
+                
                 if (pythonResponse.ToLower().Contains("success"))
                 {
                     this.DialogResult = DialogResult.OK;

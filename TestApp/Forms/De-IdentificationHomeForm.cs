@@ -5,9 +5,6 @@ using System.IO;
 using System.Windows.Forms;
 using DE_IDENTIFICATION_TOOL.Models;
 using DE_IDENTIFICATION_TOOL.Forms;
-using System.Data;
-using Newtonsoft.Json.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace DE_IDENTIFICATION_TOOL
 {
@@ -144,7 +141,7 @@ namespace DE_IDENTIFICATION_TOOL
 
             }
         }
-        
+
         private void ViewSourceMenuItem_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = treeView.SelectedNode;
@@ -259,7 +256,7 @@ namespace DE_IDENTIFICATION_TOOL
                         CSVLocationForm csvLocationForm = new CSVLocationForm(selectedNode.Text);
                         if (csvLocationForm.ShowDialog() == DialogResult.OK)
                         {
-                            string tableName = csvLocationForm.TableName;
+                            string tableName = csvLocationForm.csvLocationFormModel.TableName;
                             TreeNode tableNode = new TreeNode(tableName);
                             selectedNode.Nodes.Add(tableNode);
                             selectedNode.Expand();
@@ -275,6 +272,11 @@ namespace DE_IDENTIFICATION_TOOL
                     else if (selectedOption == "Database")
                     {
                         // Handle database import
+                        DBLocationForm dbLocationForm = new DBLocationForm();
+                        if(dbLocationForm.ShowDialog() == DialogResult.OK)
+                        {
+                            dbLocationForm.Show();
+                        }
                     }
                 }
             }
@@ -334,12 +336,13 @@ namespace DE_IDENTIFICATION_TOOL
                 var project = projectData.Find(p => p.Name == selectedNode.Text);
                 if (project != null)
                 {
-                    string pythonfile = @"Add path of delete project connection";
-                    string pythonResponse = pythonService.DeleteData(projectName, tablename, pythonfile);
+                    string projecrtname = selectedNode.Text;                    
+                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\bin\Debug\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\DeleteTableConnection.py";
+                    string pythonResponse = pythonService.DeleteProjectData(projecrtname, pythonfile);
                     if (pythonResponse.ToLower().Contains("success"))
                     {
                         MessageBox.Show("Python response is" + pythonResponse);
-                        projectData.Remove(project);
+                        //projectData.Remove(project);
 
                     }
                     else
@@ -355,7 +358,7 @@ namespace DE_IDENTIFICATION_TOOL
                 if (project != null)
                 {
                     string pythonfile = @"Add path of delete table connection";
-                                        //@"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeleteConnection.py";
+                    string projecrtname = selectedNode.Parent.Text;
                     string pythonResponse = pythonService.DeleteData(projectName, tablename, pythonfile);
                     if (pythonResponse.ToLower().Contains("success"))
                     {

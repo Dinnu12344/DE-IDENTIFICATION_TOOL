@@ -210,10 +210,9 @@ namespace DE_IDENTIFICATION_TOOL
 
             // Convert the selected data to JSON format
             string json = JsonConvert.SerializeObject(selectedData, Formatting.Indented);
-
-            string directoryPath = "Add the config path";
-
-            string filePath = Path.Combine(directoryPath, (table + ".json"));
+            string userName = Environment.UserName;
+            string directoryPath = $@"C:\Users\{userName}\AppData\Roaming\DeidentificationTool\{project}\{table}\ConfigFile";
+            string filePath = Path.Combine(directoryPath, (table+".json"));
 
             // Ensure the directory exists
             if (!Directory.Exists(directoryPath))
