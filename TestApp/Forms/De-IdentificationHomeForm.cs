@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using DE_IDENTIFICATION_TOOL.Models;
 using DE_IDENTIFICATION_TOOL.Forms;
+using System.Runtime.InteropServices;
 
 namespace DE_IDENTIFICATION_TOOL
 {
@@ -23,7 +24,7 @@ namespace DE_IDENTIFICATION_TOOL
             pythonService = new PythonService();
             LoadProjectData();
             PopulateTreeView();
-            InitializeContextMenus();            
+            InitializeContextMenus();
         }
 
         private void PopulateTreeView()
@@ -136,7 +137,7 @@ namespace DE_IDENTIFICATION_TOOL
                 }
                 else
                 {
-                    MessageBox.Show("Python response is not deidentified : " +  getpythonResponse);
+                    MessageBox.Show("Python response is not deidentified : " + getpythonResponse);
                 }
 
             }
@@ -273,7 +274,7 @@ namespace DE_IDENTIFICATION_TOOL
                     {
                         // Handle database import
                         DBLocationForm dbLocationForm = new DBLocationForm();
-                        if(dbLocationForm.ShowDialog() == DialogResult.OK)
+                        if (dbLocationForm.ShowDialog() == DialogResult.OK)
                         {
                             dbLocationForm.Show();
                         }
@@ -326,24 +327,25 @@ namespace DE_IDENTIFICATION_TOOL
         {
             TreeNode selectedNode = treeView.SelectedNode;
 
-
-
             if (selectedNode == null) return;
 
             if (selectedNode.Parent != null && selectedNode.Parent.Text == "Projects")
             {
                 // Delete Project
                 var project = projectData.Find(p => p.Name == selectedNode.Text);
+
                 if (project != null)
                 {
-                    string projecrtname = selectedNode.Text;                    
-                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\bin\Debug\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\DeleteTableConnection.py";
+                    string projecrtname = selectedNode.Text;
+
+                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\bin\Debug\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\DeleteProjectConnection.py";
+
                     string pythonResponse = pythonService.DeleteProjectData(projecrtname, pythonfile);
+
                     if (pythonResponse.ToLower().Contains("success"))
                     {
                         MessageBox.Show("Python response is" + pythonResponse);
-                        //projectData.Remove(project);
-
+                        projectData.Remove(project);
                     }
                     else
                     {
@@ -355,27 +357,31 @@ namespace DE_IDENTIFICATION_TOOL
             {
                 // Delete Table
                 var project = projectData.Find(p => p.Name == selectedNode.Parent.Text);
+
                 if (project != null)
                 {
-                    string pythonfile = @"Add path of delete table connection";
-                                        //@"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\DeleteConnection.py";
-                    string pythonResponse = pythonService.DeleteData(projectName, tablename, pythonfile);
+                    string projecrtname = selectedNode.Parent.Text;
+
+                    string tablename = selectedNode.Text;
+
+                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\bin\Debug\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\DeleteTableConnection.py";
+
+                    string pythonResponse = pythonService.DeleteData(projecrtname, tablename, pythonfile);
+
                     if (pythonResponse.ToLower().Contains("success"))
                     {
                         MessageBox.Show("Python response is" + pythonResponse);
                         project.Tables.Remove(selectedNode.Text);
-
                     }
                     else
                     {
                         MessageBox.Show("Python response is not deidentified :" + pythonResponse);
                     }
-
-
                 }
             }
 
             SaveProjectData();
+
             PopulateTreeView();
         }
 
@@ -388,9 +394,10 @@ namespace DE_IDENTIFICATION_TOOL
         {
             DeleteSelectedNode();
         }
+
         private void ExportMenuItem_Click(object sender, EventArgs e)
         {
-             TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeView.SelectedNode;
             TreeNode parentNode = selectedNode.Parent;
             string tablename = selectedNode.Text;
             string projectName = parentNode.Text;
@@ -399,4 +406,4 @@ namespace DE_IDENTIFICATION_TOOL
         }
     }
 }
-    
+
