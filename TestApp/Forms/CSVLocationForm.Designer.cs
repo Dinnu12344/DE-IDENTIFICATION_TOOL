@@ -139,7 +139,7 @@
             this.CanclebtnforClear.TabIndex = 3;
             this.CanclebtnforClear.Text = "Cancel";
             this.CanclebtnforClear.UseVisualStyleBackColor = true;
-            this.CanclebtnforClear.Click += new System.EventHandler(this.cancelButton_Click);
+            this.CanclebtnforClear.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // finishButtonInCsvlocationWindow
             // 
@@ -149,7 +149,7 @@
             this.finishButtonInCsvlocationWindow.TabIndex = 2;
             this.finishButtonInCsvlocationWindow.Text = "Finish";
             this.finishButtonInCsvlocationWindow.UseVisualStyleBackColor = true;
-            this.finishButtonInCsvlocationWindow.Click += new System.EventHandler(this.finishButtonInCsvlocationWindow_Click);
+            this.finishButtonInCsvlocationWindow.Click += new System.EventHandler(this.FinishButtonInCsvlocationWindow_Click);
             // 
             // btnForBack
             // 
@@ -159,7 +159,7 @@
             this.btnForBack.TabIndex = 0;
             this.btnForBack.Text = "Back";
             this.btnForBack.UseVisualStyleBackColor = true;
-            this.btnForBack.Click += new System.EventHandler(this.btnForBack_Click);
+            this.btnForBack.Click += new System.EventHandler(this.BtnForBack_Click);
             // 
             // delimiterLabel
             // 
@@ -214,7 +214,7 @@
             this.txtForNoofColumns.Name = "txtForNoofColumns";
             this.txtForNoofColumns.Size = new System.Drawing.Size(100, 27);
             this.txtForNoofColumns.TabIndex = 9;
-            this.txtForNoofColumns.TextChanged += new System.EventHandler(this.txtForNoofColumns_TextChanged);
+            this.txtForNoofColumns.TextChanged += new System.EventHandler(this.TxtForNoofColumns_TextChanged);
             // 
             // lblForNoofColumns
             // 
@@ -243,7 +243,7 @@
             this.txtForTblName.Name = "txtForTblName";
             this.txtForTblName.Size = new System.Drawing.Size(282, 27);
             this.txtForTblName.TabIndex = 12;
-            this.txtForTblName.TextChanged += new System.EventHandler(this.txtForTblName_TextChanged);
+            this.txtForTblName.TextChanged += new System.EventHandler(this.TxtForTblName_TextChanged);
             // 
             // CsvLocationForm
             // 

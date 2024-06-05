@@ -5,16 +5,16 @@ namespace DE_IDENTIFICATION_TOOL
 {
     public partial class ExportForm : Form
     {
-        private string tablename;
+        private string tableName;
         private string projectName;
         private PythonService pythonService;
 
-        public ExportForm(string tablename, string projectName)
+        public ExportForm(string tableName, string projectName)
         {
             InitializeComponent();
             pythonService = new PythonService();
-            this.tablename = tablename; // Corrected field name
-            this.projectName = projectName; // Corrected field name
+            this.tableName = tableName; 
+            this.projectName = projectName; 
         }
         public string SelectedImportOption { get; set; }
         private void btnForNext_Click(object sender, EventArgs e)
@@ -35,8 +35,8 @@ namespace DE_IDENTIFICATION_TOOL
                         string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
                         // Add your code here to export the data to the selected folder path
-                        string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\ExportCsvConnection.py";
-                        string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tablename, pythonScriptPath);
+                        string pythonScriptPath = @"Add path of export connection";
+                        string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
                         MessageBox.Show("The exported path is : " + pythonResponse);
                         this.Close();
                     }

@@ -8,7 +8,6 @@ namespace DE_IDENTIFICATION_TOOL
 {
     public partial class CSVLocationForm : Form
     {
-
         public string SelectedCsvFilePath { get; set; }
         public string SelectedDelimiter { get; set; }
         public string SelectedQuote { get; set; }
@@ -22,7 +21,6 @@ namespace DE_IDENTIFICATION_TOOL
         {
             InitializeComponent();
             pythonService = new PythonService();
-            // Initialize controls visibility and other settings
             delimiterLabel.Visible = false;
             DelimeterComboBox.Visible = false;
             QuoteLabel.Visible = false;
@@ -57,25 +55,22 @@ namespace DE_IDENTIFICATION_TOOL
                 txtForTblName.Visible = true;
             }
         }
-
         private void DelimeterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedDelimiter = DelimeterComboBox.SelectedItem?.ToString();
             UpdateFinishButtonVisibility();
         }
-
         private void QuoteComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedQuote = QuoteComboBox.SelectedItem?.ToString();
             UpdateFinishButtonVisibility();
         }
-
-        private void txtForNoofColumns_TextChanged(object sender, EventArgs e)
+        private void TxtForNoofColumns_TextChanged(object sender, EventArgs e)
         {
             if (!int.TryParse(txtForNoofColumns.Text, out int value))
             {
                 MessageBox.Show("Please enter a valid number.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtForNoofColumns.Text = ""; // Clear the text box
+                txtForNoofColumns.Text = ""; 
                 return;
             }
 
@@ -88,13 +83,11 @@ namespace DE_IDENTIFICATION_TOOL
             EnteredText = txtForNoofColumns.Text;
             UpdateFinishButtonVisibility();
         }
-
-        private void txtForTblName_TextChanged(object sender, EventArgs e)
+        private void TxtForTblName_TextChanged(object sender, EventArgs e)
         {
             TableName = txtForTblName.Text;
             UpdateFinishButtonVisibility();
         }
-
         private void UpdateFinishButtonVisibility()
         {
             finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(SelectedDelimiter) &&
@@ -102,18 +95,14 @@ namespace DE_IDENTIFICATION_TOOL
                                                       !string.IsNullOrEmpty(EnteredText) &&
                                                       !string.IsNullOrEmpty(TableName);
         }
-
-        private void finishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
+        private void FinishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
         {
             string projectName = labelName;
 
             if (!string.IsNullOrEmpty(SelectedCsvFilePath))
             {
-                // Simulate sending data to Python script
-                string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ImportCsvConnection.py";
-                 string pythonResponse = pythonService.SendDataToPython(SelectedCsvFilePath, projectName, TableName,SelectedDelimiter, SelectedQuote, EnteredText, pythonScriptPath);
-                
-                // Check the response from the Python script
+                string pythonScriptPath = @"Add Path of ImportCSVConnection"; 
+                string pythonResponse = pythonService.SendDataToPython(SelectedCsvFilePath, projectName, TableName,SelectedDelimiter, SelectedQuote, EnteredText, pythonScriptPath);
                 if (pythonResponse.ToLower().Contains("success"))
                 {
                     this.DialogResult = DialogResult.OK;
@@ -121,19 +110,16 @@ namespace DE_IDENTIFICATION_TOOL
                 }
                 else
                 {
-                    // Display error message
                     MessageBox.Show("The CSV file is not valid. Error: " + pythonResponse, "Error");
                 }
             }
         }
-
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
-        private void btnForBack_Click(object sender, EventArgs e)
+        private void BtnForBack_Click(object sender, EventArgs e)
         {
             this.Close();
         }

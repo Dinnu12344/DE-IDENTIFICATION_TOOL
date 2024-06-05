@@ -22,6 +22,6 @@ if __name__ == "__main__":
     if(mf.check_table_existence(table_name,db_file_path)==True):
             d.delete_folders(mf.tool_path+"\\"+project_name+"\\"+table_name)
             d.delete_tables(db_file_path,table_name)
-            print()
+            print("success")
     else:
         print(f"The table {table_name} doest exist in sqlite")

@@ -74,7 +74,6 @@ public class PythonService
         return ExecutePythonScript(command);
 
     }
-
     private string ExecutePythonScript(string command)
     {
         using (Process process = new Process())
