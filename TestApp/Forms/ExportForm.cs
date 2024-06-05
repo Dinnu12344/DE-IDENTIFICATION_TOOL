@@ -35,7 +35,7 @@ namespace DE_IDENTIFICATION_TOOL
                         string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
                         // Add your code here to export the data to the selected folder path
-                        string pythonScriptPath = @"Add path of export connection";
+                        string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ExportCsvConnection.py";
                         string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
                         MessageBox.Show("The exported path is : " + pythonResponse);
                         this.Close();

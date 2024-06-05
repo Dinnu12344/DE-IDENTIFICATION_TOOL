@@ -27,10 +27,10 @@ def export_to_csv(Table_name,sqlite_conn,path):
             # path_file = f"{Table_name}_"+ datetime.datetime.now().strftime("%Y%m%d_%H%M") + ".csv"
             # path = os.path.join(path, path_file)
             # path=normalize_path(path)
-            print(path)
+            print(path,"path1")
 
             path = os.path.join(path, Table_name + ".csv")            
-            print(path)
+            print(path,"path2")
           
             # Export DataFrame to CSV file
             df.to_csv(path, index=False)
@@ -38,8 +38,8 @@ def export_to_csv(Table_name,sqlite_conn,path):
             # print("Export Successful:", f"{Table_name} exported to CSV file at {path}")
 
             Status = "Success"
-            # Comment = f"Export Successful: {Table_name} exported to CSV file at {path}"
-            return Status
+            Comment = f"Export Successful: {Table_name} exported to CSV file at {path}"
+            return Status,Comment
             # messagebox.showinfo("Export Successful", f"{table_name} exported to CSV file at {file_path}")
         else:
             # print("Export Cancelled: No file path entered.")

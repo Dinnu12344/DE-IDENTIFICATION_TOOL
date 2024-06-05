@@ -101,7 +101,7 @@ namespace DE_IDENTIFICATION_TOOL
 
             if (!string.IsNullOrEmpty(SelectedCsvFilePath))
             {
-                string pythonScriptPath = @"Add Path of ImportCSVConnection"; 
+                string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ImportCsvConnection.py"; 
                 string pythonResponse = pythonService.SendDataToPython(SelectedCsvFilePath, projectName, TableName,SelectedDelimiter, SelectedQuote, EnteredText, pythonScriptPath);
                 if (pythonResponse.ToLower().Contains("success"))
                 {

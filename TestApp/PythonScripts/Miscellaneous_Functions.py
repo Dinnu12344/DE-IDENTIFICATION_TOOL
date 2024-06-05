@@ -123,7 +123,8 @@ def check_table_existence(table_name, database_path):
     table_names = tables_list_Of_sqlite(database_path)
     # print(table_names)
     if table_name in table_names:
-        return "Table is Present"
+        return True
+        #return "Table is Present"
     elif table_name=="":
         Comment = "Table does not specified"
         return Comment

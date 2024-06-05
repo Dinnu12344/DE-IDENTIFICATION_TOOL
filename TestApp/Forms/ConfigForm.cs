@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -211,7 +212,7 @@ namespace DE_IDENTIFICATION_TOOL
             // Convert the selected data to JSON format
             string json = JsonConvert.SerializeObject(selectedData, Formatting.Indented);
 
-            string directoryPath = "Add the config path";
+            string directoryPath = $@"C:\Users\Dinesh Puvvala\AppData\Roaming\DeidentificationTool\{project}\{table}\ConfigFile"; ;
 
             string filePath = Path.Combine(directoryPath, (table + ".json"));
 
