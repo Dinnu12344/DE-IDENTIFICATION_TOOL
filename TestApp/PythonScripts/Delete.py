@@ -4,7 +4,7 @@ import shutil
 
 # Function to delete folders in the file system
 def delete_project(folder_path):
-        
+    print(folder_path,"Folder")
     try:
         # Check if the file exists
         # fold=os.path.join(r"E:\New folder",r"New folder")

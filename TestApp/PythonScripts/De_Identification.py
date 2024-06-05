@@ -224,8 +224,8 @@ def de_Identification_Main(config_files_path,table_name,db_file_path):
             mf.Df_Data_To_Sqlite(db_file_path,df,"de_identified_"+table_name)
 
             Status = "Success"
-            # Comment = f"Successfully De-identified the data for the table : '{table_name}'"
-            return Status
+            Comment = f"Successfully De-identified the data for the table : '{table_name}'"
+            return Status,Comment
         
     except Exception as e:
 

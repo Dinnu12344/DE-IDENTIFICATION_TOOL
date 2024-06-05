@@ -1,3 +1,4 @@
+from token import COMMENT
 import pandas as pd
 import pyodbc
 import sqlite3
@@ -83,7 +84,7 @@ def Import_SqlServer_Data_To_SqLite(server,database,table_name,n, db_file_path,p
     
 #Function for importing the CSV data to the DataFrame
 
-def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_path,delimeter,quotechar):
+def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_path,delimeter,quotechar,project_name):
     # print("SqLite Function")
     n=int(n)
     try:
@@ -137,7 +138,7 @@ def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_p
             return response
         
         # print(df)
-        # Comment = f"Successfully imported file : {path} as a table : {table_name} inside the project : {project_name}"
+        Comment = f"Successfully imported file : {path} as a table : {table_name} inside the project : {project_name}"
         mf.create_path(table_name_folder_path)
 
         config_files_path=table_name_folder_path+'\\ConfigFile'
@@ -147,14 +148,13 @@ def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_p
         mf.create_path(log_files_path)
         Status = "success"
         # print(Comment,Status)
-        return Status
+        return Status,Comment
 
     except Exception as e:
         Status = "Import Failed"
-        # Comment = f"Import failed : {db_file_path} Failed with one or more data exception : {e}"
-        return Status+f"{e}"
+        Comment = f"Import failed : {db_file_path} Failed with one or more data exception : {e}"
+        return Status+f"{e}",Comment
 #-------------------------------------------------------------------------------------------------------------
-
 
 def Import_CSV_Relational_Data_To_SqLite(relationshipsList,csv_path,db_file_path,n,table_name,project_name,delimeter,quotechar):
 

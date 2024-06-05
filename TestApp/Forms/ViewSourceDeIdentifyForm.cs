@@ -31,7 +31,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
                     Alignment = DataGridViewContentAlignment.MiddleLeft,
-                    WrapMode = DataGridViewTriState.True 
+                    WrapMode = DataGridViewTriState.True
                 },
                 ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
                 {
@@ -40,6 +40,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
             };
 
+            // Add DataGridView to the form's Controls collection
+            Controls.Add(dataGridView);
             DataTable dataTable = ConvertJsonToDataTable(jsonData);
             if (dataTable != null)
             {
@@ -52,7 +54,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 dataGridView.DataSource = dataTable;
                 foreach (DataGridViewColumn column in dataGridView.Columns)
                 {
-                    column.MinimumWidth = 100; 
+                    column.MinimumWidth = 100;
                     column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 }
 
