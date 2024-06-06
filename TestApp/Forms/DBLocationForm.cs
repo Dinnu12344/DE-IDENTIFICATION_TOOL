@@ -17,27 +17,18 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         {
             InitializeComponent();
             lblForServer.Visible = false;
-            txtForServer.Visible = false;
-
-            lblForPort.Visible = false;
-            txtForPort.Visible = false;
+            txtForServer.Visible = false;            
 
             lblForUserName.Visible = false;
             txtForUsername.Visible = false;
 
             lblForPassword.Visible = false;
-            txtForPassword.Visible = false;
-
-            lblForDatabase.Visible = false;
-            txtForDatabase.Visible = false;
+            txtForPassword.Visible = false;           
 
             btnFroNextinJdbcFrm.Enabled = false;
             btnForFinish.Enabled = true;
             //btnForCancelInJdbcFrm.Enabled = false;
-
-
         }
-
 
         private void btnForBackInJdbcFrm_Click(object sender, EventArgs e)
         {
@@ -53,11 +44,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         {
             dbTypedd.Text = string.Empty;
             txtForServer.Text = string.Empty;
-            txtForPort.Text = string.Empty;
             txtForUsername.Text = string.Empty;
             lblForPassword.Text = string.Empty;
             txtForPassword.Text = string.Empty;
-            txtForDatabase.Text = string.Empty;
         }
 
         private void dbTypedd_SelectedIndexChanged(object sender, EventArgs e)
@@ -65,14 +54,12 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string selectedItem = dbTypedd.SelectedItem.ToString();
 
             // If "My Sql" is selected
-            if (selectedItem == "My SQL")
+            if (selectedItem == "SQL")
             {
                 // Hide MySQL related controls
                 lblForServer.Visible = true;
                 txtForServer.Visible = true;
 
-                lblForPort.Visible = true;
-                txtForPort.Visible = true;
 
                 lblForUserName.Visible = true;
                 txtForUsername.Visible = true;
@@ -80,8 +67,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 lblForPassword.Visible = true;
                 txtForPassword.Visible = true;
 
-                lblForDatabase.Visible = true;
-                txtForDatabase.Visible = true;
             }
             // If "Oracle" is selected
             else if (selectedItem == "Oracle")
@@ -112,7 +97,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 try
                 {
                     myConnection.Open();
-                    MessageBox.Show("Connection opened");
+                    //MessageBox.Show("Connection opened");
 
                     // Query to get all database names
                     string query = "SELECT name FROM sys.databases";
@@ -129,9 +114,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                                 databaseNames.AppendLine(reader["name"].ToString());
                             }
 
-                            MessageBox.Show($"Databases on the server:\n{databaseNames.ToString()}", "Databases", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            //MessageBox.Show($"Databases on the server:\n{databaseNames.ToString()}", "Databases", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
+                    DbtableForm dbTableForm = new DbtableForm(connectionString);
+                    dbTableForm.Show();
                 }
                 catch (Exception ex)
                 {
@@ -139,49 +126,5 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
             }
         }
-
-
-
-
-        //private void btnForFinish_Click(object sender, EventArgs e)
-        //{
-        //    string connectionString = $"server={this.txtForServer.Text};" +
-        //                              //$"database={this.txtForDatabase.Text}; " +
-        //                              $"user id={this.txtForUsername.Text};" +
-        //                              $"password={this.txtForPassword.Text};" +
-        //                              $"connection timeout=30";
-
-        //    using (SqlConnection myConnection = new SqlConnection(connectionString))
-        //    {
-        //        try
-        //        {
-        //            myConnection.Open();
-        //            MessageBox.Show("Connection opened");
-
-        //            // Query to get all table names
-        //            string query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'";
-
-        //            using (SqlCommand cmd = new SqlCommand(query, myConnection))
-        //            {
-        //                using (SqlDataReader reader = cmd.ExecuteReader())
-        //                {
-        //                    // Use a StringBuilder to collect all table names
-        //                    System.Text.StringBuilder tableNames = new System.Text.StringBuilder();
-
-        //                    while (reader.Read())
-        //                    {
-        //                        tableNames.AppendLine(reader["TABLE_NAME"].ToString());
-        //                    }
-
-        //                    MessageBox.Show($"Tables in the database:\n{tableNames.ToString()}", "Tables", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show($"Connection failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //    }
-        //}
     }
 }

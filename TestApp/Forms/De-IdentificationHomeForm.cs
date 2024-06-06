@@ -17,6 +17,7 @@ namespace DE_IDENTIFICATION_TOOL
         private ContextMenuStrip createdProjectsContextMenu;
         private ContextMenuStrip tableContextMenu;
         private PythonService pythonService;
+        private static readonly string pythonScriptsDirectory;
 
         public Form1()
         {
@@ -76,8 +77,6 @@ namespace DE_IDENTIFICATION_TOOL
             ToolStripMenuItem deleteProjectItem = new ToolStripMenuItem("Delete");
             editProjectItem.Click += ImportProjectItem_Click;
             deleteProjectItem.Click += DeleteProjectItem_Click;
-            //renameProjectItem.Click += RenameProjectItem_Click;
-            //refreshProjectItem.Click += RefreshProjectItem_Click;
             createdProjectsContextMenu.Items.Add(editProjectItem);
             createdProjectsContextMenu.Items.Add(deleteProjectItem);
             createdProjectsContextMenu.Items.Add(renameProjectItem);
@@ -97,9 +96,7 @@ namespace DE_IDENTIFICATION_TOOL
             deleteMenuItem.Click += DeleteMenuItem_Click;
             viewSourceDataMenuItem.Click += ViewSourceMenuItem_Click;
             viewDeidentifiedData.Click += ViewSourceMenuItem_Click;
-            //logMenuItem.Click += DeleteMenuItem_Click;
             exportMenuItem.Click += ExportMenuItem_Click;
-            //refreshMenuItem.Click += RefreshMenuItem_Click;
             tableContextMenu.Items.Add(configMenuItem);
             tableContextMenu.Items.Add(deIdentifyMenuItem);
             tableContextMenu.Items.Add(deleteMenuItem);
@@ -116,8 +113,10 @@ namespace DE_IDENTIFICATION_TOOL
             if (selectedNode != null)
             {
                 TreeNode parentNode = selectedNode.Parent;
-                string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\tableColumnsConnection.py";
+                string pythonScriptPath = @"E:\DE -IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\tableColumnsConnection.py";
                 string pythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentNode.Text, pythonScriptPath);
+
+                // Proceed with the rest of your code
                 ConfigForm configForm = new ConfigForm(this, pythonResponse, selectedNode, parentNode);
                 configForm.Show();
             }
@@ -129,7 +128,7 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode parentnode = selectedNode.Parent;
             if (selectedNode != null)
             {
-                string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\DeIentificationConnection.py";
+                string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeIentificationConnection.py";
                 string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
                 if (getpythonResponse.ToLower().Contains("success"))
                 {
@@ -159,7 +158,7 @@ namespace DE_IDENTIFICATION_TOOL
                 return;
             }
 
-            string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ViewScourceDataConnection.py";
+            string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ViewScourceDataConnection.py";
             string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
             Console.WriteLine("Python Response: " + getpythonResponse);
             if (IsValidPythonResponse(getpythonResponse))
@@ -188,7 +187,7 @@ namespace DE_IDENTIFICATION_TOOL
                 return;
             }
 
-            string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ViewDeidentifiedDataConnection.py";
+            string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ViewDeidentifiedDataConnection.py";
             string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
             Console.WriteLine("Python Response: " + getpythonResponse);
 
@@ -338,7 +337,7 @@ namespace DE_IDENTIFICATION_TOOL
                 {
                     string projecrtname = selectedNode.Text;
 
-                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\bin\Debug\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\DeleteProjectConnection.py";
+                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteProjectConnection.py";
 
                     string pythonResponse = pythonService.DeleteProjectData(projecrtname, pythonfile);
 
@@ -364,7 +363,7 @@ namespace DE_IDENTIFICATION_TOOL
 
                     string tablename = selectedNode.Text;
 
-                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\bin\Debug\PythonScriptsGit\ConnectionTestRepo_New\ConnectionTestRepo\DeleteTableConnection.py";
+                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteTableConnection.py";
 
                     string pythonResponse = pythonService.DeleteData(projecrtname, tablename, pythonfile);
 

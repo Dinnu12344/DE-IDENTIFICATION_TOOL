@@ -39,15 +39,11 @@
             this.btnFroNextinJdbcFrm = new System.Windows.Forms.Button();
             this.btnForBackInJdbcFrm = new System.Windows.Forms.Button();
             this.lblForServer = new System.Windows.Forms.Label();
-            this.lblForPort = new System.Windows.Forms.Label();
             this.lblForUserName = new System.Windows.Forms.Label();
             this.lblForPassword = new System.Windows.Forms.Label();
-            this.lblForDatabase = new System.Windows.Forms.Label();
             this.txtForServer = new System.Windows.Forms.TextBox();
-            this.txtForPort = new System.Windows.Forms.TextBox();
             this.txtForUsername = new System.Windows.Forms.TextBox();
             this.txtForPassword = new System.Windows.Forms.TextBox();
-            this.txtForDatabase = new System.Windows.Forms.TextBox();
             this.panelInDBLocationForm.SuspendLayout();
             this.panelHoldingButtonsInJdbcWindow.SuspendLayout();
             this.SuspendLayout();
@@ -96,11 +92,11 @@
             // 
             this.dbTypedd.FormattingEnabled = true;
             this.dbTypedd.Items.AddRange(new object[] {
-            "My SQL",
+            "SQL",
             "Oracel"});
-            this.dbTypedd.Location = new System.Drawing.Point(134, 155);
+            this.dbTypedd.Location = new System.Drawing.Point(185, 154);
             this.dbTypedd.Name = "dbTypedd";
-            this.dbTypedd.Size = new System.Drawing.Size(491, 24);
+            this.dbTypedd.Size = new System.Drawing.Size(344, 24);
             this.dbTypedd.TabIndex = 2;
             this.dbTypedd.SelectedIndexChanged += new System.EventHandler(this.dbTypedd_SelectedIndexChanged);
             // 
@@ -164,19 +160,10 @@
             this.lblForServer.TabIndex = 4;
             this.lblForServer.Text = "Server";
             // 
-            // lblForPort
-            // 
-            this.lblForPort.AutoSize = true;
-            this.lblForPort.Location = new System.Drawing.Point(39, 258);
-            this.lblForPort.Name = "lblForPort";
-            this.lblForPort.Size = new System.Drawing.Size(31, 16);
-            this.lblForPort.TabIndex = 5;
-            this.lblForPort.Text = "Port";
-            // 
             // lblForUserName
             // 
             this.lblForUserName.AutoSize = true;
-            this.lblForUserName.Location = new System.Drawing.Point(42, 301);
+            this.lblForUserName.Location = new System.Drawing.Point(36, 279);
             this.lblForUserName.Name = "lblForUserName";
             this.lblForUserName.Size = new System.Drawing.Size(73, 16);
             this.lblForUserName.TabIndex = 6;
@@ -185,70 +172,43 @@
             // lblForPassword
             // 
             this.lblForPassword.AutoSize = true;
-            this.lblForPassword.Location = new System.Drawing.Point(42, 348);
+            this.lblForPassword.Location = new System.Drawing.Point(36, 337);
             this.lblForPassword.Name = "lblForPassword";
             this.lblForPassword.Size = new System.Drawing.Size(67, 16);
             this.lblForPassword.TabIndex = 7;
             this.lblForPassword.Text = "Password";
             // 
-            // lblForDatabase
-            // 
-            this.lblForDatabase.AutoSize = true;
-            this.lblForDatabase.Location = new System.Drawing.Point(42, 397);
-            this.lblForDatabase.Name = "lblForDatabase";
-            this.lblForDatabase.Size = new System.Drawing.Size(67, 16);
-            this.lblForDatabase.TabIndex = 8;
-            this.lblForDatabase.Text = "Database";
-            // 
             // txtForServer
             // 
-            this.txtForServer.Location = new System.Drawing.Point(134, 209);
+            this.txtForServer.Location = new System.Drawing.Point(185, 209);
             this.txtForServer.Name = "txtForServer";
             this.txtForServer.Size = new System.Drawing.Size(344, 22);
             this.txtForServer.TabIndex = 9;
             // 
-            // txtForPort
-            // 
-            this.txtForPort.Location = new System.Drawing.Point(134, 252);
-            this.txtForPort.Name = "txtForPort";
-            this.txtForPort.Size = new System.Drawing.Size(344, 22);
-            this.txtForPort.TabIndex = 10;
-            // 
             // txtForUsername
             // 
-            this.txtForUsername.Location = new System.Drawing.Point(134, 295);
+            this.txtForUsername.Location = new System.Drawing.Point(185, 273);
             this.txtForUsername.Name = "txtForUsername";
             this.txtForUsername.Size = new System.Drawing.Size(344, 22);
             this.txtForUsername.TabIndex = 11;
             // 
             // txtForPassword
             // 
-            this.txtForPassword.Location = new System.Drawing.Point(134, 342);
+            this.txtForPassword.Location = new System.Drawing.Point(185, 331);
             this.txtForPassword.Name = "txtForPassword";
             this.txtForPassword.Size = new System.Drawing.Size(344, 22);
             this.txtForPassword.TabIndex = 12;
-            // 
-            // txtForDatabase
-            // 
-            this.txtForDatabase.Location = new System.Drawing.Point(134, 391);
-            this.txtForDatabase.Name = "txtForDatabase";
-            this.txtForDatabase.Size = new System.Drawing.Size(344, 22);
-            this.txtForDatabase.TabIndex = 13;
             // 
             // DBLocationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(802, 543);
-            this.Controls.Add(this.txtForDatabase);
             this.Controls.Add(this.txtForPassword);
             this.Controls.Add(this.txtForUsername);
-            this.Controls.Add(this.txtForPort);
             this.Controls.Add(this.txtForServer);
-            this.Controls.Add(this.lblForDatabase);
             this.Controls.Add(this.lblForPassword);
             this.Controls.Add(this.lblForUserName);
-            this.Controls.Add(this.lblForPort);
             this.Controls.Add(this.lblForServer);
             this.Controls.Add(this.panelHoldingButtonsInJdbcWindow);
             this.Controls.Add(this.dbTypedd);
@@ -276,15 +236,11 @@
         private System.Windows.Forms.Button btnFroNextinJdbcFrm;
         private System.Windows.Forms.Button btnForBackInJdbcFrm;
         private System.Windows.Forms.Label lblForServer;
-        private System.Windows.Forms.Label lblForPort;
         private System.Windows.Forms.Label lblForUserName;
         private System.Windows.Forms.Label lblForPassword;
-        private System.Windows.Forms.Label lblForDatabase;
         private System.Windows.Forms.TextBox txtForServer;
-        private System.Windows.Forms.TextBox txtForPort;
         private System.Windows.Forms.TextBox txtForUsername;
         private System.Windows.Forms.TextBox txtForPassword;
-        private System.Windows.Forms.TextBox txtForDatabase;
         private System.Windows.Forms.Button btnForFinish;
     }
 }

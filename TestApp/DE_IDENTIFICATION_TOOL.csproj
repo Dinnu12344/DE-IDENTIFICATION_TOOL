@@ -101,6 +101,12 @@
     <Compile Include="Forms\DBLocationForm.Designer.cs">
       <DependentUpon>DBLocationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DbtableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DbtableForm.Designer.cs">
+      <DependentUpon>DbtableForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\De-IdentificationHomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,6 +144,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CSVLocationForm.resx">
       <DependentUpon>CSVLocationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DBLocationForm.resx">
+      <DependentUpon>DBLocationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DbtableForm.resx">
+      <DependentUpon>DbtableForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\De-IdentificationHomeForm.resx">
       <DependentUpon>De-IdentificationHomeForm.cs</DependentUpon>
@@ -181,6 +193,9 @@
     <None Include="PythonScripts\ExportCsvConnection.py" />
     <None Include="PythonScripts\Import.py" />
     <None Include="PythonScripts\ImportCsvConnection.py" />
+    <None Include="PythonScripts\ImportSqlConnection.py">
+      <SubType>Form</SubType>
+    </None>
     <None Include="PythonScripts\LogFile.py" />
     <None Include="PythonScripts\Main.py" />
     <None Include="PythonScripts\Miscellaneous_Functions.py" />

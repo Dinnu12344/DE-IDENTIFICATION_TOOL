@@ -105,6 +105,15 @@ namespace DE_IDENTIFICATION_TOOL
 
             if (!string.IsNullOrEmpty(csvLocationFormModel.SelectedCsvFilePath))
             {
+                string username = Environment.UserName;
+                string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{csvLocationFormModel.TableName}\LogFile";
+                // Ensure the directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+
                 string dirName = Path.Combine(pythonScriptsDirectory, "ImportCsvConnection.py");
                 string pythonScriptPath = Path.Combine(dirName, "ImportCsvConnection.py");
                 string pythonResponse = pythonService.SendDataToPython(csvLocationFormModel.SelectedCsvFilePath, projectName, csvLocationFormModel.TableName,csvLocationFormModel.SelectedDelimiter, csvLocationFormModel.SelectedQuote, csvLocationFormModel.EnteredText, pythonScriptPath);
