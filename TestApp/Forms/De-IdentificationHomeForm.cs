@@ -98,7 +98,7 @@ namespace DE_IDENTIFICATION_TOOL
             deIdentifyMenuItem.Click += DeIdentifyMenuItem_Click;
             deleteMenuItem.Click += DeleteMenuItem_Click;
             viewSourceDataMenuItem.Click += ViewSourceMenuItem_Click;
-            viewDeidentifiedData.Click += ViewSourceMenuItem_Click;
+            viewDeidentifiedData.Click += ViewDataMenuItem_Click;
             //logMenuItem.Click += DeleteMenuItem_Click;
             exportMenuItem.Click += ExportMenuItem_Click;
             //refreshMenuItem.Click += RefreshMenuItem_Click;

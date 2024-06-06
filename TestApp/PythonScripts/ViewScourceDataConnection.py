@@ -91,7 +91,9 @@ if __name__ == "__main__":
         response = mf.SqlLite_Data_To_Df(db_file_path, table_name)
         
         # Convert DataFrame to a list of JSON objects
+        # json_list = response.reset_index().to_dict(orient='records')
         json_list = response.to_dict(orient='records')
+
         
         # Print JSON list with each object on a new line
         print("[")
