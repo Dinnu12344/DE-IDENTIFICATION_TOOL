@@ -41,6 +41,16 @@ public class PythonService
         var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
         return ExecutePythonScript(command);
     }
+    public string SendSqlDataToPython(string server, string DatabaseName, string password, string userId, string projectName, string EnteredText, string tableName,string schemaName, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{server}\" \"{DatabaseName}\" \"{password}\" \"{userId}\"  \"{projectName}\" \"{EnteredText}\" \"{tableName}\" \"{schemaName}\"";
+        return ExecutePythonScript(command);
+    }
 
     public string SendDataToPython(string filePath, string project,string table, string pythonScriptPath)        
     {

@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DbtableForm));
             this.cmbDatabases = new System.Windows.Forms.ComboBox();
             this.cmbTables = new System.Windows.Forms.ComboBox();
             this.labelForDatabase = new System.Windows.Forms.Label();
@@ -36,8 +37,10 @@
             this.textBoxForSourceTbl = new System.Windows.Forms.TextBox();
             this.textBoxForSourceTblKey = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblForNoofColumns = new System.Windows.Forms.Label();
+            this.txtForNoofColumns = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,7 +84,7 @@
             // checkBoxforPullreleateddata
             // 
             this.checkBoxforPullreleateddata.AutoSize = true;
-            this.checkBoxforPullreleateddata.Location = new System.Drawing.Point(72, 196);
+            this.checkBoxforPullreleateddata.Location = new System.Drawing.Point(76, 199);
             this.checkBoxforPullreleateddata.Name = "checkBoxforPullreleateddata";
             this.checkBoxforPullreleateddata.Size = new System.Drawing.Size(134, 20);
             this.checkBoxforPullreleateddata.TabIndex = 4;
@@ -105,6 +108,7 @@
             this.btnForFinish.TabIndex = 6;
             this.btnForFinish.Text = "Finish";
             this.btnForFinish.UseVisualStyleBackColor = true;
+            this.btnForFinish.Click += new System.EventHandler(this.btnForFinish_Click);
             // 
             // btnForCancel
             // 
@@ -229,15 +233,6 @@
             this.panel1.Size = new System.Drawing.Size(967, 87);
             this.panel1.TabIndex = 20;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(38, 13);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 16);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Tables";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -247,9 +242,38 @@
             this.label6.TabIndex = 1;
             this.label6.Text = "Please select the table you want  to import from ";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(38, 13);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(50, 16);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Tables";
+            // 
+            // lblForNoofColumns
+            // 
+            this.lblForNoofColumns.AutoSize = true;
+            this.lblForNoofColumns.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblForNoofColumns.Location = new System.Drawing.Point(734, 145);
+            this.lblForNoofColumns.Name = "lblForNoofColumns";
+            this.lblForNoofColumns.Size = new System.Drawing.Size(100, 20);
+            this.lblForNoofColumns.TabIndex = 21;
+            this.lblForNoofColumns.Text = "Rows Count";
+            // 
+            // txtForNoofColumns
+            // 
+            this.txtForNoofColumns.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtForNoofColumns.Location = new System.Drawing.Point(840, 145);
+            this.txtForNoofColumns.Name = "txtForNoofColumns";
+            this.txtForNoofColumns.Size = new System.Drawing.Size(100, 27);
+            this.txtForNoofColumns.TabIndex = 22;
+            // 
             // DbtableForm
             // 
             this.ClientSize = new System.Drawing.Size(974, 591);
+            this.Controls.Add(this.txtForNoofColumns);
+            this.Controls.Add(this.lblForNoofColumns);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.textBoxForSourceTblKey);
             this.Controls.Add(this.textBoxForSourceTbl);
@@ -271,6 +295,7 @@
             this.Controls.Add(this.labelForDatabase);
             this.Controls.Add(this.cmbTables);
             this.Controls.Add(this.cmbDatabases);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DbtableForm";
             this.Text = "Database and Tables";
             this.panel1.ResumeLayout(false);
@@ -303,6 +328,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblForNoofColumns;
+        private System.Windows.Forms.TextBox txtForNoofColumns;
     }
 }
 

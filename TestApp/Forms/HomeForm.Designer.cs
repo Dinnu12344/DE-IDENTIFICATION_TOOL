@@ -1,6 +1,6 @@
 ﻿namespace DE_IDENTIFICATION_TOOL
 {
-    partial class Form1
+    partial class HomeForm
     {
         /// <summary>
         /// Required designer variable.
@@ -24,7 +24,7 @@
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeForm));
             this.treeView = new System.Windows.Forms.TreeView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,25 +77,25 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
             this.newProjectToolStripMenuItem.Text = "New Project";
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
             this.openProjectToolStripMenuItem.Text = "Open Project";
             // 
             // exportDataToolStripMenuItem
             // 
             this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
-            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
             this.exportDataToolStripMenuItem.Text = "Export Data";
             // 
             // reToolStripMenuItem
             // 
             this.reToolStripMenuItem.Name = "reToolStripMenuItem";
-            this.reToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.reToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
             this.reToolStripMenuItem.Text = "Exit";
             // 
             // editToolStripMenuItem
@@ -122,14 +122,14 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // Form1
+            // HomeForm
             // 
             this.ClientSize = new System.Drawing.Size(953, 564);
             this.Controls.Add(this.treeView);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "HomeForm";
             this.Text = "Cognine De-Identification Tool";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

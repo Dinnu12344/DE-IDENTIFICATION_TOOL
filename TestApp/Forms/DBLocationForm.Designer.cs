@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DBLocationForm));
             this.panelInDBLocationForm = new System.Windows.Forms.Panel();
             this.lblForJdbcSubPara = new System.Windows.Forms.Label();
             this.lblForJdbc = new System.Windows.Forms.Label();
@@ -214,6 +215,7 @@
             this.Controls.Add(this.dbTypedd);
             this.Controls.Add(this.lblForTypeInJdbcFrm);
             this.Controls.Add(this.panelInDBLocationForm);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DBLocationForm";
             this.Text = "DBLocationForm";
             this.panelInDBLocationForm.ResumeLayout(false);

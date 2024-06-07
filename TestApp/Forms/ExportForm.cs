@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DE_IDENTIFICATION_TOOL.Pythonresponse;
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
@@ -34,8 +36,12 @@ namespace DE_IDENTIFICATION_TOOL
                         // Save the selected folder path for further use
                         string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
+                        string pythonScriptName = "ExportCsvConnection.py";
+                        string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                        string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+
                         // Add your code here to export the data to the selected folder path
-                        string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ExportCsvConnection.py";
+                        //string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ExportCsvConnection.py";
                         string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
                         MessageBox.Show("The exported path is : " + pythonResponse);
                         this.Close();

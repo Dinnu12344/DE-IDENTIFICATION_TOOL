@@ -11,13 +11,13 @@ namespace DE_IDENTIFICATION_TOOL
     public partial class ConfigForm : Form
     {
         private List<System.Windows.Forms.ComboBox> dynamicComboBoxes;
-        private Form1 homeForm;
+        private HomeForm homeForm;
         private Panel scrollablePanel;
         private string pythonResponse;
         private TreeNode tabelName;
         private TreeNode projectName;
 
-        public ConfigForm(Form1 homeForm, string response,TreeNode selectedNode, TreeNode parentNode)
+        public ConfigForm(HomeForm homeForm, string response,TreeNode selectedNode, TreeNode parentNode)
         {
             this.homeForm = homeForm;
             pythonResponse = response;
@@ -170,7 +170,7 @@ namespace DE_IDENTIFICATION_TOOL
         {
             string response = pythonResponse.Replace("'", "\""); 
 
-            List<string> columns = JsonConvert.DeserializeObject<List<string>>(response);
+             List<string> columns = JsonConvert.DeserializeObject<List<string>>(response);
 
             return columns;
         }

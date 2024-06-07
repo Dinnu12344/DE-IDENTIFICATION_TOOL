@@ -1,4 +1,5 @@
 ﻿using DE_IDENTIFICATION_TOOL.Models;
+using DE_IDENTIFICATION_TOOL.Pythonresponse;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -113,9 +114,12 @@ namespace DE_IDENTIFICATION_TOOL
                     Directory.CreateDirectory(directoryPath);
                 }
 
-
-                string dirName = Path.Combine(pythonScriptsDirectory, "ImportCsvConnection.py");
-                string pythonScriptPath = Path.Combine(dirName, "ImportCsvConnection.py");
+                string pythonScriptName = "ImportCsvConnection.py";
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                //string dirName = Path.Combine(pythonScriptsDirectory, "ImportCsvConnection.py");
+                //string pythonScriptPath = Path.Combine(dirName, "ImportCsvConnection.py");
+                //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ImportCsvConnection.py";
                 string pythonResponse = pythonService.SendDataToPython(csvLocationFormModel.SelectedCsvFilePath, projectName, csvLocationFormModel.TableName,csvLocationFormModel.SelectedDelimiter, csvLocationFormModel.SelectedQuote, csvLocationFormModel.EnteredText, pythonScriptPath);
                 
                 if (pythonResponse.ToLower().Contains("success"))
