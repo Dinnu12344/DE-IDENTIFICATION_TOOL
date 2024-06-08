@@ -113,11 +113,11 @@
     <Compile Include="Forms\HomeForm.Designer.cs">
       <DependentUpon>HomeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ExportForm.cs">
+    <Compile Include="Forms\exportForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ExportForm.Designer.cs">
-      <DependentUpon>ExportForm.cs</DependentUpon>
+    <Compile Include="Forms\exportForm.Designer.cs">
+      <DependentUpon>exportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ImportForm.cs">
       <SubType>Form</SubType>
@@ -155,8 +155,8 @@
     <EmbeddedResource Include="Forms\HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ExportForm.resx">
-      <DependentUpon>ExportForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\exportForm.resx">
+      <DependentUpon>exportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportForm.resx">
       <DependentUpon>ImportForm.cs</DependentUpon>

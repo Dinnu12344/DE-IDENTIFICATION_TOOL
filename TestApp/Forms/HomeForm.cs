@@ -430,7 +430,7 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode parentNode = selectedNode.Parent;
             string tablename = selectedNode.Text;
             string projectName = parentNode.Text;
-            ExportForm deIdentifyForm = new ExportForm(tablename, projectName);
+            exportForm deIdentifyForm = new exportForm(tablename, projectName);
             deIdentifyForm.ShowDialog();
         }
     }
