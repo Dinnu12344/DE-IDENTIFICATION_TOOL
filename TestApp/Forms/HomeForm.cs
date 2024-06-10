@@ -119,7 +119,7 @@ namespace DE_IDENTIFICATION_TOOL
                 TreeNode parentNode = selectedNode.Parent;
                 if (parentNode != null) // Ensure the selected node has a parent node
                 {
-                    string pythonScriptName = "tableColumnsConnection.py";
+                    string pythonScriptName = "TableColumnsConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                     string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
 
@@ -147,7 +147,7 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode parentnode = selectedNode.Parent;
             if (selectedNode != null)
             {
-                string pythonScriptName = "DeIentificationConnection.py";
+                string pythonScriptName = "DeidentificationConnection.py";
                 string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                 string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
 
@@ -181,7 +181,7 @@ namespace DE_IDENTIFICATION_TOOL
                 return;
             }
 
-            string pythonScriptName = "ViewScourceDataConnection.py";
+            string pythonScriptName = "ViewSourceDataConnection.py";
             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
             string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
 
@@ -438,7 +438,7 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode parentNode = selectedNode.Parent;
             string tablename = selectedNode.Text;
             string projectName = parentNode.Text;
-            exportForm deIdentifyForm = new exportForm(tablename, projectName);
+            ExportForm deIdentifyForm = new ExportForm(tablename, projectName);
             deIdentifyForm.ShowDialog();
         }
     }

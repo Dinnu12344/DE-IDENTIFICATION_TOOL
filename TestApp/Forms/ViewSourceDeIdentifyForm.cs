@@ -40,7 +40,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
             };
 
-            // Add DataGridView to the form's Controls collection
             Controls.Add(dataGridView);
             DataTable dataTable = ConvertJsonToDataTable(jsonData);
             if (dataTable != null)

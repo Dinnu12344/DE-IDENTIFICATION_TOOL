@@ -56,7 +56,7 @@ namespace DE_IDENTIFICATION_TOOL
             Button saveButton = new Button();
             saveButton.Text = "SaveFinish";
             saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left; // Anchoring to the bottom and left
-            saveButton.Click += new EventHandler(saveBtn_Click);
+            saveButton.Click += new EventHandler(SaveBtn_Click);
             saveButton.Location = new Point(10, 10); // Adjust location within the button panel
             buttonPanel.Controls.Add(saveButton);
 
@@ -64,7 +64,7 @@ namespace DE_IDENTIFICATION_TOOL
             Button cancelButton = new Button();
             cancelButton.Text = "Cancel";
             cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            cancelButton.Click += new EventHandler(cancelButton_Click);
+            cancelButton.Click += new EventHandler(CancelButton_Click);
             cancelButton.Location = new Point(110, 10);
             buttonPanel.Controls.Add(cancelButton);
 
@@ -175,13 +175,13 @@ namespace DE_IDENTIFICATION_TOOL
             return columns;
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             homeForm.Show();
             this.Hide();
         }
 
-        private void saveBtn_Click(object sender, EventArgs e)
+        private void SaveBtn_Click(object sender, EventArgs e)
         {
             string table = tabelName.Text;
             string project = projectName.Text;
