@@ -39,7 +39,7 @@ if __name__ == "__main__":
     log_files_path_table = os.path.join(log_files_path, table_name, "LogFile")
     mf.create_path(log_files_path_table)
     
-    log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+    log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
     filename = os.path.join(log_files_path_table, log_filename)
 
     result = check_json_file_presence(config_file_path)

@@ -125,11 +125,11 @@
     <Compile Include="Forms\ImportForm.Designer.cs">
       <DependentUpon>ImportForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\KeysForm.cs">
+    <Compile Include="Forms\KeyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\KeysForm.Designer.cs">
-      <DependentUpon>KeysForm.cs</DependentUpon>
+    <Compile Include="Forms\KeyForm.Designer.cs">
+      <DependentUpon>KeyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LogViewForm.cs">
       <SubType>Form</SubType>
@@ -172,6 +172,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportForm.resx">
       <DependentUpon>ImportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\KeyForm.resx">
+      <DependentUpon>KeyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LogViewForm.resx">
+      <DependentUpon>LogViewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ViewSourceDeIdentifyForm.resx">
       <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
@@ -227,6 +233,7 @@
   <ItemGroup>
     <Content Include="PythonScripts\DisplayDeidentifyConnection.py" />
     <Content Include="PythonScripts\DisplaySourceDataConnection.py" />
+    <Content Include="PythonScripts\GetTableNames.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

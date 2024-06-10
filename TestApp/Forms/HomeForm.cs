@@ -76,12 +76,15 @@ namespace DE_IDENTIFICATION_TOOL
             // Context menu for created projects
             createdProjectsContextMenu = new ContextMenuStrip();
             ToolStripMenuItem editProjectItem = new ToolStripMenuItem("Import");
+            ToolStripMenuItem keyProjectItem = new ToolStripMenuItem("Key");
             ToolStripMenuItem renameProjectItem = new ToolStripMenuItem("Rename");
             ToolStripMenuItem refreshProjectItem = new ToolStripMenuItem("Refresh");
             ToolStripMenuItem deleteProjectItem = new ToolStripMenuItem("Delete");
             editProjectItem.Click += ImportProjectItem_Click;
             deleteProjectItem.Click += DeleteProjectItem_Click;
+            keyProjectItem.Click += KeyProjectItem_Click;
             createdProjectsContextMenu.Items.Add(editProjectItem);
+            createdProjectsContextMenu.Items.Add(keyProjectItem);
             createdProjectsContextMenu.Items.Add(deleteProjectItem);
             createdProjectsContextMenu.Items.Add(renameProjectItem);
             createdProjectsContextMenu.Items.Add(refreshProjectItem);
@@ -98,6 +101,7 @@ namespace DE_IDENTIFICATION_TOOL
             configMenuItem.Click += ConfigMenuItem_Click;
             deIdentifyMenuItem.Click += DeIdentifyMenuItem_Click;
             deleteMenuItem.Click += DeleteMenuItem_Click;
+            logMenuItem.Click += LogMenuItem_Click;
             viewSourceDataMenuItem.Click += ViewSourceMenuItem_Click;
             viewDeidentifiedData.Click += ViewDataMenuItem_Click;
             exportMenuItem.Click += ExportMenuItem_Click;
@@ -237,7 +241,23 @@ namespace DE_IDENTIFICATION_TOOL
         {
             return !string.IsNullOrEmpty(response);
         }
+        private void KeyProjectItem_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = treeView.SelectedNode;
+            if (selectedNode != null)
+            {
+                KeyForm keyForm = new KeyForm(selectedNode);
+                keyForm.ShowDialog();
+            }
+        }
+        private void LogMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode parentNode = selectedNode.Parent;
 
+            LogViewForm logViewForm = new LogViewForm(selectedNode, parentNode);
+            logViewForm.ShowDialog();
+        }
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Right)

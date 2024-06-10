@@ -2,38 +2,42 @@
 {
     partial class LogViewForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.ListBox dateListBox;
+        private System.Windows.Forms.TextBox logTextBox;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "LogViewForm";
-        }
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogViewForm));
+            this.dateListBox = new System.Windows.Forms.ListBox();
+            this.logTextBox = new System.Windows.Forms.TextBox();
+            this.SuspendLayout();
+            // 
+            // dateListBox
+            // 
+            this.dateListBox.FormattingEnabled = true;
+            this.dateListBox.Location = new System.Drawing.Point(12, 12);
+            this.dateListBox.Name = "dateListBox";
+            this.dateListBox.Size = new System.Drawing.Size(200, 290);
+            this.dateListBox.TabIndex = 0;
+            // 
+            // logTextBox
+            // 
+            this.logTextBox.Location = new System.Drawing.Point(230, 12);
+            this.logTextBox.Multiline = true;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.Size = new System.Drawing.Size(300, 290);
+            this.logTextBox.TabIndex = 1;
+            // 
+            // LogViewForm
+            // 
+            this.ClientSize = new System.Drawing.Size(550, 320);
+            this.Controls.Add(this.dateListBox);
+            this.Controls.Add(this.logTextBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "LogViewForm";
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
-        #endregion
+        }
     }
 }
