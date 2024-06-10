@@ -99,7 +99,7 @@ namespace DE_IDENTIFICATION_TOOL
             deIdentifyMenuItem.Click += DeIdentifyMenuItem_Click;
             deleteMenuItem.Click += DeleteMenuItem_Click;
             viewSourceDataMenuItem.Click += ViewSourceMenuItem_Click;
-            viewDeidentifiedData.Click += ViewSourceMenuItem_Click;
+            viewDeidentifiedData.Click += ViewDataMenuItem_Click;
             exportMenuItem.Click += ExportMenuItem_Click;
             tableContextMenu.Items.Add(configMenuItem);
             tableContextMenu.Items.Add(deIdentifyMenuItem);
@@ -367,9 +367,13 @@ namespace DE_IDENTIFICATION_TOOL
                 {
                     string projecrtname = selectedNode.Text;
 
-                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteProjectConnection.py";
+                    string pythonScriptName = "DeleteProjectConnection.py";
+                    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                    string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
 
-                    string pythonResponse = pythonService.DeleteProjectData(projecrtname, pythonfile);
+                    //string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteProjectConnection.py";
+
+                    string pythonResponse = pythonService.DeleteProjectData(projecrtname, pythonScriptPath);
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
@@ -393,9 +397,13 @@ namespace DE_IDENTIFICATION_TOOL
 
                     string tablename = selectedNode.Text;
 
-                    string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteTableConnection.py";
+                    string pythonScriptName = "DeleteTableConnection.py";
+                    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                    string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
 
-                    string pythonResponse = pythonService.DeleteData(projecrtname, tablename, pythonfile);
+                    //string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteTableConnection.py";
+
+                    string pythonResponse = pythonService.DeleteData(projecrtname, tablename, pythonScriptPath);
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {

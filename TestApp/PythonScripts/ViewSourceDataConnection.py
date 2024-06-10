@@ -84,8 +84,7 @@ if __name__ == "__main__":
     project_name = sys.argv[1]
     table_name = sys.argv[2]
     db_file_path = mf.tool_path + "\\" + project_name + "\\TablesData\\Data.db"
-    print("I am IN")
-    
+        
     if mf.check_table_existence(table_name, db_file_path):
         pd.set_option('display.max_rows', None)
         pd.set_option('display.max_columns', None)
@@ -99,7 +98,7 @@ if __name__ == "__main__":
         print(",\n".join(json.dumps(record, indent=4) for record in json_list))
         print("]")
         
-        print("Hello")
+        
         # Optional: Display tabulated result in a readable format
         result = tabulate(response, headers='keys', tablefmt='simple', showindex=False)
         # display(result)
