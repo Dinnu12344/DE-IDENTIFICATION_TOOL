@@ -16,7 +16,7 @@ namespace DE_IDENTIFICATION_TOOL
         {
             buttonNext.Enabled = radioCheckCSV.Checked || radioCheckDatabase.Checked;
         }
-        private void nextButton_Click(object sender, EventArgs e)
+        private void NextButton_Click(object sender, EventArgs e)
         {
             if (radioCheckCSV.Checked)
             {
@@ -31,7 +31,7 @@ namespace DE_IDENTIFICATION_TOOL
             this.Close();
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
@@ -44,7 +44,6 @@ namespace DE_IDENTIFICATION_TOOL
         private RadioButton radioCheckCSV;
         private RadioButton radioCheckDatabase;
         private Button buttonNext;
-        //private Button buttonBack;
         private Button buttonCancel;
     }
 }

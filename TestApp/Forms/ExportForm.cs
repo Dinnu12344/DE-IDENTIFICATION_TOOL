@@ -1,20 +1,22 @@
-﻿using System;
+﻿using DE_IDENTIFICATION_TOOL.Pythonresponse;
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
 {
-    public partial class DeIdentifyForm : Form
+    public partial class ExportForm : Form
     {
-        private string tablename;
+        private string tableName;
         private string projectName;
         private PythonService pythonService;
 
-        public DeIdentifyForm(string tablename, string projectName)
+        public ExportForm(string tableName, string projectName)
         {
             InitializeComponent();
             pythonService = new PythonService();
-            this.tablename = tablename; // Corrected field name
-            this.projectName = projectName; // Corrected field name
+            this.tableName = tableName; 
+            this.projectName = projectName; 
         }
         public string SelectedImportOption { get; set; }
         private void btnForNext_Click(object sender, EventArgs e)
@@ -34,10 +36,14 @@ namespace DE_IDENTIFICATION_TOOL
                         // Save the selected folder path for further use
                         string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
+                        string pythonScriptName = "ExportCsvConnection.py";
+                        string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                        string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+
                         // Add your code here to export the data to the selected folder path
-                        string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ExportCsvConnection.py";
-                        string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tablename, pythonScriptPath);
-                        MessageBox.Show("The exported path is : ", pythonResponse);
+                        //string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ExportCsvConnection.py";
+                        string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
+                        MessageBox.Show("The exported path is : " + pythonResponse);
                         this.Close();
                     }
                 }

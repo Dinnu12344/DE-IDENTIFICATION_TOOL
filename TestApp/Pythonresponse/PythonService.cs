@@ -41,12 +41,22 @@ public class PythonService
         var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
         return ExecutePythonScript(command);
     }
+    public string SendSqlDataToPython(string server, string DatabaseName, string password, string userId, string projectName, string EnteredText, string tableName,string schemaName, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{server}\" \"{DatabaseName}\" \"{password}\" \"{userId}\"  \"{projectName}\" \"{EnteredText}\" \"{tableName}\" \"{schemaName}\"";
+        return ExecutePythonScript(command);
+    }
 
     public string SendDataToPython(string filePath, string project,string table, string pythonScriptPath)        
     {
         if (!File.Exists(pythonScriptPath))
         {
-            return "Error: Python script file not found.";
+               return "Error: Python script file not found.";
         }
 
         var command = $"\"{pythonScriptPath}\" \"{filePath}\" \"{project}\" \"{table}\"";
@@ -63,6 +73,17 @@ public class PythonService
         return ExecutePythonScript(command);
     }
 
+    public string DeleteProjectData(string project, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{project}\"";
+        return ExecutePythonScript(command);
+    }
+
     public string SendDataToPython(string SelectedCsvFilePath, string projectName, string TableName, string SelectedDelimiter, string SelectedQuote, string EnteredText, string pythonScriptPath)
     {
         if (!File.Exists(pythonScriptPath))
@@ -74,30 +95,8 @@ public class PythonService
         return ExecutePythonScript(command);
 
     }
-
     private string ExecutePythonScript(string command)
     {
-        //using (Process process = new Process())
-        //{
-        //    ProcessStartInfo startInfo = new ProcessStartInfo
-        //    {
-        //        WindowStyle = ProcessWindowStyle.Hidden,
-        //        CreateNoWindow = true,
-        //        UseShellExecute = false,
-        //        RedirectStandardOutput = true,
-        //        FileName = pythonExePath,
-        //        Arguments = command,
-        //        StandardOutputEncoding = Encoding.UTF8
-        //    };
-
-        //    process.StartInfo = startInfo;
-        //    process.Start();
-
-        //    string output = process.StandardOutput.ReadToEnd();
-        //    process.WaitForExit();
-
-        //    return output;
-        //}
         using (Process process = new Process())
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();

@@ -76,7 +76,7 @@
             this.buttonNext.TabIndex = 2;
             this.buttonNext.Text = "Next";
             this.buttonNext.UseVisualStyleBackColor = true;
-            this.buttonNext.Click += new System.EventHandler(this.nextButton_Click);
+            this.buttonNext.Click += new System.EventHandler(this.NextButton_Click);
             // 
             // cancelButton
             // 
@@ -86,7 +86,7 @@
             this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.cancelButton_Click);
+            this.buttonCancel.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // ImportForm
             // 

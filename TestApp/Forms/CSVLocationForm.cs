@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DE_IDENTIFICATION_TOOL.Models;
+using DE_IDENTIFICATION_TOOL.Pythonresponse;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -8,21 +10,17 @@ namespace DE_IDENTIFICATION_TOOL
 {
     public partial class CSVLocationForm : Form
     {
-
-        public string SelectedCsvFilePath { get; set; }
-        public string SelectedDelimiter { get; set; }
-        public string SelectedQuote { get; set; }
-        public string EnteredText { get; set; }
-        public string TableName { get; set; }
-
         private readonly string labelName;
         private PythonService pythonService;
+        public readonly CSVLocationFormModel csvLocationFormModel;
+        private readonly string pythonScriptsDirectory;
 
         public CSVLocationForm(string labelName)
         {
             InitializeComponent();
             pythonService = new PythonService();
-            // Initialize controls visibility and other settings
+            //pythonService = new PythonService();
+            csvLocationFormModel = new CSVLocationFormModel();
             delimiterLabel.Visible = false;
             DelimeterComboBox.Visible = false;
             QuoteLabel.Visible = false;
@@ -34,6 +32,8 @@ namespace DE_IDENTIFICATION_TOOL
             txtForTblName.Visible = false;
 
             this.labelName = labelName;
+            pythonScriptsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PythonScripts");
+
         }
 
         private void LocationBrowsebtn_Click(object sender, EventArgs e)
@@ -45,8 +45,11 @@ namespace DE_IDENTIFICATION_TOOL
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                SelectedCsvFilePath = openFileDialog.FileName;
-                textBoxForHoldingFilePath.Text = SelectedCsvFilePath;
+                // Update the model with the selected file path
+                csvLocationFormModel.SelectedCsvFilePath = openFileDialog.FileName;
+                textBoxForHoldingFilePath.Text = csvLocationFormModel.SelectedCsvFilePath;
+
+                // Show other controls
                 delimiterLabel.Visible = true;
                 DelimeterComboBox.Visible = true;
                 QuoteLabel.Visible = true;
@@ -57,25 +60,22 @@ namespace DE_IDENTIFICATION_TOOL
                 txtForTblName.Visible = true;
             }
         }
-
         private void DelimeterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedDelimiter = DelimeterComboBox.SelectedItem?.ToString();
+            csvLocationFormModel.SelectedDelimiter = DelimeterComboBox.SelectedItem?.ToString();
             UpdateFinishButtonVisibility();
         }
-
         private void QuoteComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedQuote = QuoteComboBox.SelectedItem?.ToString();
+            csvLocationFormModel.SelectedQuote = QuoteComboBox.SelectedItem?.ToString();
             UpdateFinishButtonVisibility();
         }
-
-        private void txtForNoofColumns_TextChanged(object sender, EventArgs e)
+        private void TxtForNoofColumns_TextChanged(object sender, EventArgs e)
         {
             if (!int.TryParse(txtForNoofColumns.Text, out int value))
             {
                 MessageBox.Show("Please enter a valid number.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtForNoofColumns.Text = ""; // Clear the text box
+                txtForNoofColumns.Text = ""; 
                 return;
             }
 
@@ -85,35 +85,40 @@ namespace DE_IDENTIFICATION_TOOL
                 txtForNoofColumns.Text = ""; // Clear the text box
             }
 
-            EnteredText = txtForNoofColumns.Text;
+            csvLocationFormModel.EnteredText = txtForNoofColumns.Text;
             UpdateFinishButtonVisibility();
         }
-
-        private void txtForTblName_TextChanged(object sender, EventArgs e)
+        private void TxtForTblName_TextChanged(object sender, EventArgs e)
         {
-            TableName = txtForTblName.Text;
+            csvLocationFormModel.TableName = txtForTblName.Text;
             UpdateFinishButtonVisibility();
         }
-
         private void UpdateFinishButtonVisibility()
         {
-            finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(SelectedDelimiter) &&
-                                                      !string.IsNullOrEmpty(SelectedQuote) &&
-                                                      !string.IsNullOrEmpty(EnteredText) &&
-                                                      !string.IsNullOrEmpty(TableName);
+            finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(csvLocationFormModel.SelectedDelimiter) &&
+                                                      !string.IsNullOrEmpty(csvLocationFormModel.SelectedQuote) &&
+                                                      !string.IsNullOrEmpty(csvLocationFormModel.EnteredText) &&
+                                                      !string.IsNullOrEmpty(csvLocationFormModel.TableName);
         }
-
-        private void finishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
+        private void FinishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
         {
             string projectName = labelName;
 
-            if (!string.IsNullOrEmpty(SelectedCsvFilePath))
+            if (!string.IsNullOrEmpty(csvLocationFormModel.SelectedCsvFilePath))
             {
-                // Simulate sending data to Python script
-                string pythonScriptPath = @"C:\Users\Satya Pulamanthula\Desktop\PythonScriptsGit\ConnectionTestRepo\ImportCsvConnection.py";
-                string pythonResponse = pythonService.SendDataToPython(SelectedCsvFilePath, projectName, TableName,SelectedDelimiter, SelectedQuote, EnteredText, pythonScriptPath);
+                string username = Environment.UserName;
+                string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{csvLocationFormModel.TableName}\LogFile";
+                // Ensure the directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                string pythonScriptName = "ImportCsvConnection.py";
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                string pythonResponse = pythonService.SendDataToPython(csvLocationFormModel.SelectedCsvFilePath, projectName, csvLocationFormModel.TableName,csvLocationFormModel.SelectedDelimiter, csvLocationFormModel.SelectedQuote, csvLocationFormModel.EnteredText, pythonScriptPath);
                 
-                // Check the response from the Python script
                 if (pythonResponse.ToLower().Contains("success"))
                 {
                     this.DialogResult = DialogResult.OK;
@@ -121,19 +126,16 @@ namespace DE_IDENTIFICATION_TOOL
                 }
                 else
                 {
-                    // Display error message
                     MessageBox.Show("The CSV file is not valid. Error: " + pythonResponse, "Error");
                 }
             }
         }
-
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
-        private void btnForBack_Click(object sender, EventArgs e)
+        private void BtnForBack_Click(object sender, EventArgs e)
         {
             this.Close();
         }

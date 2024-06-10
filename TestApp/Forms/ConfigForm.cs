@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -10,19 +11,20 @@ namespace DE_IDENTIFICATION_TOOL
     public partial class ConfigForm : Form
     {
         private List<System.Windows.Forms.ComboBox> dynamicComboBoxes;
-        private Form1 homeForm;
+        private HomeForm homeForm;
         private Panel scrollablePanel;
         private string pythonResponse;
         private TreeNode tabelName;
         private TreeNode projectName;
 
-        public ConfigForm(Form1 homeForm, string response,TreeNode selectedNode, TreeNode parentNode )
+        public ConfigForm(HomeForm homeForm, string response,TreeNode selectedNode, TreeNode parentNode)
         {
             this.homeForm = homeForm;
             pythonResponse = response;
             tabelName = selectedNode;
             projectName = parentNode;
             InitializeComponent();
+            InitializeCustomControls();
             InitializeDynamicControls();
         }
 
@@ -30,140 +32,170 @@ namespace DE_IDENTIFICATION_TOOL
         private List<Control> checkBoxes = new List<Control>();
         private Dictionary<Control, Control[]> controlMap = new Dictionary<Control, Control[]>();
 
+        private void InitializeCustomControls()
+        {
+            this.Text = "Config Form";
+            this.StartPosition = FormStartPosition.CenterScreen;
+            Panel headerPanel = new Panel() ;
+            headerPanel.Dock = DockStyle.Top; 
+            headerPanel.Height = 30;
+            this.Controls.Add(headerPanel);
+
+            scrollablePanel = new Panel();
+            scrollablePanel.Dock = DockStyle.Fill; 
+            scrollablePanel.AutoScroll = true;
+            this.Controls.Add(scrollablePanel);
+
+            //Create buttonPanel and dock the bottom of the form and fixing the height
+            Panel buttonPanel = new Panel();
+            buttonPanel.Dock = DockStyle.Bottom;
+            buttonPanel.Height = 50; 
+            this.Controls.Add(buttonPanel);
+
+            // Create and add Save button
+            Button saveButton = new Button();
+            saveButton.Text = "SaveFinish";
+            saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left; // Anchoring to the bottom and left
+            saveButton.Click += new EventHandler(SaveBtn_Click);
+            saveButton.Location = new Point(10, 10); // Adjust location within the button panel
+            buttonPanel.Controls.Add(saveButton);
+
+            // Create and add Cancel button
+            Button cancelButton = new Button();
+            cancelButton.Text = "Cancel";
+            cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            cancelButton.Click += new EventHandler(CancelButton_Click);
+            cancelButton.Location = new Point(110, 10);
+            buttonPanel.Controls.Add(cancelButton);
+
+            // Initialize the header panel with column names
+            InitializeHeaderPanel(headerPanel);
+        }
+
+        private void InitializeHeaderPanel(Panel headerPanel)
+        {
+            TableLayoutPanel headerTableLayoutPanel = new TableLayoutPanel();
+            headerTableLayoutPanel.Dock = DockStyle.Fill;
+            headerTableLayoutPanel.ColumnCount = 5;
+            headerTableLayoutPanel.RowCount = 1;
+
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15)); // Select
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20)); // Column
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25)); // DataType
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25)); // Technique
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25)); // Keys
+
+            headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("Select"), 0, 0);
+            headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("Column"), 1, 0);
+            headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("DataType"), 2, 0);
+            headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("Technique"), 3, 0);
+            headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("Keys"), 4, 0);
+
+            headerPanel.Controls.Add(headerTableLayoutPanel);
+        }
+
         private void InitializeDynamicControls()
         {
-            int controlWidth = 150;
-            int controlHeight = 21;
-            int spacing = 10;
-            int startX = 20;
-            int startY = 170;
-            int headingFontSize = 12; // Adjust the font size as needed
-
             // Fetch columns from Python backend
             List<string> columns = FetchColumnsFromPythonBackend();
 
-            // Check if columns were fetched successfully
             if (columns != null && columns.Count > 0)
             {
-                // Add heading for checkboxes
-                Label checkBoxHeading = new Label();
-                checkBoxHeading.Text = "Select";
-                checkBoxHeading.Location = new Point(startX - 15, startY - 20);
-                checkBoxHeading.Font = new Font(checkBoxHeading.Font.FontFamily, headingFontSize, checkBoxHeading.Font.Style);
-                this.Controls.Add(checkBoxHeading);
+                TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
+                tableLayoutPanel.Dock = DockStyle.Top;
+                tableLayoutPanel.AutoSize = true;
+                tableLayoutPanel.ColumnCount = 5; 
+                tableLayoutPanel.RowCount = columns.Count + 1; 
+                tableLayoutPanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
+                tableLayoutPanel.AutoScroll = false;
 
-                // Add heading for column names
-                Label columnHeading = new Label();
-                columnHeading.Text = "Column";
-                columnHeading.Location = new Point(startX + 80, startY - 20);
-                columnHeading.Font = new Font(columnHeading.Font.FontFamily, headingFontSize, columnHeading.Font.Style);
-                this.Controls.Add(columnHeading);
+                // Set column styles
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15)); // Select
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20)); // Column
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25)); // DataType
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25)); // Technique
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25)); // Keys
+                tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
 
-                // Add heading for data types
-                Label dataTypeHeading = new Label();
-                dataTypeHeading.Text = "  DataType";
-                dataTypeHeading.Location = new Point(startX + controlWidth + 70, startY - 20);
-                dataTypeHeading.Font = new Font(dataTypeHeading.Font.FontFamily, headingFontSize, dataTypeHeading.Font.Style);
-                this.Controls.Add(dataTypeHeading);
-
-                // Add heading for techniques
-                Label techniqueHeading = new Label();
-                techniqueHeading.Text = "Technique";
-                techniqueHeading.Location = new Point(startX + 2 * (controlWidth + 60), startY - 20);
-                techniqueHeading.Font = new Font(techniqueHeading.Font.FontFamily, headingFontSize, techniqueHeading.Font.Style);
-                this.Controls.Add(techniqueHeading);
-
-                // Add heading for keys
-                Label keysHeading = new Label();
-                keysHeading.Text = "Keys";
-                keysHeading.Location = new Point(startX + 3 * (controlWidth + 50), startY - 20);
-                keysHeading.Font = new Font(keysHeading.Font.FontFamily, headingFontSize, keysHeading.Font.Style);
-                this.Controls.Add(keysHeading);
-
-                // Adjust startY for the controls
-                startY += 20; // Move down to leave space for the headings
+                int row = 1;
 
                 foreach (string column in columns)
                 {
-                    // Create checkboxes for each column
-                    System.Windows.Forms.CheckBox checkBox = new System.Windows.Forms.CheckBox();
-                    checkBox.Location = new Point(startX, startY);
-                    checkBox.Size = new Size(15, controlHeight);
-                    this.Controls.Add(checkBox);
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.AutoSize = true;
+                    tableLayoutPanel.Controls.Add(checkBox, 0, row);
                     checkBoxes.Add(checkBox);
 
-                    // Create labels for column names
                     Label columnLabel = new Label();
-                    columnLabel.Location = new Point(startX + 80, startY);
-                    columnLabel.Size = new Size(controlWidth, controlHeight);
                     columnLabel.Text = column;
-                    this.Controls.Add(columnLabel);
+                    columnLabel.AutoSize = true;
+                    tableLayoutPanel.Controls.Add(columnLabel, 1, row);
 
-                    // Create combo boxes for datatypes, techniques, and keys
-                    System.Windows.Forms.ComboBox dataTypeComboBox = new System.Windows.Forms.ComboBox();
-                    dataTypeComboBox.Location = new Point(startX + controlWidth + 80, startY);
-                    dataTypeComboBox.Size = new Size(controlWidth, controlHeight);
+                    ComboBox dataTypeComboBox = new ComboBox();
                     dataTypeComboBox.Items.AddRange(new string[] { "int", "float", "string", "DateTime", "bool" });
-                    this.Controls.Add(dataTypeComboBox);
+                    dataTypeComboBox.Dock = DockStyle.Fill;
+                    tableLayoutPanel.Controls.Add(dataTypeComboBox, 2, row);
 
-                    System.Windows.Forms.ComboBox techniqueComboBox = new System.Windows.Forms.ComboBox();
-                    techniqueComboBox.Location = new Point(startX + 2 * (controlWidth + 60), startY);
-                    techniqueComboBox.Size = new Size(controlWidth, controlHeight);
+                    ComboBox techniqueComboBox = new ComboBox();
                     techniqueComboBox.Items.AddRange(new string[] { "Pseudonymization", "Anonymization", "Masking", "Generalization", "dateTo20_30years", "dateTimeAddRange" });
-                    this.Controls.Add(techniqueComboBox);
+                    techniqueComboBox.Dock = DockStyle.Fill;
+                    tableLayoutPanel.Controls.Add(techniqueComboBox, 3, row);
 
-                    System.Windows.Forms.ComboBox keysComboBox = new System.Windows.Forms.ComboBox();
-                    keysComboBox.Location = new Point(startX + 3 * (controlWidth + 50), startY);
-                    keysComboBox.Size = new Size(controlWidth, controlHeight);
+                    ComboBox keysComboBox = new ComboBox();
                     keysComboBox.Items.AddRange(new string[] { "Yes", "No" });
-                    this.Controls.Add(keysComboBox);
+                    keysComboBox.Dock = DockStyle.Fill;
+                    tableLayoutPanel.Controls.Add(keysComboBox, 4, row);
 
-                    // Map the checkbox to the corresponding controls
                     controlMap.Add(checkBox, new Control[] { columnLabel, dataTypeComboBox, techniqueComboBox, keysComboBox });
 
-                    // Adjust startY for the next row
-                    startY += controlHeight + spacing;
+                    row++; 
                 }
+
+                scrollablePanel.Controls.Add(tableLayoutPanel);
             }
+        }
+
+        private Label CreateHeaderLabel(string text)
+        {
+            return new Label
+            {
+                Text = text,
+                Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold),
+                AutoSize = true,
+                Anchor = AnchorStyles.Right | AnchorStyles.Left,
+            };
         }
 
         private List<string> FetchColumnsFromPythonBackend()
         {
-            // Simulated method to fetch columns from Python backend
-            // Replace this with actual implementation to fetch columns dynamically
-            //return new List<string>() { pythonResponse };
-            string response = pythonResponse.Replace("'", "\""); // Replace single quotes with double quotes
+            string response = pythonResponse.Replace("'", "\""); 
 
-            // Now parse the JSON-like string to get the list of column names
-            List<string> columns = JsonConvert.DeserializeObject<List<string>>(response);
+             List<string> columns = JsonConvert.DeserializeObject<List<string>>(response);
 
             return columns;
         }
-        private void cancelButton_Click(object sender, EventArgs e)
+
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             homeForm.Show();
             this.Hide();
         }
-        private void finishButton_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Save Button is Hitted");
-        }
 
-        private void saveBtn_Click(object sender, EventArgs e)
+        private void SaveBtn_Click(object sender, EventArgs e)
         {
             string table = tabelName.Text;
             string project = projectName.Text;
             var selectedData = new List<object>();
 
-            foreach (System.Windows.Forms.CheckBox checkBox in checkBoxes)
+            foreach (CheckBox checkBox in checkBoxes)
             {
                 if (checkBox.Checked)
                 {
                     var controls = controlMap[checkBox];
                     var columnLabel = (Label)controls[0];
-                    var dataTypeComboBox = (System.Windows.Forms.ComboBox)controls[1];
-                    var techniqueComboBox = (System.Windows.Forms.ComboBox)controls[2];
-                    var keysComboBox = (System.Windows.Forms.ComboBox)controls[3];
+                    var dataTypeComboBox = (ComboBox)controls[1];
+                    var techniqueComboBox = (ComboBox)controls[2];
+                    var keysComboBox = (ComboBox)controls[3];
 
                     var data = new
                     {
@@ -177,25 +209,17 @@ namespace DE_IDENTIFICATION_TOOL
                 }
             }
 
-            // Convert the selected data to JSON format
             string json = JsonConvert.SerializeObject(selectedData, Formatting.Indented);
-
-            // Define the file path
-            string directoryPath = $@"C:\Users\Satya Pulamanthula\AppData\Roaming\DeidentificationTool\{project}\{table}\ConfigFile";
-            string filePath = Path.Combine(directoryPath, (table+".json"));
+            string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeidentificationTool", project, table, "ConfigFile");
+            string filePath = Path.Combine(directoryPath, $"{table}.json");
 
             // Ensure the directory exists
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
+            Directory.CreateDirectory(directoryPath);
 
-            // Write the JSON data to the file
             File.WriteAllText(filePath, json);
 
             MessageBox.Show("JSON data has been saved to " + filePath);
             this.Close();
         }
-
     }
 }

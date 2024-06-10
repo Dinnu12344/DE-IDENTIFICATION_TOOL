@@ -7,7 +7,7 @@
     <ProjectGuid>{ACA453EC-AE26-4A43-A1AB-DDFCC46E6B33}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>DE_IDENTIFICATION_TOOL</RootNamespace>
-    <AssemblyName>TestApp</AssemblyName>
+    <AssemblyName>DE_IDENTIFICATION_TOOL</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -95,17 +95,29 @@
     <Compile Include="Forms\CSVLocationForm.Designer.cs">
       <DependentUpon>CSVLocationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\De-IdentificationHomeForm.cs">
+    <Compile Include="Forms\DBLocationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\De-IdentificationHomeForm.Designer.cs">
-      <DependentUpon>De-IdentificationHomeForm.cs</DependentUpon>
+    <Compile Include="Forms\DBLocationForm.Designer.cs">
+      <DependentUpon>DBLocationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DeIdentifyForm.cs">
+    <Compile Include="Forms\DbtableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\DeIdentifyForm.Designer.cs">
-      <DependentUpon>DeIdentifyForm.cs</DependentUpon>
+    <Compile Include="Forms\DbtableForm.Designer.cs">
+      <DependentUpon>DbtableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\HomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HomeForm.Designer.cs">
+      <DependentUpon>HomeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ExportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportForm.Designer.cs">
+      <DependentUpon>ExportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ImportForm.cs">
       <SubType>Form</SubType>
@@ -113,9 +125,17 @@
     <Compile Include="Forms\ImportForm.Designer.cs">
       <DependentUpon>ImportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ViewSourceDeIdentifyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewSourceDeIdentifyForm.Designer.cs">
+      <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CSVLocationFormModel.cs" />
     <Compile Include="Models\ProjectData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Pythonresponse\PythonScriptFilePath.cs" />
     <Compile Include="Pythonresponse\PythonService.cs" />
     <EmbeddedResource Include="Forms\ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
@@ -126,14 +146,23 @@
     <EmbeddedResource Include="Forms\CSVLocationForm.resx">
       <DependentUpon>CSVLocationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\De-IdentificationHomeForm.resx">
-      <DependentUpon>De-IdentificationHomeForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\DBLocationForm.resx">
+      <DependentUpon>DBLocationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DeIdentifyForm.resx">
-      <DependentUpon>DeIdentifyForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\DbtableForm.resx">
+      <DependentUpon>DbtableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HomeForm.resx">
+      <DependentUpon>HomeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportForm.resx">
+      <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportForm.resx">
       <DependentUpon>ImportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewSourceDeIdentifyForm.resx">
+      <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -155,12 +184,37 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="PythonScripts\DeidentificationConnection.py" />
+    <None Include="PythonScripts\Delete.py" />
+    <None Include="PythonScripts\DeleteProjectConnection.py" />
+    <None Include="PythonScripts\DeleteTableConnection.py" />
+    <None Include="PythonScripts\De_Identification.py" />
+    <None Include="PythonScripts\DynamicPaths.py" />
+    <None Include="PythonScripts\Export.py" />
+    <None Include="PythonScripts\ExportCsvConnection.py" />
+    <None Include="PythonScripts\ExportSqlConnection.py" />
+    <None Include="PythonScripts\Import.py" />
+    <None Include="PythonScripts\ImportCsvConnection.py" />
+    <None Include="PythonScripts\ImportSqlConnection.py">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="PythonScripts\LogFile.py" />
+    <None Include="PythonScripts\Main.py" />
+    <None Include="PythonScripts\Miscellaneous_Functions.py" />
+    <None Include="PythonScripts\TableColumnsConnection.py" />
+    <None Include="PythonScripts\Test.py" />
+    <None Include="PythonScripts\Test1.py" />
+    <None Include="PythonScripts\Test2.py" />
+    <None Include="PythonScripts\Test3.py" />
+    <None Include="PythonScripts\ViewDeidentifiedDataConnection.py" />
+    <None Include="PythonScripts\ViewSourceDataConnection.py" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scripts\" />
+    <Content Include="PythonScripts\DisplayDeidentifyConnection.py" />
+    <Content Include="PythonScripts\DisplaySourceDataConnection.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

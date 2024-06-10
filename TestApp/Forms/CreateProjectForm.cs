@@ -10,9 +10,8 @@ namespace DE_IDENTIFICATION_TOOL
         {
             InitializeComponent();
         }
-        private void btnCreateProject_Click(object sender, EventArgs e)
+        private void BtnCreateProject_Click(object sender, EventArgs e)
         {
-            // Create the project and close the form
             ProjectName = txtProjectName.Text;
             DialogResult = DialogResult.OK;
             Close();
