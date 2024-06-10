@@ -5,13 +5,13 @@ using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
 {
-    public partial class exportForm : Form
+    public partial class ExportForm : Form
     {
         private string tableName;
         private string projectName;
         private PythonService pythonService;
 
-        public exportForm(string tableName, string projectName)
+        public ExportForm(string tableName, string projectName)
         {
             InitializeComponent();
             pythonService = new PythonService();

@@ -1,6 +1,6 @@
 ﻿namespace DE_IDENTIFICATION_TOOL
 {
-    partial class exportForm
+    partial class ExportForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(exportForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExportForm));
             this.radioBtnForCsvExport = new System.Windows.Forms.RadioButton();
             this.radioBtnDatabaseExport = new System.Windows.Forms.RadioButton();
             this.btnForNext = new System.Windows.Forms.Button();
