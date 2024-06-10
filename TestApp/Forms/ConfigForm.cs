@@ -17,7 +17,7 @@ namespace DE_IDENTIFICATION_TOOL
         private TreeNode tabelName;
         private TreeNode projectName;
 
-        public ConfigForm(HomeForm homeForm, string response, TreeNode selectedNode, TreeNode parentNode)
+        public ConfigForm(HomeForm homeForm, string response,TreeNode selectedNode, TreeNode parentNode)
         {
             this.homeForm = homeForm;
             pythonResponse = response;
@@ -36,20 +36,20 @@ namespace DE_IDENTIFICATION_TOOL
         {
             this.Text = "Config Form";
             this.StartPosition = FormStartPosition.CenterScreen;
-            Panel headerPanel = new Panel();
-            headerPanel.Dock = DockStyle.Top;
+            Panel headerPanel = new Panel() ;
+            headerPanel.Dock = DockStyle.Top; 
             headerPanel.Height = 30;
             this.Controls.Add(headerPanel);
 
             scrollablePanel = new Panel();
-            scrollablePanel.Dock = DockStyle.Fill;
+            scrollablePanel.Dock = DockStyle.Fill; 
             scrollablePanel.AutoScroll = true;
             this.Controls.Add(scrollablePanel);
 
             //Create buttonPanel and dock the bottom of the form and fixing the height
             Panel buttonPanel = new Panel();
             buttonPanel.Dock = DockStyle.Bottom;
-            buttonPanel.Height = 50;
+            buttonPanel.Height = 50; 
             this.Controls.Add(buttonPanel);
 
             // Create and add Save button
@@ -104,8 +104,8 @@ namespace DE_IDENTIFICATION_TOOL
                 TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
                 tableLayoutPanel.Dock = DockStyle.Top;
                 tableLayoutPanel.AutoSize = true;
-                tableLayoutPanel.ColumnCount = 5;
-                tableLayoutPanel.RowCount = columns.Count + 1;
+                tableLayoutPanel.ColumnCount = 5; 
+                tableLayoutPanel.RowCount = columns.Count + 1; 
                 tableLayoutPanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
                 tableLayoutPanel.AutoScroll = false;
 
@@ -123,7 +123,6 @@ namespace DE_IDENTIFICATION_TOOL
                 {
                     CheckBox checkBox = new CheckBox();
                     checkBox.AutoSize = true;
-                    checkBox.Checked = true;
                     tableLayoutPanel.Controls.Add(checkBox, 0, row);
                     checkBoxes.Add(checkBox);
 
@@ -149,7 +148,7 @@ namespace DE_IDENTIFICATION_TOOL
 
                     controlMap.Add(checkBox, new Control[] { columnLabel, dataTypeComboBox, techniqueComboBox, keysComboBox });
 
-                    row++;
+                    row++; 
                 }
 
                 scrollablePanel.Controls.Add(tableLayoutPanel);
@@ -169,9 +168,9 @@ namespace DE_IDENTIFICATION_TOOL
 
         private List<string> FetchColumnsFromPythonBackend()
         {
-            string response = pythonResponse.Replace("'", "\"");
+            string response = pythonResponse.Replace("'", "\""); 
 
-            List<string> columns = JsonConvert.DeserializeObject<List<string>>(response);
+             List<string> columns = JsonConvert.DeserializeObject<List<string>>(response);
 
             return columns;
         }
