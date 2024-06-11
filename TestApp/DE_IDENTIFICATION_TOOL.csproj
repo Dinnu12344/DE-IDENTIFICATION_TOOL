@@ -233,7 +233,7 @@
   <ItemGroup>
     <Content Include="PythonScripts\DisplayDeidentifyConnection.py" />
     <Content Include="PythonScripts\DisplaySourceDataConnection.py" />
-    <Content Include="PythonScripts\GetTableNames.py" />
+    <Content Include="PythonScripts\GetSourceTableNames.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

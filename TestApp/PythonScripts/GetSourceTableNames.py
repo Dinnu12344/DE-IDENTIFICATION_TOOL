@@ -8,7 +8,7 @@ def get_table_names(db_path):
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         # Query to get all table names
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'de_identified%';")
         tables = cursor.fetchall()
         # Extract table names from the result
         table_names = [table[0] for table in tables]

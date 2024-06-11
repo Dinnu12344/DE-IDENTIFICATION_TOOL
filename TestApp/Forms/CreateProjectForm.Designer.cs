@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
+using System.ComponentModel;
 namespace DE_IDENTIFICATION_TOOL
 {
     partial class CreateProjectForm
@@ -7,7 +8,7 @@ namespace DE_IDENTIFICATION_TOOL
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -27,7 +28,7 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateProjectForm));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(CreateProjectForm));
             this.txtProjectName = new TextBox();
             this.btnCreateProject = new Button();
             this.SuspendLayout();

@@ -1,4 +1,6 @@
 ﻿using System.Windows.Forms;
+using System.Drawing;
+using System.ComponentModel;
 namespace DE_IDENTIFICATION_TOOL.Forms
 {
     partial class LogViewForm
@@ -8,7 +10,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogViewForm));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(LogViewForm));
             this.dateListBox = new ListBox();
             this.logTextBox = new TextBox();
             this.SuspendLayout();
@@ -16,26 +18,26 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // dateListBox
             // 
             this.dateListBox.FormattingEnabled = true;
-            this.dateListBox.Location = new System.Drawing.Point(12, 12);
+            this.dateListBox.Location = new Point(12, 12);
             this.dateListBox.Name = "dateListBox";
-            this.dateListBox.Size = new System.Drawing.Size(200, 290);
+            this.dateListBox.Size = new Size(200, 290);
             this.dateListBox.TabIndex = 0;
             // 
             // logTextBox
             // 
-            this.logTextBox.Location = new System.Drawing.Point(230, 12);
+            this.logTextBox.Location = new Point(230, 12);
             this.logTextBox.Multiline = true;
             this.logTextBox.ScrollBars = ScrollBars.Vertical;
             this.logTextBox.Name = "logTextBox";
-            this.logTextBox.Size = new System.Drawing.Size(300, 290);
+            this.logTextBox.Size = new Size(300, 290);
             this.logTextBox.TabIndex = 1;
             // 
             // LogViewForm
             // 
-            this.ClientSize = new System.Drawing.Size(550, 320);
+            this.ClientSize = new Size(550, 320);
             this.Controls.Add(this.dateListBox);
             this.Controls.Add(this.logTextBox);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LogViewForm";
             this.ResumeLayout(false);
             this.PerformLayout();

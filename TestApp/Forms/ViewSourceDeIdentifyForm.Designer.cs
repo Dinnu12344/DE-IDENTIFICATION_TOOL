@@ -1,11 +1,14 @@
-﻿namespace DE_IDENTIFICATION_TOOL.Forms
+﻿using System.Windows.Forms;
+using System.Drawing;
+using System.ComponentModel;
+namespace DE_IDENTIFICATION_TOOL.Forms
 {
     partial class ViewSourceDeIdentifyForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -28,15 +31,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewSourceDeIdentifyForm));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(ViewSourceDeIdentifyForm));
             this.SuspendLayout();
             // 
             // ViewSourceDeIdentifyForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(800, 450);
+            this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ViewSourceDeIdentifyForm";
             this.Text = "View Data";
             this.ResumeLayout(false);

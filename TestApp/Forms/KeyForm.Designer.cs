@@ -1,4 +1,6 @@
 ﻿using System.Windows.Forms;
+using System.Drawing;
+using System.ComponentModel;
 namespace DE_IDENTIFICATION_TOOL.Forms
 {
     partial class KeyForm
@@ -6,7 +8,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -29,7 +31,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KeyForm));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(KeyForm));
             this.label1 = new Label();
             this.textBox1 = new TextBox();
             this.button1 = new Button();
@@ -38,27 +40,27 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(81, 110);
+            this.label1.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new Point(81, 110);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(199, 24);
+            this.label1.Size = new Size(199, 24);
             this.label1.TabIndex = 0;
             this.label1.Text = "Please Enter Your Key";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(334, 114);
+            this.textBox1.Location = new Point(334, 114);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(238, 20);
+            this.textBox1.Size = new Size(238, 20);
             this.textBox1.TabIndex = 1;
             // 
             // button1
             // 
             this.button1.Enabled = false;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(497, 230);
+            this.button1.Font = new Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new Point(497, 230);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 30);
+            this.button1.Size = new Size(75, 30);
             this.button1.TabIndex = 2;
             this.button1.Text = "Save";
             this.button1.UseVisualStyleBackColor = true;
@@ -66,13 +68,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // KeyForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new Size(800, 450);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
             this.Name = "KeyForm";
             this.Text = "KeyForm";
             this.ResumeLayout(false);
