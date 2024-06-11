@@ -37,7 +37,7 @@ def main():
         log_files_path = os.path.join(tool_path, project_name)	
         log_files_path_table = os.path.join(log_files_path, table_name, "LogFile")
         mf.create_path(log_files_path_table)
-        log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+        log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
         filename = os.path.join(log_files_path_table, log_filename)
         if not mf.check_table_existence(table_name, db_file_path):    
             Status, Comment = ex.export_to_sql_server_user_defined(server_name,database_name,db_file_path , table_name,sqlserver_table_name, sql_server_username,sql_server_password,schema_name)

@@ -119,7 +119,7 @@ def main():
         log_files_path_table = os.path.join(log_files_path, table_name, "LogFile")
         mf.create_path(log_files_path_table)
         
-        log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+        log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
         filename = os.path.join(log_files_path_table, log_filename)
 
         if not mf.check_table_existence(table_name, db_file_path):    
