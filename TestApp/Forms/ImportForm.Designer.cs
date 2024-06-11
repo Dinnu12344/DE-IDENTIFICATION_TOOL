@@ -1,4 +1,5 @@
-﻿namespace DE_IDENTIFICATION_TOOL
+﻿using System.Windows.Forms;
+namespace DE_IDENTIFICATION_TOOL
 {
     partial class ImportForm
     {
@@ -29,16 +30,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportForm));
-            this.radioCheckCSV = new System.Windows.Forms.RadioButton();
-            this.radioCheckDatabase = new System.Windows.Forms.RadioButton();
-            this.buttonNext = new System.Windows.Forms.Button();
-            this.buttonCancel = new System.Windows.Forms.Button();
+            this.radioCheckCSV = new RadioButton();
+            this.radioCheckDatabase = new RadioButton();
+            this.buttonNext = new Button();
+            this.buttonCancel = new Button();
             this.SuspendLayout();
             // 
             // ImportForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ImportForm";

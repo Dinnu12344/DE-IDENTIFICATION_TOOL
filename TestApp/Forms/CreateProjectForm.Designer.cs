@@ -1,4 +1,6 @@
-﻿namespace DE_IDENTIFICATION_TOOL
+﻿using System.Windows.Forms;
+using System.Drawing;
+namespace DE_IDENTIFICATION_TOOL
 {
     partial class CreateProjectForm
     {
@@ -20,29 +22,29 @@
             base.Dispose(disposing);
         }
 
-        private System.Windows.Forms.TextBox txtProjectName;
-        private System.Windows.Forms.Button btnCreateProject;
+        private TextBox txtProjectName;
+        private Button btnCreateProject;
 
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateProjectForm));
-            this.txtProjectName = new System.Windows.Forms.TextBox();
-            this.btnCreateProject = new System.Windows.Forms.Button();
+            this.txtProjectName = new TextBox();
+            this.btnCreateProject = new Button();
             this.SuspendLayout();
             // 
             // txtProjectName
             // 
-            this.txtProjectName.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProjectName.Location = new System.Drawing.Point(73, 120);
+            this.txtProjectName.Font = new Font("Microsoft Sans Serif", 16.2F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.txtProjectName.Location = new Point(73, 120);
             this.txtProjectName.Name = "txtProjectName";
-            this.txtProjectName.Size = new System.Drawing.Size(240, 38);
+            this.txtProjectName.Size = new Size(240, 38);
             this.txtProjectName.TabIndex = 0;
             // 
             // btnCreateProject
             // 
-            this.btnCreateProject.Location = new System.Drawing.Point(350, 118);
+            this.btnCreateProject.Location = new Point(350, 118);
             this.btnCreateProject.Name = "btnCreateProject";
-            this.btnCreateProject.Size = new System.Drawing.Size(102, 36);
+            this.btnCreateProject.Size = new Size(102, 36);
             this.btnCreateProject.TabIndex = 1;
             this.btnCreateProject.Text = "Create Project";
             this.btnCreateProject.UseVisualStyleBackColor = true;
@@ -50,10 +52,10 @@
             // 
             // CreateProjectForm
             // 
-            this.ClientSize = new System.Drawing.Size(610, 354);
+            this.ClientSize = new Size(610, 354);
             this.Controls.Add(this.btnCreateProject);
             this.Controls.Add(this.txtProjectName);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreateProjectForm";
             this.Text = "Create Project";
             this.ResumeLayout(false);

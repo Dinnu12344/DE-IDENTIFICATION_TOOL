@@ -24,13 +24,8 @@ def export_to_csv(Table_name,sqlite_conn,path):
        
 
         if path:
-            # path_file = f"{Table_name}_"+ datetime.datetime.now().strftime("%Y%m%d_%H%M") + ".csv"
-            # path = os.path.join(path, path_file)
-            # path=normalize_path(path)
-            print(path,"path1")
-
-            path = os.path.join(path, Table_name + ".csv")            
-            print(path,"path2")
+            path_file = f"{Table_name}_"+ datetime.datetime.now().strftime("%Y%m%d_%H%M") + ".csv"
+            path = os.path.join(path, path_file)
           
             # Export DataFrame to CSV file
             df.to_csv(path, index=False)

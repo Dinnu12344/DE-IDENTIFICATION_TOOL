@@ -1,4 +1,5 @@
-﻿namespace DE_IDENTIFICATION_TOOL
+﻿using System.Windows.Forms;
+namespace DE_IDENTIFICATION_TOOL
 {
     partial class HomeForm
     {
@@ -25,17 +26,17 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeForm));
-            this.treeView = new System.Windows.Forms.TreeView();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.monitoeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeView = new TreeView();
+            this.menuStrip1 = new MenuStrip();
+            this.fileToolStripMenuItem = new ToolStripMenuItem();
+            this.newProjectToolStripMenuItem = new ToolStripMenuItem();
+            this.openProjectToolStripMenuItem = new ToolStripMenuItem();
+            this.exportDataToolStripMenuItem = new ToolStripMenuItem();
+            this.reToolStripMenuItem = new ToolStripMenuItem();
+            this.editToolStripMenuItem = new ToolStripMenuItem();
+            this.viewToolStripMenuItem = new ToolStripMenuItem();
+            this.monitoeToolStripMenuItem = new ToolStripMenuItem();
+            this.helpToolStripMenuItem = new ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,13 +46,13 @@
             this.treeView.Name = "treeView";
             this.treeView.Size = new System.Drawing.Size(211, 532);
             this.treeView.TabIndex = 0;
-            this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
+            this.treeView.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
             // 
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStrip1.Items.AddRange(new ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
             this.viewToolStripMenuItem,
@@ -138,16 +139,16 @@
 
         }
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem reToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem monitoeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem newProjectToolStripMenuItem;
+        private ToolStripMenuItem openProjectToolStripMenuItem;
+        private ToolStripMenuItem exportDataToolStripMenuItem;
+        private ToolStripMenuItem reToolStripMenuItem;
+        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem monitoeToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
     }
 }
 

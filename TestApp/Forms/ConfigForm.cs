@@ -123,6 +123,7 @@ namespace DE_IDENTIFICATION_TOOL
                 {
                     CheckBox checkBox = new CheckBox();
                     checkBox.AutoSize = true;
+                    checkBox.Checked = true;
                     tableLayoutPanel.Controls.Add(checkBox, 0, row);
                     checkBoxes.Add(checkBox);
 

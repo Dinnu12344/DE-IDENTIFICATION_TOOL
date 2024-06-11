@@ -1,15 +1,16 @@
-﻿namespace DE_IDENTIFICATION_TOOL.Forms
+﻿using System.Windows.Forms;
+namespace DE_IDENTIFICATION_TOOL.Forms
 {
     partial class LogViewForm
     {
-        private System.Windows.Forms.ListBox dateListBox;
-        private System.Windows.Forms.TextBox logTextBox;
+        private ListBox dateListBox;
+        private TextBox logTextBox;
 
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogViewForm));
-            this.dateListBox = new System.Windows.Forms.ListBox();
-            this.logTextBox = new System.Windows.Forms.TextBox();
+            this.dateListBox = new ListBox();
+            this.logTextBox = new TextBox();
             this.SuspendLayout();
             // 
             // dateListBox
@@ -24,6 +25,7 @@
             // 
             this.logTextBox.Location = new System.Drawing.Point(230, 12);
             this.logTextBox.Multiline = true;
+            this.logTextBox.ScrollBars = ScrollBars.Vertical;
             this.logTextBox.Name = "logTextBox";
             this.logTextBox.Size = new System.Drawing.Size(300, 290);
             this.logTextBox.TabIndex = 1;

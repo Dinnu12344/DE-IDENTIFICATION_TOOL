@@ -1,4 +1,5 @@
-﻿namespace DE_IDENTIFICATION_TOOL
+﻿using System.Windows.Forms;
+namespace DE_IDENTIFICATION_TOOL
 {
     partial class ExportForm
     {
@@ -29,10 +30,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExportForm));
-            this.radioBtnForCsvExport = new System.Windows.Forms.RadioButton();
-            this.radioBtnDatabaseExport = new System.Windows.Forms.RadioButton();
-            this.btnForNext = new System.Windows.Forms.Button();
-            this.btnForCancel = new System.Windows.Forms.Button();
+            this.radioBtnForCsvExport = new RadioButton();
+            this.radioBtnDatabaseExport = new RadioButton();
+            this.btnForNext = new Button();
+            this.btnForCancel = new Button();
             this.SuspendLayout();
             // 
             // radioBtnForCsvExport
@@ -88,7 +89,7 @@
             this.Controls.Add(this.radioBtnDatabaseExport);
             this.Controls.Add(this.radioBtnForCsvExport);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new Padding(4, 4, 4, 4);
             this.Name = "DeIdentifyForm";
             this.Text = "De-IdentifyForm";
             this.ResumeLayout(false);
@@ -98,9 +99,9 @@
 
         #endregion
 
-        private System.Windows.Forms.RadioButton radioBtnForCsvExport;
-        private System.Windows.Forms.RadioButton radioBtnDatabaseExport;
-        private System.Windows.Forms.Button btnForNext;
-        private System.Windows.Forms.Button btnForCancel;
+        private RadioButton radioBtnForCsvExport;
+        private RadioButton radioBtnDatabaseExport;
+        private Button btnForNext;
+        private Button btnForCancel;
     }
 }

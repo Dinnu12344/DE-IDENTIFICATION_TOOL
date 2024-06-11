@@ -1,4 +1,5 @@
-﻿namespace DE_IDENTIFICATION_TOOL.Forms
+﻿using System.Windows.Forms;
+namespace DE_IDENTIFICATION_TOOL.Forms
 {
     partial class DbtableForm
     {
@@ -16,37 +17,37 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DbtableForm));
-            this.cmbDatabases = new System.Windows.Forms.ComboBox();
-            this.cmbTables = new System.Windows.Forms.ComboBox();
-            this.labelForDatabase = new System.Windows.Forms.Label();
-            this.labelForDatabaseTbl = new System.Windows.Forms.Label();
-            this.checkBoxforPullreleateddata = new System.Windows.Forms.CheckBox();
-            this.btnForBack = new System.Windows.Forms.Button();
-            this.btnForFinish = new System.Windows.Forms.Button();
-            this.btnForCancel = new System.Windows.Forms.Button();
-            this.btnForAddingColumns = new System.Windows.Forms.Button();
-            this.btnForDeleteColumns = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.txtboxForTblName = new System.Windows.Forms.TextBox();
-            this.txtBoxFoeExistingTblKey = new System.Windows.Forms.TextBox();
-            this.textBoxForSourceTbl = new System.Windows.Forms.TextBox();
-            this.textBoxForSourceTblKey = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lblForNoofColumns = new System.Windows.Forms.Label();
-            this.txtForNoofColumns = new System.Windows.Forms.TextBox();
+            this.cmbDatabases = new ComboBox();
+            this.cmbTables = new ComboBox();
+            this.labelForDatabase = new Label();
+            this.labelForDatabaseTbl = new Label();
+            this.checkBoxforPullreleateddata = new CheckBox();
+            this.btnForBack = new   Button();
+            this.btnForFinish = new Button();
+            this.btnForCancel = new Button();
+            this.btnForAddingColumns = new Button();
+            this.btnForDeleteColumns = new Button();
+            this.checkBox1 = new CheckBox();
+            this.label1 = new Label();
+            this.label2 = new Label();
+            this.label3 = new Label();
+            this.label4 = new Label();
+            this.checkBox2 = new CheckBox();
+            this.txtboxForTblName = new TextBox();
+            this.txtBoxFoeExistingTblKey = new  TextBox();
+            this.textBoxForSourceTbl = new TextBox();
+            this.textBoxForSourceTblKey = new TextBox();
+            this.panel1 = new Panel();
+            this.label6 = new Label();
+            this.label5 = new Label();
+            this.lblForNoofColumns = new Label();
+            this.txtForNoofColumns = new TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmbDatabases
             // 
-            this.cmbDatabases.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDatabases.DropDownStyle = ComboBoxStyle.DropDownList;
             this.cmbDatabases.FormattingEnabled = true;
             this.cmbDatabases.Location = new System.Drawing.Point(237, 103);
             this.cmbDatabases.Name = "cmbDatabases";
@@ -56,7 +57,7 @@
             // 
             // cmbTables
             // 
-            this.cmbTables.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTables.DropDownStyle = ComboBoxStyle.DropDownList;
             this.cmbTables.FormattingEnabled = true;
             this.cmbTables.Location = new System.Drawing.Point(237, 145);
             this.cmbTables.Name = "cmbTables";
@@ -305,31 +306,31 @@
 
         }
 
-        private System.Windows.Forms.ComboBox cmbDatabases;
-        private System.Windows.Forms.ComboBox cmbTables;
-        private System.Windows.Forms.Label labelForDatabase;
-        private System.Windows.Forms.Label labelForDatabaseTbl;
-        private System.Windows.Forms.CheckBox checkBoxforPullreleateddata;
-        private System.Windows.Forms.Button btnForBack;
-        private System.Windows.Forms.Button btnForFinish;
-        private System.Windows.Forms.Button btnForCancel;
-        private System.Windows.Forms.Button btnForAddingColumns;
-        private System.Windows.Forms.Button btnForDeleteColumns;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.TextBox txtboxForTblName;
-        private System.Windows.Forms.TextBox txtBoxFoeExistingTblKey;
-        private System.Windows.Forms.TextBox textBoxForSourceTbl;
-        private System.Windows.Forms.TextBox textBoxForSourceTblKey;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label lblForNoofColumns;
-        private System.Windows.Forms.TextBox txtForNoofColumns;
+        private ComboBox cmbDatabases;
+        private ComboBox cmbTables;
+        private Label labelForDatabase;
+        private Label labelForDatabaseTbl;
+        private CheckBox checkBoxforPullreleateddata;
+        private Button btnForBack;
+        private Button btnForFinish;
+        private Button btnForCancel;
+        private Button btnForAddingColumns;
+        private Button btnForDeleteColumns;
+        private CheckBox checkBox1;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private CheckBox checkBox2;
+        private TextBox txtboxForTblName;
+        private TextBox txtBoxFoeExistingTblKey;
+        private TextBox textBoxForSourceTbl;
+        private TextBox textBoxForSourceTblKey;
+        private Panel panel1;
+        private Label label6;
+        private Label label5;
+        private Label lblForNoofColumns;
+        private TextBox txtForNoofColumns;
     }
 }
 
