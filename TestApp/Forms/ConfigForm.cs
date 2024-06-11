@@ -10,7 +10,7 @@ namespace DE_IDENTIFICATION_TOOL
 {
     public partial class ConfigForm : Form
     {
-        private List<System.Windows.Forms.ComboBox> dynamicComboBoxes;
+        private List<ComboBox> dynamicComboBoxes;
         private HomeForm homeForm;
         private Panel scrollablePanel;
         private string pythonResponse;
