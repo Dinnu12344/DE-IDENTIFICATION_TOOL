@@ -17,9 +17,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void InitializeForm()
         {
-            button1.Enabled = false; // Initially disable the button
-            textBox1.TextChanged += TextBox1_TextChanged; // Subscribe to the TextChanged event
-            button1.Click += SaveKeyData; // Subscribe to the Click event for saving
+            button1.Enabled = false; 
+            textBox1.TextChanged += TextBox1_TextChanged; 
+            button1.Click += SaveKeyData; 
         }
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
