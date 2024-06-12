@@ -144,6 +144,7 @@
       <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\CSVLocationFormModel.cs" />
+    <Compile Include="Models\DbtableFormModel.cs" />
     <Compile Include="Models\ProjectData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

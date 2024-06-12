@@ -145,6 +145,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         //}
         private void btnForFinish_Click(object sender, EventArgs e)
         {
+            string projectName = labelName;
             string connectionString = $"server={this.txtForServer.Text};" +
                                       $"user id={this.txtForUsername.Text};" +
                                       $"password={this.txtForPassword.Text};" +
@@ -171,7 +172,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         }
                     }
 
-                    DbtableForm dbTableForm = new DbtableForm(connectionString, selectedNode, projectData, homeForm);
+                    DbtableForm dbTableForm = new DbtableForm(connectionString, selectedNode, projectData, homeForm,projectName);
                     dbTableForm.ShowDialog();
                     
                 }
