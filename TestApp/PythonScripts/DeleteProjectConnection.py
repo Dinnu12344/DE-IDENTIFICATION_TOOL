@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # Extract arguments passed from command line
     project_name = sys.argv[1]
     
-    response=d.delete_project(mf.tool_path+"\\"+project_name)
+    response=d.delete_folders(mf.tool_path+"\\"+project_name)
     print(response)
 
 
