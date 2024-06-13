@@ -22,22 +22,21 @@ def delete_project(folder_path):
     except Exception as e:
         return f"An error occurred while deleting the file: {e}"
         
-
 # Function to delete folders in the file system
-def delete_folders(folder_path,table_name_logfile):
+def delete_folders(folder_path):
         
     try:
         # Check if the file exists
         # fold=os.path.join(r"E:\New folder",r"New folder")
-        fold=os.path.join(folder_path,table_name_logfile)
+        fold=os.path.join(folder_path)
 
         if os.path.exists(fold):
             # Delete the file
             shutil.rmtree(fold)
 
-            print(f" {table_name_logfile} has been deleted.")
+            print(f" {folder_path} has been deleted.")
         else:
-            print(f"{table_name_logfile} does not exist.")
+            print(f"{folder_path} does not exist.")
     except Exception as e:
         print(f"An error occurred while deleting the file: {e}")
 
