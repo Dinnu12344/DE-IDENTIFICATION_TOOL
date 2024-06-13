@@ -13,6 +13,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private string logDirectoryPath;
 
         private Dictionary<DateTime, string> logs = new Dictionary<DateTime, string>();
+        private bool shouldClose = false;
+
         public LogViewForm(TreeNode selectedNode, TreeNode parentNode)
         {
             InitializeComponent();
@@ -30,6 +32,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             else
             {
                 MessageBox.Show($"Log directory for project '{projectNameText}' and table '{tableNameText}' does not exist at '{logDirectoryPath}'.", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                shouldClose = true;
             }
 
             PopulateDateList();
@@ -55,18 +58,27 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     else
                     {
                         MessageBox.Show($"Improperly formatted log file name: {fileName}", "Format Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        shouldClose = true;
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error reading log files: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                shouldClose = true;
             }
         }
 
         private void PopulateDateList()
         {
             dateListBox.Items.Clear();
+
+            if (logs.Count == 0)
+            {
+                MessageBox.Show("No logs are found for the selected project and table.", "No Logs Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                shouldClose = true;
+                return;
+            }
 
             foreach (DateTime date in logs.Keys)
             {
@@ -88,6 +100,15 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 {
                     logTextBox.Text = "No logs available for selected date.";
                 }
+            }
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            if (shouldClose)
+            {
+                this.Close();
             }
         }
     }
