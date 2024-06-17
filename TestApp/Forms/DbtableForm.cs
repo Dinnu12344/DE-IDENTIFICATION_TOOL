@@ -411,11 +411,20 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string projectName = _properties.ProjectName;
             string username = Environment.UserName;
 
-            // Construct the dynamic path to the JSON file based on the selected table
-            string jsonFilePathForFields = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{tableName}\ConfigFile\{tableName}.json";
+            string pythonScriptName = "TableColumnsConnection.py";
+            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+            string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+            string pythonResponse = pythonService.SendDataToPython(tableName, projectName, pythonScriptPath);
+            //List<string> result = pythonResponse.Split(',').ToList();
+
+            // Clean up the response string
+            pythonResponse = pythonResponse.Trim(new char[] { '[', ']', ' ' }).Replace("'", "");
+
+            // Split the cleaned string into a list of values
+            List<string> result = pythonResponse.Split(new char[] { ',' }).Select(s => s.Trim()).ToList();
 
             // Get the keys from the JSON file
-            List<string> keys = GetAllTablesColumnsFromJson(jsonFilePathForFields);
+            List<string> keys = result;/*GetAllTablesColumnsFromJson(jsonFilePathForFields)*/;
 
             // Update the key ComboBoxes with the new keys
             foreach (var keyCombo in _properties.KeyCombos)
@@ -669,11 +678,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         var data = new SelectedTableData
                         {
                             ExistingTable = _properties.ExistingTableCombos[i].Text,
-                            Key = _properties.KeyCombos[i].Text,
+                            ExistingColumn = _properties.KeyCombos[i].Text,
                             SourceTable = _properties.SourceTableCombos.Count > i
                                           ? _properties.SourceTableCombos[i].Text
                                           : _properties.SourceTableTextBoxs[i - _properties.SourceTableCombos.Count].Text,
-                            SourceKey = _properties.SourceKeyCombos[i].Text
+                            SourceColumn = _properties.SourceKeyCombos[i].Text
                         };
                         selectedData.Add(data);
                     }

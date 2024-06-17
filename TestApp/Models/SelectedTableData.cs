@@ -9,9 +9,9 @@ namespace DE_IDENTIFICATION_TOOL.Models
     public class SelectedTableData
     {
         public string ExistingTable { get; set; }
-        public string Key { get; set; }
+        public string ExistingColumn { get; set; }
         public string SourceTable { get; set; }
-        public string SourceKey { get; set; }
+        public string SourceColumn { get; set; }
     }
 
 }
