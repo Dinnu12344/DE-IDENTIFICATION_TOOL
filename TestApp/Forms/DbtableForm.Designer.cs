@@ -43,13 +43,14 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.lblForNoofColumns = new System.Windows.Forms.Label();
             this.txtForNoofColumns = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.btnForSavePullreleatedData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cmbDatabases
             // 
             this.cmbDatabases.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDatabases.FormattingEnabled = true;
-            this.cmbDatabases.Location = new System.Drawing.Point(237, 103);
+            this.cmbDatabases.Location = new System.Drawing.Point(237, 65);
             this.cmbDatabases.Name = "cmbDatabases";
             this.cmbDatabases.Size = new System.Drawing.Size(475, 24);
             this.cmbDatabases.TabIndex = 0;
@@ -59,15 +60,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.cmbTables.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTables.FormattingEnabled = true;
-            this.cmbTables.Location = new System.Drawing.Point(237, 145);
+            this.cmbTables.Location = new System.Drawing.Point(237, 120);
             this.cmbTables.Name = "cmbTables";
             this.cmbTables.Size = new System.Drawing.Size(475, 24);
             this.cmbTables.TabIndex = 1;
+            this.cmbTables.SelectedIndexChanged += new System.EventHandler(this.cmbTables_SelectedIndexChanged);
             // 
             // labelForDatabase
             // 
             this.labelForDatabase.AutoSize = true;
-            this.labelForDatabase.Location = new System.Drawing.Point(73, 103);
+            this.labelForDatabase.Location = new System.Drawing.Point(73, 73);
             this.labelForDatabase.Name = "labelForDatabase";
             this.labelForDatabase.Size = new System.Drawing.Size(74, 16);
             this.labelForDatabase.TabIndex = 2;
@@ -76,7 +78,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // labelForDatabaseTbl
             // 
             this.labelForDatabaseTbl.AutoSize = true;
-            this.labelForDatabaseTbl.Location = new System.Drawing.Point(69, 153);
+            this.labelForDatabaseTbl.Location = new System.Drawing.Point(73, 120);
             this.labelForDatabaseTbl.Name = "labelForDatabaseTbl";
             this.labelForDatabaseTbl.Size = new System.Drawing.Size(50, 16);
             this.labelForDatabaseTbl.TabIndex = 3;
@@ -95,7 +97,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // btnForBack
             // 
-            this.btnForBack.Location = new System.Drawing.Point(461, 536);
+            this.btnForBack.Location = new System.Drawing.Point(559, 536);
             this.btnForBack.Name = "btnForBack";
             this.btnForBack.Size = new System.Drawing.Size(75, 23);
             this.btnForBack.TabIndex = 5;
@@ -104,7 +106,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // btnForFinish
             // 
-            this.btnForFinish.Location = new System.Drawing.Point(593, 535);
+            this.btnForFinish.Location = new System.Drawing.Point(663, 536);
             this.btnForFinish.Name = "btnForFinish";
             this.btnForFinish.Size = new System.Drawing.Size(75, 23);
             this.btnForFinish.TabIndex = 6;
@@ -114,7 +116,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // btnForCancel
             // 
-            this.btnForCancel.Location = new System.Drawing.Point(712, 536);
+            this.btnForCancel.Location = new System.Drawing.Point(775, 536);
             this.btnForCancel.Name = "btnForCancel";
             this.btnForCancel.Size = new System.Drawing.Size(75, 23);
             this.btnForCancel.TabIndex = 7;
@@ -213,7 +215,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.panelForPullreleatedData.Name = "panelForPullreleatedData";
             this.panelForPullreleatedData.Size = new System.Drawing.Size(820, 282);
             this.panelForPullreleatedData.TabIndex = 16;
-            this.panelForPullreleatedData.AutoScroll = true;
             // 
             // label6
             // 
@@ -238,23 +239,35 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // txtForNoofColumns
             // 
-            this.txtForNoofColumns.Location = new System.Drawing.Point(862, 147);
+            this.txtForNoofColumns.Location = new System.Drawing.Point(237, 165);
             this.txtForNoofColumns.Name = "txtForNoofColumns";
             this.txtForNoofColumns.Size = new System.Drawing.Size(100, 22);
             this.txtForNoofColumns.TabIndex = 0;
+            this.txtForNoofColumns.TextChanged += new System.EventHandler(this.txtForNoofColumns_TextChanged);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(757, 150);
+            this.label7.Location = new System.Drawing.Point(76, 165);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(71, 16);
             this.label7.TabIndex = 15;
             this.label7.Text = "Row Count";
             // 
+            // btnForSavePullreleatedData
+            // 
+            this.btnForSavePullreleatedData.Location = new System.Drawing.Point(451, 536);
+            this.btnForSavePullreleatedData.Name = "btnForSavePullreleatedData";
+            this.btnForSavePullreleatedData.Size = new System.Drawing.Size(75, 23);
+            this.btnForSavePullreleatedData.TabIndex = 17;
+            this.btnForSavePullreleatedData.Text = "Save";
+            this.btnForSavePullreleatedData.UseVisualStyleBackColor = true;
+            this.btnForSavePullreleatedData.Click += new System.EventHandler(this.btnForSavePullreleatedData_Click);
+            // 
             // DbtableForm
             // 
             this.ClientSize = new System.Drawing.Size(974, 591);
+            this.Controls.Add(this.btnForSavePullreleatedData);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtForNoofColumns);
             this.Controls.Add(this.lblForNoofColumns);
@@ -313,6 +326,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private Label lblForNoofColumns;
         private TextBox txtForNoofColumns;
         private Label label7;
+        private Button btnForSavePullreleatedData;
     }
 }
 

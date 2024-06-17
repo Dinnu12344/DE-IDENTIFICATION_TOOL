@@ -1,65 +1,19 @@
 ﻿using DE_IDENTIFICATION_TOOL.Models;
 using System;
-using System.Collections.Specialized;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Web;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using DE_IDENTIFICATION_TOOL.Pythonresponse;
 using System.IO;
 using System.Linq;
-using static System.Windows.Forms.AxHost;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
 {
     public partial class DbtableForm : Form
     {
-        //private string _connectionString;
-        //private string _projectName;
-        //private readonly string labelName;
-        //private PythonService pythonService;
-
-        //private TreeNode _selectedNode;
-        //private List<ProjectData> _projectData;
-        //private HomeForm _homeForm;
-        //public string EnteredText { get; set; }
-
-        //// List to keep track of dynamically added controls
-        //private List<ComboBox> existingTableCombos = new List<ComboBox>();
-        //private List<ComboBox> keyCombos = new List<ComboBox>();
-        //private List<TextBox> sourceTableCombos = new List<TextBox>();
-        //private List<ComboBox> sourceKeyCombos = new List<ComboBox>();
-        //List<CheckBox> selectedCheck = new List<CheckBox>();
-
-        //private Button btnNew;
-        //private Button btnDelete;
-
-        //public DbtableForm(string connectionString, TreeNode selectednode, List<ProjectData> projectData, HomeForm homeForm,string projectName)
-        //{
-        //    InitializeComponent();
-        //    pythonService = new PythonService();
-        //    _connectionString = connectionString;
-        //    _projectName = projectName;
-        //    _selectedNode = selectednode;
-        //    _homeForm = homeForm;
-        //    _projectData = projectData;
-        //    LoadDatabases();
-        //    this.labelName = labelName;
-
-        //    // Initialize New and Delete buttons
-        //    btnNew = new Button { Text = "+ New", Visible = false };
-        //    btnNew.Click += BtnNew_Click;
-        //    Controls.Add(btnNew);
-
-        //    btnDelete = new Button { Text = "Delete", Visible = false };
-        //    btnDelete.Click += BtnDelete_Click;
-        //    Controls.Add(btnDelete);
-        //}
-
         private readonly DbtableFormModel _properties;
         private PythonService pythonService;
         private Button btnNew;
@@ -68,6 +22,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         public DbtableForm(DbtableFormModel properties)
         {
             InitializeComponent();
+            btnForSavePullreleatedData.Enabled = false;
             pythonService = new PythonService();
             _properties = properties;
             LoadDatabases();
@@ -80,6 +35,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             btnDelete = new Button { Text = "Delete", Visible = false };
             btnDelete.Click += BtnDelete_Click;
             Controls.Add(btnDelete);
+            btnForFinish.Enabled = false;
         }
 
         private void LoadDatabases()
@@ -112,11 +68,36 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
         }
 
+        // Assuming _properties is a class-level field of type DbtableFormModel or a similar class
+        //private DbtableFormModel _properties = new DbtableFormModel();
+
         private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
         {
+            _properties.dbName = cmbDatabases.SelectedItem.ToString();
+            UpdateFinishButtonVisibility();
             string selectedDatabase = cmbDatabases.SelectedItem.ToString();
             LoadTables(selectedDatabase);
         }
+
+        private void cmbTables_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _properties.tableName = cmbTables.SelectedItem.ToString();
+            UpdateFinishButtonVisibility();
+        }
+
+        private void txtForNoofColumns_TextChanged(object sender, EventArgs e)
+        {
+            _properties.rowCount = txtForNoofColumns.Text;
+            UpdateFinishButtonVisibility();
+        }
+
+        private void UpdateFinishButtonVisibility()
+        {
+            btnForFinish.Enabled = !string.IsNullOrEmpty(_properties.dbName) &&
+                                   !string.IsNullOrEmpty(_properties.tableName) &&
+                                   !string.IsNullOrEmpty(_properties.rowCount);
+        }
+
 
         private Dictionary<string, string> tableSchemas = new Dictionary<string, string>();
         private Dictionary<string, List<string>> tableColumns = new Dictionary<string, List<string>>();
@@ -132,14 +113,14 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     // Query to get all table names, schemas, and columns
                     string query = @"
-                SELECT 
-                    TABLE_SCHEMA, 
-                    TABLE_NAME, 
-                    COLUMN_NAME 
-                FROM 
-                    INFORMATION_SCHEMA.COLUMNS 
-                WHERE 
-                    TABLE_NAME IN (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')";
+                        SELECT 
+                            TABLE_SCHEMA, 
+                            TABLE_NAME, 
+                            COLUMN_NAME 
+                        FROM 
+                            INFORMATION_SCHEMA.COLUMNS 
+                        WHERE 
+                            TABLE_NAME IN (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')";
 
                     using (SqlCommand cmd = new SqlCommand(query, myConnection))
                     {
@@ -251,18 +232,19 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void checkBoxforPullreleateddata_CheckedChanged_1(object sender, EventArgs e)
         {
+            btnForFinish.Enabled = false;
+            btnForSavePullreleatedData.Enabled = true;
             CheckBox checkBox = sender as CheckBox;
             if (checkBox.Checked)
             {
-                string pythonScriptName = ".py";
-                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-
-                string response = ""; // Call your method to get the response here
+                //string pythonScriptName = ".py";
+                //string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                //string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                //string response = ""; // Call your method to get the response here
 
                 // Show buttons and headers
                 ShowNewAndDeleteButtons();
-                ShowHeadersAndDropDowns(response);
+                ShowHeadersAndDropDowns(/*response*/);
             }
             else
             {
@@ -303,7 +285,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             btnDelete.Visible = false;
         }
 
-        private void ShowHeadersAndDropDowns(string response)
+        private void ShowHeadersAndDropDowns(/*string response*/)
         {
             string projectName = _properties.ProjectName;
 
@@ -316,34 +298,22 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // Get the list of tables from JSON file
             List<string> existingTables = GetAllTablesFromJson(jsonFilePath, projectName);
 
-            List<string> keys = new List<string> { "Key1", "Key2" };
+            // Initial setup for the keys, assuming the first table is selected
+            string selectedTable = existingTables.FirstOrDefault();
+            if (selectedTable != null)
+            {
+                UpdateKeysForSelectedTable(selectedTable);
+            }
+
             string sourceColumn = GetSourceColumns();
             List<string> sourceTblKey = tableColumns.ContainsKey(cmbTables.Text) ? tableColumns[cmbTables.Text] : new List<string>();
 
             AddHeaderLabels();
 
             // Use sourceColumns here
-            AddDropDowns(existingTables, keys, sourceColumn, sourceTblKey);
+            AddDropDowns(existingTables, new List<string>(), sourceColumn, sourceTblKey);
         }
 
-
-        //private List<string> GetAllTablesFromJson(string filePath,string _projectName)
-        //{
-        //    try
-        //    {
-        //        var jsonData = File.ReadAllText(filePath);
-        //        var projectDataList = JsonConvert.DeserializeObject<List<ProjectData>>(jsonData);
-
-        //        // Extract all tables from all projects into a single list
-        //        var allTables = projectDataList.SelectMany(p => p.Tables).ToList();
-        //        return allTables;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Failed to load tables from JSON: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        return new List<string>();
-        //    }
-        //}
         private List<string> GetAllTablesFromJson(string filePath, string projectName)
         {
             try
@@ -427,10 +397,111 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             panelForPullreleatedData.Controls.Add(lblSourceKey);
         }
 
+        private void CbExistingTable_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cbExistingTable = sender as ComboBox;
+            if (cbExistingTable != null)
+            {
+                string selectedTable = cbExistingTable.SelectedItem.ToString();
+                UpdateKeysForSelectedTable(selectedTable);
+            }
+        }
+        private void UpdateKeysForSelectedTable(string tableName)
+        {
+            string projectName = _properties.ProjectName;
+            string username = Environment.UserName;
+
+            // Construct the dynamic path to the JSON file based on the selected table
+            string jsonFilePathForFields = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{tableName}\ConfigFile\{tableName}.json";
+
+            // Get the keys from the JSON file
+            List<string> keys = GetAllTablesColumnsFromJson(jsonFilePathForFields);
+
+            // Update the key ComboBoxes with the new keys
+            foreach (var keyCombo in _properties.KeyCombos)
+            {
+                keyCombo.Items.Clear();
+                keyCombo.Items.AddRange(keys.ToArray());
+            }
+        }
+
+        private List<string> GetAllTablesColumnsFromJson(string jsonFilePathForFields)
+        {
+            try
+            {
+                if (!File.Exists(jsonFilePathForFields))
+                {
+                    throw new FileNotFoundException($"The configuration file was not found: {jsonFilePathForFields}");
+                }
+
+                var jsonData = File.ReadAllText(jsonFilePathForFields);
+                var tableConfig = JsonConvert.DeserializeObject<List<TableColumn>>(jsonData);
+
+                // Extract the column names
+                return tableConfig?.Select(tc => tc.Column).ToList() ?? new List<string>();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load columns from JSON: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<string>();
+            }
+        }
+
+        //private void AddDropDowns(List<string> existingTables, List<string> keys, string sourceColumns, List<string> sourceTblKey)
+        //{
+        //    int startPositionY = 123;
+
+        //    CheckBox selectCheckbox = new CheckBox
+        //    {
+        //        Location = new Point(47, startPositionY),
+        //        Size = new Size(18, 17),
+        //        Text = "" // or any relevant text for your checkbox
+        //    };
+
+        //    ComboBox cbExistingTable = new ComboBox
+        //    {
+        //        Location = new Point(142, startPositionY),
+        //        Size = new Size(100, 22)
+        //    };
+        //    cbExistingTable.Items.AddRange(existingTables.ToArray());
+        //    cbExistingTable.SelectedIndexChanged += CbExistingTable_SelectedIndexChanged;
+
+        //    ComboBox cbKey = new ComboBox
+        //    {
+        //        Location = new Point(311, startPositionY),
+        //        Size = new Size(70, 22)
+        //    };
+        //    cbKey.Items.AddRange(keys.ToArray());
+
+        //    TextBox txtSourceTable = new TextBox
+        //    {
+        //        Location = new Point(478, startPositionY),
+        //        Size = new Size(100, 22),
+        //        Text = sourceColumns
+        //    };
+
+        //    ComboBox cbSourceKey = new ComboBox
+        //    {
+        //        Location = new Point(682, startPositionY),
+        //        Size = new Size(70, 22)
+        //    };
+        //    cbSourceKey.Items.AddRange(sourceTblKey.ToArray());
+
+        //    panelForPullreleatedData.Controls.Add(selectCheckbox);
+        //    panelForPullreleatedData.Controls.Add(cbExistingTable);
+        //    panelForPullreleatedData.Controls.Add(cbKey);
+        //    panelForPullreleatedData.Controls.Add(txtSourceTable); // Add the TextBox instead of ComboBox
+        //    panelForPullreleatedData.Controls.Add(cbSourceKey);
+
+        //    _properties.SelectedCheck.Add(selectCheckbox);
+        //    _properties.ExistingTableCombos.Add(cbExistingTable);
+        //    _properties.KeyCombos.Add(cbKey);
+        //    _properties.SourceTableTextBoxs.Add(txtSourceTable); // Change the list to hold TextBox
+        //    _properties.SourceKeyCombos.Add(cbSourceKey);
+        //}
 
         private void AddDropDowns(List<string> existingTables, List<string> keys, string sourceColumns, List<string> sourceTblKey)
         {
-            int yOffset = 30;
             int startPositionY = 123;
 
             CheckBox selectCheckbox = new CheckBox
@@ -440,20 +511,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 Text = "" // or any relevant text for your checkbox
             };
 
-            //ComboBox cbExistingTable = new ComboBox
-            //{
-            //    Location = new Point(142, startPositionY),
-            //    Size = new Size(100, 22)
-            //};
-            //cbExistingTable.Items.AddRange(existingTables.ToArray());
             ComboBox cbExistingTable = new ComboBox
             {
                 Location = new Point(142, startPositionY),
-                Size = new Size(100, 22),
-                MaxDropDownItems = 10 // This will show a scrollbar if there are more than 10 items
+                Size = new Size(100, 22)
             };
             cbExistingTable.Items.AddRange(existingTables.ToArray());
-
+            cbExistingTable.SelectedIndexChanged += CbExistingTable_SelectedIndexChanged;
 
             ComboBox cbKey = new ComboBox
             {
@@ -479,13 +543,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             panelForPullreleatedData.Controls.Add(selectCheckbox);
             panelForPullreleatedData.Controls.Add(cbExistingTable);
             panelForPullreleatedData.Controls.Add(cbKey);
-            panelForPullreleatedData.Controls.Add(txtSourceTable); // Add the TextBox instead of ComboBox
+            panelForPullreleatedData.Controls.Add(txtSourceTable);
             panelForPullreleatedData.Controls.Add(cbSourceKey);
 
             _properties.SelectedCheck.Add(selectCheckbox);
             _properties.ExistingTableCombos.Add(cbExistingTable);
             _properties.KeyCombos.Add(cbKey);
-            _properties.SourceTableCombos.Add(txtSourceTable); // Change the list to hold TextBox
+            _properties.SourceTableTextBoxs.Add(txtSourceTable);
             _properties.SourceKeyCombos.Add(cbSourceKey);
         }
 
@@ -495,8 +559,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             int lastIndex = _properties.ExistingTableCombos.Count - 1;
             int startY = _properties.ExistingTableCombos.Count > 0 ? _properties.ExistingTableCombos[lastIndex].Location.Y + spacingY : 240;
             int newIndex = _properties.ExistingTableCombos.Count; // New index for the new controls
-            string TableName = cmbTables.Text;
-            string tableName = TableName.Split('.')[1];
 
             // Create new checkbox
             CheckBox selectCheckbox = new CheckBox
@@ -506,30 +568,28 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 Tag = newIndex
             };
 
-            // Create new drop-downs
             ComboBox cbExistingTable = new ComboBox
             {
                 Location = new Point(142, startY),
-                Size = new Size(100, 22),
-                Tag = newIndex
+                Size = new Size(100, 22)
             };
             cbExistingTable.Items.AddRange(_properties.ExistingTableCombos[0].Items.Cast<string>().ToArray());
+            cbExistingTable.SelectedIndexChanged += CbExistingTable_SelectedIndexChanged;
 
             ComboBox cbKey = new ComboBox
             {
                 Location = new Point(311, startY),
-                Size = new Size(70, 22),
-                Tag = newIndex
+                Size = new Size(70, 22)
             };
             cbKey.Items.AddRange(_properties.KeyCombos[0].Items.Cast<string>().ToArray());
 
-            TextBox txtSourceTable = new TextBox
+            ComboBox cbSourceTable = new ComboBox
             {
                 Location = new Point(478, startY),
                 Size = new Size(100, 22),
-                Tag = newIndex,
-                Text = tableName // Set the TextBox value from sourceColumns
+                Tag = newIndex
             };
+            cbSourceTable.Items.AddRange(_properties.ExistingTableCombos[0].Items.Cast<string>().ToArray());
 
             ComboBox cbSourceKey = new ComboBox
             {
@@ -537,21 +597,22 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 Size = new Size(70, 22),
                 Tag = newIndex
             };
-            cbSourceKey.Items.AddRange(_properties.SourceKeyCombos[0].Items.Cast<string>().ToArray());
+            cbSourceKey.Items.AddRange(_properties.KeyCombos[0].Items.Cast<string>().ToArray());
 
             // Add them to the panel and the respective lists
             panelForPullreleatedData.Controls.Add(selectCheckbox);
             panelForPullreleatedData.Controls.Add(cbExistingTable);
             panelForPullreleatedData.Controls.Add(cbKey);
-            panelForPullreleatedData.Controls.Add(txtSourceTable); // Ensure adding TextBox here
+            panelForPullreleatedData.Controls.Add(cbSourceTable);
             panelForPullreleatedData.Controls.Add(cbSourceKey);
 
             _properties.SelectedCheck.Add(selectCheckbox);
             _properties.ExistingTableCombos.Add(cbExistingTable);
             _properties.KeyCombos.Add(cbKey);
-            _properties.SourceTableCombos.Add(txtSourceTable); // Ensure adding TextBox to the list
+            _properties.SourceTableCombos.Add(cbSourceTable);
             _properties.SourceKeyCombos.Add(cbSourceKey);
         }
+
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
@@ -581,6 +642,92 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         _properties.SourceKeyCombos[j].Tag = j;
                     }
                 }
+            }
+        }
+
+        
+        private void btnForSavePullreleatedData_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedData = new List<SelectedTableData>();
+
+                // Ensure all collections have the same count
+                int count = _properties.SelectedCheck.Count;
+                if (_properties.ExistingTableCombos.Count != count ||
+                    _properties.KeyCombos.Count != count ||
+                    _properties.SourceTableCombos.Count + _properties.SourceTableTextBoxs.Count != count ||
+                    _properties.SourceKeyCombos.Count != count)
+                {
+                    throw new InvalidOperationException("Collection counts are not synchronized.");
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    if (_properties.SelectedCheck[i].Checked)
+                    {
+                        var data = new SelectedTableData
+                        {
+                            ExistingTable = _properties.ExistingTableCombos[i].Text,
+                            Key = _properties.KeyCombos[i].Text,
+                            SourceTable = _properties.SourceTableCombos.Count > i
+                                          ? _properties.SourceTableCombos[i].Text
+                                          : _properties.SourceTableTextBoxs[i - _properties.SourceTableCombos.Count].Text,
+                            SourceKey = _properties.SourceKeyCombos[i].Text
+                        };
+                        selectedData.Add(data);
+                    }
+                }
+
+                string jsonData = JsonConvert.SerializeObject(selectedData);
+
+                // Extract information from properties
+                string projectName = _properties.ProjectName;
+                string tableName = cmbTables.Text.Split('.')[1]; // Extract the table name
+                                                                 //string schemaName = _properties.TableSchemas[tableName]; // Get the schema name from the dictionary
+                string databaseName = cmbDatabases.Text;
+                string connectionString = _properties.ConnectionString;
+                //string rowCount = _properties.RowCount;
+
+                // Extract details from connection string
+                string serverPattern = @"server\s*=\s*([^;]+)";
+                string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
+                string passwordPattern = @"password\s*=\s*([^;]+)";
+                string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
+
+                string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
+                string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
+                string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
+                string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
+
+                // Display the serialized JSON data (for debugging purposes)
+                MessageBox.Show(jsonData);
+
+                // Define the Python script path
+                string pythonScriptName = "your_python_script.py";
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+
+                // Send data to Python script and capture the response
+                string pythonResponse = "";// pythonService.SendSqlDataToPython(server, databaseName, password, userId, projectName, rowCount, tableName, schemaName, pythonScriptPath, jsonData);
+
+                // Handle the response from the Python script
+                if (pythonResponse.ToLower().Contains("success"))
+                {
+                    btnForSavePullreleatedData.Enabled = false;
+                    btnForFinish.Enabled = true;
+                    MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    btnForSavePullreleatedData.Enabled = false;
+                    btnForFinish.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to save data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -43,8 +43,17 @@ namespace DE_IDENTIFICATION_TOOL
                         // Add your code here to export the data to the selected folder path
                         //string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ExportCsvConnection.py";
                         string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
-                        MessageBox.Show("The exported path is : " + pythonResponse);
-                        this.Close();
+
+                        if (pythonResponse.ToLower().Contains("success"))
+                        {
+                            MessageBox.Show("The exporte is success and the export path is : " + pythonResponse);
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("the Export is not done");
+                        }
+                        
                     }
                 }
             }

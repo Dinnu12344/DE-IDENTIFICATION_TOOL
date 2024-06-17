@@ -146,6 +146,8 @@
     <Compile Include="Models\CSVLocationFormModel.cs" />
     <Compile Include="Models\DbtableFormModel.cs" />
     <Compile Include="Models\ProjectData.cs" />
+    <Compile Include="Models\SelectedTableData.cs" />
+    <Compile Include="Models\TableColumns.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pythonresponse\PythonScriptFilePath.cs" />
