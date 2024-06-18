@@ -1,4 +1,6 @@
-﻿using DE_IDENTIFICATION_TOOL.Pythonresponse;
+﻿using DE_IDENTIFICATION_TOOL.Forms;
+using DE_IDENTIFICATION_TOOL.Models;
+using DE_IDENTIFICATION_TOOL.Pythonresponse;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -40,8 +42,6 @@ namespace DE_IDENTIFICATION_TOOL
                         string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                         string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
 
-                        // Add your code here to export the data to the selected folder path
-                        //string pythonScriptPath = @"C:\Users\Dinesh Puvvala\source\repos\DE-IDENTIFICATION_TOOL_new\TestApp\PythonScripts\ExportCsvConnection.py";
                         string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
 
                         if (pythonResponse.ToLower().Contains("success"))
@@ -60,9 +60,12 @@ namespace DE_IDENTIFICATION_TOOL
             else if (radioBtnDatabaseExport.Checked)
             {
                 SelectedImportOption = "Database";
-                // Add your database export logic here
+                if (SelectedImportOption == "Database")
+                {
+                    ExportDbForm dBLocationForm = new ExportDbForm(projectName, tableName);
+                    dBLocationForm.ShowDialog();
+                }
             }
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

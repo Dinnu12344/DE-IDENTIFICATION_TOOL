@@ -27,7 +27,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             _properties = properties;
             LoadDatabases();
 
-            // Initialize New and Delete buttons
             btnNew = new Button { Text = "+ New", Visible = false };
             btnNew.Click += BtnNew_Click;
             Controls.Add(btnNew);
@@ -35,7 +34,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             btnDelete = new Button { Text = "Delete", Visible = false };
             btnDelete.Click += BtnDelete_Click;
             Controls.Add(btnDelete);
-            btnForFinish.Enabled = false;
+            btnForFinish.Enabled = true;
         }
 
         private void LoadDatabases()
@@ -67,9 +66,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
             }
         }
-
-        // Assuming _properties is a class-level field of type DbtableFormModel or a similar class
-        //private DbtableFormModel _properties = new DbtableFormModel();
 
         private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -162,7 +158,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
         }
 
-
         private void btnForFinish_Click(object sender, EventArgs e)
         {
             string projectName = _properties.SelectedNode.Text;
@@ -183,68 +178,121 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
             string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
 
-            string pythonScriptName = "ImportSqlConnection.py";
-            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-            string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-
-            string pythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, pythonScriptPath);
-
-            if (pythonResponse.ToLower().Contains("success"))
+            try
             {
-                if (_properties.SelectedNode == null)
+                if (checkBoxforPullreleateddata.Checked)
                 {
-                    MessageBox.Show("Selected node is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    var selectedData = new List<SelectedTableData>();
+
+                    // Ensure all collections have the same count
+                    int count = _properties.SelectedCheck.Count;
+                    if (_properties.ExistingTableCombos.Count != count ||
+                        _properties.KeyCombos.Count != count ||
+                        _properties.SourceTableCombos.Count + _properties.SourceTableTextBoxs.Count != count ||
+                        _properties.SourceKeyCombos.Count != count)
+                    {
+                        throw new InvalidOperationException("Collection counts are not synchronized.");
+                    }
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (_properties.SelectedCheck[i].Checked)
+                        {
+                            var data = new SelectedTableData
+                            {
+                                ExistingTable = _properties.ExistingTableCombos[i].Text,
+                                ExistingColumn = _properties.KeyCombos[i].Text,
+                                SourceTable = _properties.SourceTableCombos.Count > i
+                                              ? _properties.SourceTableCombos[i].Text
+                                              : _properties.SourceTableTextBoxs[i - _properties.SourceTableCombos.Count].Text,
+                                SourceColumn = _properties.SourceKeyCombos[i].Text
+                            };
+                            selectedData.Add(data);
+                        }
+                    }
+
+                    string jsonData = JsonConvert.SerializeObject(selectedData);
+                    MessageBox.Show(jsonData);
+
+                    // Define the Python script path for the checkbox-checked scenario
+                    string savePythonScriptName = "your_python_script.py";
+                    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                    string savePythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", savePythonScriptName);
+
+                    // Send data to Python script and capture the response
+                    string savePythonResponse = "";//pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, savePythonScriptPath, jsonData);
+
+                    if (savePythonResponse.ToLower().Contains("success"))
+                    {
+                        MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
 
-                if (_properties.ProjectData == null)
+                // Define the Python script path for the default scenario
+                string importPythonScriptName = "ImportSqlConnection.py";
+                string importProjectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string importPythonScriptPath = Path.Combine(importProjectRootDirectory, "PythonScripts", importPythonScriptName);
+
+                string importPythonResponse = pythonService.SendSqlImportDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, importPythonScriptPath);
+
+                if (importPythonResponse.ToLower().Contains("success"))
                 {
-                    MessageBox.Show("Project data is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                    if (_properties.SelectedNode == null)
+                    {
+                        MessageBox.Show("Selected node is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
-                if (_properties.HomeForm == null)
+                    if (_properties.ProjectData == null)
+                    {
+                        MessageBox.Show("Project data is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    if (_properties.HomeForm == null)
+                    {
+                        MessageBox.Show("Home form reference is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Add the table to the selected node in the TreeView
+                    TreeNode tableNode = new TreeNode(tableName);
+                    _properties.SelectedNode.Nodes.Add(tableNode);
+                    _properties.SelectedNode.Expand();
+
+                    var project = _properties.ProjectData.Find(p => p.Name == _properties.SelectedNode.Text);
+                    if (project != null)
+                    {
+                        project.Tables.Add(tableName);
+                        _properties.HomeForm.SaveProjectData();
+                    }
+
+                    this.DialogResult = DialogResult.OK;
+                    this.Hide();
+                }
+                else
                 {
-                    MessageBox.Show("Home form reference is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    MessageBox.Show("The CSV file is not valid. Error: " + importPythonResponse, "Error");
                 }
-
-                // Add the table to the selected node in the TreeView
-                TreeNode tableNode = new TreeNode(tableName);
-                _properties.SelectedNode.Nodes.Add(tableNode);
-                _properties.SelectedNode.Expand();
-
-                var project = _properties.ProjectData.Find(p => p.Name == _properties.SelectedNode.Text);
-                if (project != null)
-                {
-                    project.Tables.Add(tableName);
-                    _properties.HomeForm.SaveProjectData();
-                }
-
-                this.DialogResult = DialogResult.OK;
-                this.Hide();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("The CSV file is not valid. Error: " + pythonResponse, "Error");
+                MessageBox.Show($"Failed to save data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void checkBoxforPullreleateddata_CheckedChanged_1(object sender, EventArgs e)
         {
-            btnForFinish.Enabled = false;
-            btnForSavePullreleatedData.Enabled = true;
             CheckBox checkBox = sender as CheckBox;
             if (checkBox.Checked)
             {
-                //string pythonScriptName = ".py";
-                //string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                //string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-                //string response = ""; // Call your method to get the response here
-
-                // Show buttons and headers
                 ShowNewAndDeleteButtons();
-                ShowHeadersAndDropDowns(/*response*/);
+                ShowHeadersAndDropDowns();
             }
             else
             {
@@ -255,17 +303,29 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void ClearDynamicControls()
         {
-            // Remove all dynamically added controls
-            foreach (var control in panelForPullreleatedData.Controls.OfType<ComboBox>().ToList())
+            // Remove all dynamically added ComboBox and TextBox controls
+            var controlsToRemove = panelForPullreleatedData.Controls.OfType<Control>()
+                                        .Where(c => c is ComboBox || c is TextBox || c is Label || c is CheckBox)
+                                        .ToList();
+
+            foreach (var control in controlsToRemove)
             {
                 panelForPullreleatedData.Controls.Remove(control);
             }
 
             // Clear the lists holding references to the dynamic controls
+            _properties.SelectedCheck.Clear();
             _properties.ExistingTableCombos.Clear();
             _properties.KeyCombos.Clear();
             _properties.SourceTableCombos.Clear();
             _properties.SourceKeyCombos.Clear();
+            _properties.SourceTableTextBoxs.Clear(); // Assuming you also need to clear this list
+        }
+
+        private void HideNewAndDeleteButtons()
+        {
+            btnNew.Visible = false;
+            btnDelete.Visible = false;
         }
 
         private void ShowNewAndDeleteButtons()
@@ -279,26 +339,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             panelForPullreleatedData.Controls.Add(btnDelete);
         }
 
-        private void HideNewAndDeleteButtons()
-        {
-            btnNew.Visible = false;
-            btnDelete.Visible = false;
-        }
-
         private void ShowHeadersAndDropDowns(/*string response*/)
         {
             string projectName = _properties.ProjectName;
 
-            // Get the base directory of the currently executing application domain
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-            // Construct the dynamic path to the JSON file
             string jsonFilePath = Path.Combine(baseDirectory, "projectData.json");
 
-            // Get the list of tables from JSON file
             List<string> existingTables = GetAllTablesFromJson(jsonFilePath, projectName);
 
-            // Initial setup for the keys, assuming the first table is selected
             string selectedTable = existingTables.FirstOrDefault();
             if (selectedTable != null)
             {
@@ -345,17 +395,14 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string TableName = cmbTables.Text;
             string tableName = "";
 
-            // Check if the TableName contains a dot and split accordingly
             if (TableName.Contains('.'))
             {
                 tableName = TableName.Split('.')[1];
             }
             else
             {
-                tableName = TableName; // Fallback in case there is no dot
+                tableName = TableName;
             }
-
-            // Return the list containing the table name
             return tableName;
         }
 
@@ -415,16 +462,14 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
             string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
             string pythonResponse = pythonService.SendDataToPython(tableName, projectName, pythonScriptPath);
-            //List<string> result = pythonResponse.Split(',').ToList();
 
             // Clean up the response string
-            pythonResponse = pythonResponse.Trim(new char[] { '[', ']', ' ' }).Replace("'", "");
+            pythonResponse = pythonResponse = pythonResponse.Replace("[", "").Replace("]", "").Replace("'", "").Trim();
 
             // Split the cleaned string into a list of values
             List<string> result = pythonResponse.Split(new char[] { ',' }).Select(s => s.Trim()).ToList();
 
-            // Get the keys from the JSON file
-            List<string> keys = result;/*GetAllTablesColumnsFromJson(jsonFilePathForFields)*/;
+            List<string> keys = result;
 
             // Update the key ComboBoxes with the new keys
             foreach (var keyCombo in _properties.KeyCombos)
@@ -433,81 +478,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 keyCombo.Items.AddRange(keys.ToArray());
             }
         }
-
-        private List<string> GetAllTablesColumnsFromJson(string jsonFilePathForFields)
-        {
-            try
-            {
-                if (!File.Exists(jsonFilePathForFields))
-                {
-                    throw new FileNotFoundException($"The configuration file was not found: {jsonFilePathForFields}");
-                }
-
-                var jsonData = File.ReadAllText(jsonFilePathForFields);
-                var tableConfig = JsonConvert.DeserializeObject<List<TableColumn>>(jsonData);
-
-                // Extract the column names
-                return tableConfig?.Select(tc => tc.Column).ToList() ?? new List<string>();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to load columns from JSON: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return new List<string>();
-            }
-        }
-
-        //private void AddDropDowns(List<string> existingTables, List<string> keys, string sourceColumns, List<string> sourceTblKey)
-        //{
-        //    int startPositionY = 123;
-
-        //    CheckBox selectCheckbox = new CheckBox
-        //    {
-        //        Location = new Point(47, startPositionY),
-        //        Size = new Size(18, 17),
-        //        Text = "" // or any relevant text for your checkbox
-        //    };
-
-        //    ComboBox cbExistingTable = new ComboBox
-        //    {
-        //        Location = new Point(142, startPositionY),
-        //        Size = new Size(100, 22)
-        //    };
-        //    cbExistingTable.Items.AddRange(existingTables.ToArray());
-        //    cbExistingTable.SelectedIndexChanged += CbExistingTable_SelectedIndexChanged;
-
-        //    ComboBox cbKey = new ComboBox
-        //    {
-        //        Location = new Point(311, startPositionY),
-        //        Size = new Size(70, 22)
-        //    };
-        //    cbKey.Items.AddRange(keys.ToArray());
-
-        //    TextBox txtSourceTable = new TextBox
-        //    {
-        //        Location = new Point(478, startPositionY),
-        //        Size = new Size(100, 22),
-        //        Text = sourceColumns
-        //    };
-
-        //    ComboBox cbSourceKey = new ComboBox
-        //    {
-        //        Location = new Point(682, startPositionY),
-        //        Size = new Size(70, 22)
-        //    };
-        //    cbSourceKey.Items.AddRange(sourceTblKey.ToArray());
-
-        //    panelForPullreleatedData.Controls.Add(selectCheckbox);
-        //    panelForPullreleatedData.Controls.Add(cbExistingTable);
-        //    panelForPullreleatedData.Controls.Add(cbKey);
-        //    panelForPullreleatedData.Controls.Add(txtSourceTable); // Add the TextBox instead of ComboBox
-        //    panelForPullreleatedData.Controls.Add(cbSourceKey);
-
-        //    _properties.SelectedCheck.Add(selectCheckbox);
-        //    _properties.ExistingTableCombos.Add(cbExistingTable);
-        //    _properties.KeyCombos.Add(cbKey);
-        //    _properties.SourceTableTextBoxs.Add(txtSourceTable); // Change the list to hold TextBox
-        //    _properties.SourceKeyCombos.Add(cbSourceKey);
-        //}
 
         private void AddDropDowns(List<string> existingTables, List<string> keys, string sourceColumns, List<string> sourceTblKey)
         {
@@ -651,92 +621,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         _properties.SourceKeyCombos[j].Tag = j;
                     }
                 }
-            }
-        }
-
-        
-        private void btnForSavePullreleatedData_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var selectedData = new List<SelectedTableData>();
-
-                // Ensure all collections have the same count
-                int count = _properties.SelectedCheck.Count;
-                if (_properties.ExistingTableCombos.Count != count ||
-                    _properties.KeyCombos.Count != count ||
-                    _properties.SourceTableCombos.Count + _properties.SourceTableTextBoxs.Count != count ||
-                    _properties.SourceKeyCombos.Count != count)
-                {
-                    throw new InvalidOperationException("Collection counts are not synchronized.");
-                }
-
-                for (int i = 0; i < count; i++)
-                {
-                    if (_properties.SelectedCheck[i].Checked)
-                    {
-                        var data = new SelectedTableData
-                        {
-                            ExistingTable = _properties.ExistingTableCombos[i].Text,
-                            ExistingColumn = _properties.KeyCombos[i].Text,
-                            SourceTable = _properties.SourceTableCombos.Count > i
-                                          ? _properties.SourceTableCombos[i].Text
-                                          : _properties.SourceTableTextBoxs[i - _properties.SourceTableCombos.Count].Text,
-                            SourceColumn = _properties.SourceKeyCombos[i].Text
-                        };
-                        selectedData.Add(data);
-                    }
-                }
-
-                string jsonData = JsonConvert.SerializeObject(selectedData);
-
-                // Extract information from properties
-                string projectName = _properties.ProjectName;
-                string tableName = cmbTables.Text.Split('.')[1]; // Extract the table name
-                                                                 //string schemaName = _properties.TableSchemas[tableName]; // Get the schema name from the dictionary
-                string databaseName = cmbDatabases.Text;
-                string connectionString = _properties.ConnectionString;
-                //string rowCount = _properties.RowCount;
-
-                // Extract details from connection string
-                string serverPattern = @"server\s*=\s*([^;]+)";
-                string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
-                string passwordPattern = @"password\s*=\s*([^;]+)";
-                string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
-
-                string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-                string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-                string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-                string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-                // Display the serialized JSON data (for debugging purposes)
-                MessageBox.Show(jsonData);
-
-                // Define the Python script path
-                string pythonScriptName = "your_python_script.py";
-                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-
-                // Send data to Python script and capture the response
-                string pythonResponse = "";// pythonService.SendSqlDataToPython(server, databaseName, password, userId, projectName, rowCount, tableName, schemaName, pythonScriptPath, jsonData);
-
-                // Handle the response from the Python script
-                if (pythonResponse.ToLower().Contains("success"))
-                {
-                    btnForSavePullreleatedData.Enabled = false;
-                    btnForFinish.Enabled = true;
-                    MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    btnForSavePullreleatedData.Enabled = false;
-                    btnForFinish.Enabled = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to save data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

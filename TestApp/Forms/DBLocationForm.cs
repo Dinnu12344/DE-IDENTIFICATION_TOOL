@@ -98,7 +98,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string connectionString = $"server={this.txtForServer.Text};" +
                                       $"user id={this.txtForUsername.Text};" +
                                       $"password={this.txtForPassword.Text};" +
-                                      $"connection timeout=30";
+                                      $"connection timeout=30"; 
 
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
@@ -141,9 +141,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
             }
             this.Hide();
-        }
-
-        
+        }        
 
         private void UpdateFinishButtonVisibility()
         {
