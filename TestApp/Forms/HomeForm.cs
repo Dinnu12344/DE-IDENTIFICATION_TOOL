@@ -263,8 +263,10 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode selectedNode = treeView.SelectedNode;
             TreeNode parentNode = selectedNode.Parent;
 
-            LogViewForm logViewForm = new LogViewForm(selectedNode, parentNode);
-            logViewForm.ShowDialog();
+            using (LogViewForm logViewForm = new LogViewForm(selectedNode, parentNode))
+            {
+                logViewForm.ShowDialog();
+            }
         }
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
