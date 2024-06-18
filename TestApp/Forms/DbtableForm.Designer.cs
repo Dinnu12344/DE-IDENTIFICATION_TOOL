@@ -262,7 +262,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.btnForSavePullreleatedData.TabIndex = 17;
             this.btnForSavePullreleatedData.Text = "Save";
             this.btnForSavePullreleatedData.UseVisualStyleBackColor = true;
-            this.btnForSavePullreleatedData.Click += new System.EventHandler(this.btnForSavePullreleatedData_Click);
+            //this.btnForSavePullreleatedData.Click += new System.EventHandler(this.btnForSavePullreleatedData_Click);
             // 
             // DbtableForm
             // 

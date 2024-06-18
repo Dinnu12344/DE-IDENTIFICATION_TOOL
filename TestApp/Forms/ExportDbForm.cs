@@ -115,7 +115,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
         }
 
-        private void cmbDatabases_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
         {
             _properties.dbName = cmbDatabases.SelectedItem.ToString();
             UpdateFinishButtonVisibility();
@@ -123,7 +123,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             LoadTables(selectedDatabase);
         }
 
-        private void cmbTables_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void cmbTables_SelectedIndexChanged(object sender, EventArgs e)
         {
             _properties.tableName = cmbTables.SelectedItem.ToString();
             UpdateFinishButtonVisibility();
@@ -232,7 +232,5 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 return; // Exit the method if it fails to save data
             }
         }
-
-        
     }
 }

@@ -108,6 +108,11 @@
       <DependentUpon>DbtableForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ExportDbForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportDbForm.Designer.cs">
+      <DependentUpon>ExportDbForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
