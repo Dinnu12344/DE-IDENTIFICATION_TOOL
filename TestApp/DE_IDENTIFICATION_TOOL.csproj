@@ -107,6 +107,7 @@
     <Compile Include="Forms\DbtableForm.Designer.cs">
       <DependentUpon>DbtableForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ExportDbForm.cs">
     <Compile Include="Forms\HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,7 +145,10 @@
       <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\CSVLocationFormModel.cs" />
+    <Compile Include="Models\DbtableFormModel.cs" />
     <Compile Include="Models\ProjectData.cs" />
+    <Compile Include="Models\SelectedTableData.cs" />
+    <Compile Include="Models\TableColumns.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pythonresponse\PythonScriptFilePath.cs" />
@@ -163,6 +167,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DbtableForm.resx">
       <DependentUpon>DbtableForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportDbForm.resx">
+      <DependentUpon>ExportDbForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>

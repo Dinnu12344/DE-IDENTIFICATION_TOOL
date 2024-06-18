@@ -131,8 +131,16 @@ namespace DE_IDENTIFICATION_TOOL
 
                     // Assuming SendDataToPython takes table name, project name, and script path as arguments
                     string pythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentNode.Text, pythonScriptPath);
-                    ConfigForm configForm = new ConfigForm(this, pythonResponse, selectedNode, parentNode);
-                    configForm.Show();
+                    if (IsValidPythonResponse(pythonResponse))
+                    {
+                        ConfigForm configForm = new ConfigForm(this, pythonResponse, selectedNode, parentNode);
+                        configForm.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Config is not done Please Check once");
+                    }
+                    
                 }
                 else
                 {
@@ -429,12 +437,12 @@ namespace DE_IDENTIFICATION_TOOL
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
-                        MessageBox.Show("Python response is" + pythonResponse);
+                        MessageBox.Show("table is deleted Successfully : " + pythonResponse);
                         project.Tables.Remove(selectedNode.Text);
                     }
                     else
                     {
-                        MessageBox.Show("Python response is not deidentified :" + pythonResponse);
+                        MessageBox.Show("Table is not deleted" + pythonResponse);
                     }
                 }
             }

@@ -33,11 +33,10 @@
             this.lblForJdbcSubPara = new System.Windows.Forms.Label();
             this.lblForJdbc = new System.Windows.Forms.Label();
             this.lblForTypeInJdbcFrm = new System.Windows.Forms.Label();
-            this.dbTypedd = new System.Windows.Forms.ComboBox();
+            this.dbTyped = new System.Windows.Forms.ComboBox();
             this.panelHoldingButtonsInJdbcWindow = new System.Windows.Forms.Panel();
             this.btnForFinish = new System.Windows.Forms.Button();
             this.btnForCancelInJdbcFrm = new System.Windows.Forms.Button();
-            this.btnFroNextinJdbcFrm = new System.Windows.Forms.Button();
             this.btnForBackInJdbcFrm = new System.Windows.Forms.Button();
             this.lblForServer = new System.Windows.Forms.Label();
             this.lblForUserName = new System.Windows.Forms.Label();
@@ -89,23 +88,22 @@
             this.lblForTypeInJdbcFrm.TabIndex = 1;
             this.lblForTypeInJdbcFrm.Text = "Type";
             // 
-            // dbTypedd
+            // dbTyped
             // 
-            this.dbTypedd.FormattingEnabled = true;
-            this.dbTypedd.Items.AddRange(new object[] {
+            this.dbTyped.FormattingEnabled = true;
+            this.dbTyped.Items.AddRange(new object[] {
             "SQL",
             "Oracel"});
-            this.dbTypedd.Location = new System.Drawing.Point(185, 154);
-            this.dbTypedd.Name = "dbTypedd";
-            this.dbTypedd.Size = new System.Drawing.Size(344, 24);
-            this.dbTypedd.TabIndex = 2;
-            this.dbTypedd.SelectedIndexChanged += new System.EventHandler(this.dbTypedd_SelectedIndexChanged);
+            this.dbTyped.Location = new System.Drawing.Point(185, 154);
+            this.dbTyped.Name = "dbTyped";
+            this.dbTyped.Size = new System.Drawing.Size(508, 24);
+            this.dbTyped.TabIndex = 2;
+            this.dbTyped.SelectedIndexChanged += new System.EventHandler(this.dbTyped_SelectedIndexChanged);
             // 
             // panelHoldingButtonsInJdbcWindow
             // 
             this.panelHoldingButtonsInJdbcWindow.Controls.Add(this.btnForFinish);
             this.panelHoldingButtonsInJdbcWindow.Controls.Add(this.btnForCancelInJdbcFrm);
-            this.panelHoldingButtonsInJdbcWindow.Controls.Add(this.btnFroNextinJdbcFrm);
             this.panelHoldingButtonsInJdbcWindow.Controls.Add(this.btnForBackInJdbcFrm);
             this.panelHoldingButtonsInJdbcWindow.Location = new System.Drawing.Point(1, 469);
             this.panelHoldingButtonsInJdbcWindow.Name = "panelHoldingButtonsInJdbcWindow";
@@ -114,7 +112,7 @@
             // 
             // btnForFinish
             // 
-            this.btnForFinish.Location = new System.Drawing.Point(617, 26);
+            this.btnForFinish.Location = new System.Drawing.Point(511, 26);
             this.btnForFinish.Name = "btnForFinish";
             this.btnForFinish.Size = new System.Drawing.Size(75, 23);
             this.btnForFinish.TabIndex = 3;
@@ -124,23 +122,13 @@
             // 
             // btnForCancelInJdbcFrm
             // 
-            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(712, 26);
+            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(608, 26);
             this.btnForCancelInJdbcFrm.Name = "btnForCancelInJdbcFrm";
             this.btnForCancelInJdbcFrm.Size = new System.Drawing.Size(75, 23);
             this.btnForCancelInJdbcFrm.TabIndex = 2;
             this.btnForCancelInJdbcFrm.Text = "Cancel";
             this.btnForCancelInJdbcFrm.UseVisualStyleBackColor = true;
             this.btnForCancelInJdbcFrm.Click += new System.EventHandler(this.btnForCancelInJdbcFrm_Click);
-            // 
-            // btnFroNextinJdbcFrm
-            // 
-            this.btnFroNextinJdbcFrm.Location = new System.Drawing.Point(516, 26);
-            this.btnFroNextinJdbcFrm.Name = "btnFroNextinJdbcFrm";
-            this.btnFroNextinJdbcFrm.Size = new System.Drawing.Size(75, 23);
-            this.btnFroNextinJdbcFrm.TabIndex = 1;
-            this.btnFroNextinJdbcFrm.Text = "Next";
-            this.btnFroNextinJdbcFrm.UseVisualStyleBackColor = true;
-            this.btnFroNextinJdbcFrm.Click += new System.EventHandler(this.btnForNextinJdbcFrm_Click);
             // 
             // btnForBackInJdbcFrm
             // 
@@ -183,22 +171,25 @@
             // 
             this.txtForServer.Location = new System.Drawing.Point(185, 209);
             this.txtForServer.Name = "txtForServer";
-            this.txtForServer.Size = new System.Drawing.Size(344, 22);
+            this.txtForServer.Size = new System.Drawing.Size(508, 22);
             this.txtForServer.TabIndex = 9;
+            this.txtForServer.TextChanged += new System.EventHandler(this.txtForServer_TextChanged);
             // 
             // txtForUsername
             // 
             this.txtForUsername.Location = new System.Drawing.Point(185, 273);
             this.txtForUsername.Name = "txtForUsername";
-            this.txtForUsername.Size = new System.Drawing.Size(344, 22);
+            this.txtForUsername.Size = new System.Drawing.Size(508, 22);
             this.txtForUsername.TabIndex = 11;
+            this.txtForUsername.TextChanged += new System.EventHandler(this.txtForUsername_TextChanged);
             // 
             // txtForPassword
             // 
-            this.txtForPassword.Location = new System.Drawing.Point(185, 331);
+            this.txtForPassword.Location = new System.Drawing.Point(185, 334);
             this.txtForPassword.Name = "txtForPassword";
-            this.txtForPassword.Size = new System.Drawing.Size(344, 22);
+            this.txtForPassword.Size = new System.Drawing.Size(508, 22);
             this.txtForPassword.TabIndex = 12;
+            this.txtForPassword.TextChanged += new System.EventHandler(this.txtForPassword_TextChanged);
             // 
             // DBLocationForm
             // 
@@ -212,7 +203,7 @@
             this.Controls.Add(this.lblForUserName);
             this.Controls.Add(this.lblForServer);
             this.Controls.Add(this.panelHoldingButtonsInJdbcWindow);
-            this.Controls.Add(this.dbTypedd);
+            this.Controls.Add(this.dbTyped);
             this.Controls.Add(this.lblForTypeInJdbcFrm);
             this.Controls.Add(this.panelInDBLocationForm);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -232,10 +223,9 @@
         private System.Windows.Forms.Label lblForJdbcSubPara;
         private System.Windows.Forms.Label lblForJdbc;
         private System.Windows.Forms.Label lblForTypeInJdbcFrm;
-        private System.Windows.Forms.ComboBox dbTypedd;
+        private System.Windows.Forms.ComboBox dbTyped;
         private System.Windows.Forms.Panel panelHoldingButtonsInJdbcWindow;
         private System.Windows.Forms.Button btnForCancelInJdbcFrm;
-        private System.Windows.Forms.Button btnFroNextinJdbcFrm;
         private System.Windows.Forms.Button btnForBackInJdbcFrm;
         private System.Windows.Forms.Label lblForServer;
         private System.Windows.Forms.Label lblForUserName;
