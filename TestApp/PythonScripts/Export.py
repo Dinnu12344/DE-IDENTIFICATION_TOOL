@@ -121,7 +121,9 @@ def export_to_sql_server_user_defined(Server_name, Database_name, db_file_path, 
         for row in rows:
             placeholders = ','.join('?' * len(row))
             columns_str = ', '.join(sql_server_columns)
+            sql_server_cursor.execute(f'SET IDENTITY_INSERT {schema}.{sqlserver_table_name} ON;')
             sql_server_cursor.execute(f'INSERT INTO {schema}.{sqlserver_table_name} ({columns_str}) VALUES ({placeholders})', row)
+            sql_server_cursor.execute(f'SET IDENTITY_INSERT {schema}.{sqlserver_table_name} OFF;')
             sql_server_conn.commit()
 
         print("Data transfer completed successfully.")

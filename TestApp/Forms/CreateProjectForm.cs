@@ -9,6 +9,12 @@ namespace DE_IDENTIFICATION_TOOL
         public CreateProjectForm()
         {
             InitializeComponent();
+            txtProjectName.TextChanged += TxtProjName_TextChanged;
+            btnCreateProject.Enabled = false;
+        }
+        private void TxtProjName_TextChanged(object sender, EventArgs e)
+        {
+            btnCreateProject.Enabled = !string.IsNullOrWhiteSpace(txtProjectName.Text);
         }
         private void BtnCreateProject_Click(object sender, EventArgs e)
         {

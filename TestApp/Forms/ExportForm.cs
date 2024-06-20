@@ -40,7 +40,7 @@ namespace DE_IDENTIFICATION_TOOL
 
                         string pythonScriptName = "ExportCsvConnection.py";
                         string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                        string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                        string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
                         string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
 

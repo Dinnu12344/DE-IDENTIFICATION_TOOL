@@ -51,7 +51,6 @@ public class PythonService
         var command = $"\"{pythonScriptPath}\" \"{server}\" \"{DatabaseName}\" \"{password}\" \"{userId}\"  \"{projectName}\" \"{EnteredText}\" \"{tableName}\" \"{schemaName}\"";
         return ExecutePythonScript(command);
     }
-
     public string SendDataToPython(string filePath, string project,string table, string pythonScriptPath)        
     {
         if (!File.Exists(pythonScriptPath))

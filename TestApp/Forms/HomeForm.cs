@@ -125,7 +125,7 @@ namespace DE_IDENTIFICATION_TOOL
                 {
                     string pythonScriptName = "TableColumnsConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                    string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                    string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
                     Console.WriteLine("Python Script Path: " + pythonScriptPath);
 
@@ -161,7 +161,7 @@ namespace DE_IDENTIFICATION_TOOL
             {
                 string pythonScriptName = "DeidentificationConnection.py";
                 string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
                 //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeIentificationConnection.py";
                 string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
@@ -195,7 +195,7 @@ namespace DE_IDENTIFICATION_TOOL
 
             string pythonScriptName = "ViewSourceDataConnection.py";
             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-            string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+            string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
             //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ViewScourceDataConnection.py";
             string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
@@ -229,7 +229,7 @@ namespace DE_IDENTIFICATION_TOOL
 
             string pythonScriptName = "ViewDeidentifiedDataConnection.py";
             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-            string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+            string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
             //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ViewDeidentifiedDataConnection.py";
             string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
@@ -399,7 +399,7 @@ namespace DE_IDENTIFICATION_TOOL
 
                     string pythonScriptName = "DeleteProjectConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                    string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                    string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
                     //string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteProjectConnection.py";
 
@@ -429,7 +429,7 @@ namespace DE_IDENTIFICATION_TOOL
 
                     string pythonScriptName = "DeleteTableConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                    string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                    string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
                     //string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteTableConnection.py";
 

@@ -31,13 +31,13 @@ def delete_tables(db_path,table_name):
         cursor = conn.cursor()
 
         # Define the SQL command to drop the table
-        sql_command = f'DROP TABLE IF EXISTS "{table_name}";'
+        sql_command = f'DROP TABLE IF EXISTS {table_name};'
 
         # Execute the SQL command
         cursor.execute(sql_command)
         
         # Define the SQL command to drop the deitentified table
-        sql_command = f'DROP TABLE IF EXISTS de_identified_"{table_name}";'
+        sql_command = f'DROP TABLE IF EXISTS de_identified_{table_name};'
 
         cursor.execute(sql_command)
 

@@ -11,8 +11,11 @@ using System.Linq;
 using Newtonsoft.Json;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
+
 {
+
     public partial class DbtableForm : Form
+
     {
         private readonly DbtableFormModel _properties;
         private PythonService pythonService;
@@ -38,41 +41,65 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         }
 
         private void LoadDatabases()
+
         {
             string connectionString = _properties.ConnectionString;
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
+
                 try
+
                 {
+
                     myConnection.Open();
 
                     // Query to get all database names
+
                     string query = "SELECT name FROM sys.databases";
 
                     using (SqlCommand cmd = new SqlCommand(query, myConnection))
+
                     {
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
+
                         {
+
                             while (reader.Read())
+
                             {
+
                                 cmbDatabases.Items.Add(reader["name"].ToString());
+
                             }
+
                         }
+
                     }
+
                 }
+
                 catch (Exception ex)
+
                 {
+
                     MessageBox.Show($"Failed to load databases: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 }
+
             }
+
         }
 
         private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
+
         {
             _properties.dbName = cmbDatabases.SelectedItem.ToString();
             UpdateFinishButtonVisibility();
             string selectedDatabase = cmbDatabases.SelectedItem.ToString();
+
             LoadTables(selectedDatabase);
+
         }
 
         private void cmbTables_SelectedIndexChanged(object sender, EventArgs e)
@@ -98,13 +125,20 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private Dictionary<string, string> tableSchemas = new Dictionary<string, string>();
         private Dictionary<string, List<string>> tableColumns = new Dictionary<string, List<string>>();
         private void LoadTables(string database)
+
         {
             string connectionStringWithDatabase = $"{_properties.ConnectionString};database={database}";
 
+            string connectionStringWithDatabase = $"{_properties.ConnectionString};database={database}";
+
             using (SqlConnection myConnection = new SqlConnection(connectionStringWithDatabase))
+
             {
+
                 try
+
                 {
+
                     myConnection.Open();
 
                     // Query to get all table names, schemas, and columns
@@ -118,17 +152,43 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         WHERE 
                             TABLE_NAME IN (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')";
 
+                    string query = @"
+
+                        SELECT 
+
+                            TABLE_SCHEMA, 
+
+                            TABLE_NAME, 
+
+                            COLUMN_NAME 
+
+                        FROM 
+
+                            INFORMATION_SCHEMA.COLUMNS 
+
+                        WHERE 
+
+                            TABLE_NAME IN (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')";
+
                     using (SqlCommand cmd = new SqlCommand(query, myConnection))
+
                     {
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
+
                         {
+
                             cmbTables.Items.Clear();
+
                             tableSchemas.Clear();
                             tableColumns.Clear(); // Initialize tableColumns dictionary
 
                             while (reader.Read())
+
                             {
+
                                 string schema = reader["TABLE_SCHEMA"].ToString();
+
                                 string tableName = reader["TABLE_NAME"].ToString();
                                 string columnName = reader["COLUMN_NAME"].ToString();
 
@@ -148,12 +208,19 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                                 tableColumns[fullTableName].Add(columnName);
                             }
                             cmbTables.Show(); // Show the tables dropdown once it's populated
+
                         }
+
                     }
+
                 }
+
                 catch (Exception ex)
+
                 {
+
                     MessageBox.Show($"Failed to load tables: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 }
             }
         }

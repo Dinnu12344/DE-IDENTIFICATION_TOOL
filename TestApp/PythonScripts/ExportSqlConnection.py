@@ -52,7 +52,6 @@ def main():
             print(Status) 
         else:
             Status, Comment = ex.export_to_sql_server_user_defined(server_name,database_name,db_file_path , table_name,sqlserver_table_name, sql_server_username,sql_server_password,schema_name)
- 
             run_end = datetime.datetime.now()
             run_time = run_end - run_start
             mf.append_logs_to_file(file_path=filename, job_name="Export", run_start=run_start, run_end=run_end, status=Status, duration=run_time, comment=Comment)

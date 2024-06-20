@@ -116,7 +116,7 @@ namespace DE_IDENTIFICATION_TOOL
 
                 string pythonScriptName = "ImportCsvConnection.py";
                 string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
+                string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
                 string pythonResponse = pythonService.SendDataToPython(csvLocationFormModel.SelectedCsvFilePath, projectName, csvLocationFormModel.TableName,csvLocationFormModel.SelectedDelimiter, csvLocationFormModel.SelectedQuote, csvLocationFormModel.EnteredText, pythonScriptPath);
                 
                 if (pythonResponse.ToLower().Contains("success"))
