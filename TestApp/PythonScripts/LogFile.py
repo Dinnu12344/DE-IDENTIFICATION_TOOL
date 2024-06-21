@@ -41,7 +41,7 @@ log_files_path_table = os.path.join(log_files_path, f'{table_name}')
 create_path(log_files_path_table)
 
 # Define the log file path dynamically
-log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
 filename = os.path.join(log_files_path_table, log_filename)
 
 # Configure the logger

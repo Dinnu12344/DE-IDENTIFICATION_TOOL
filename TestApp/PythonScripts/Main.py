@@ -89,7 +89,7 @@ def Import(db_file_path,project_name,log_files_path):
                 mf.create_path(log_files_path_table)
 
                 #Defining LogFileName 
-                log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+                log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
                 filename = os.path.join(log_files_path_table, log_filename)
 
                 choice = input("Do you want relation with already existing data? (yes/no): ")
@@ -129,7 +129,7 @@ def Import(db_file_path,project_name,log_files_path):
             log_files_path_table = os.path.join(log_files_path, f'{table_name}')
             mf.create_path(log_files_path_table)
             #Defining LogFileName 
-            log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+            log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
             filename = os.path.join(log_files_path_table, log_filename)
             
             i.Import_SqlServer_Data_To_SqLite(server_name,data_base_name,table_name,n,db_file_path,project_name,sql_server_username,sql_server_password,schema_name)
@@ -167,7 +167,7 @@ def Import(db_file_path,project_name,log_files_path):
             mf.create_path(log_files_path_table)
 
             #Defining LogFileName 
-            log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+            log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
             filename = os.path.join(log_files_path_table, log_filename)
             run_end = datetime.datetime.now()
             run_time = run_end - run_start
@@ -275,7 +275,7 @@ def Export(db_file_path):
                 mf.create_path(log_files_path_table)
 
                 #Defining LogFileName 
-                log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+                log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
                 filename = os.path.join(log_files_path_table, log_filename)
                 run_end = datetime.datetime.now()
                 run_time = run_end - run_start
@@ -293,7 +293,7 @@ def Export(db_file_path):
             log_files_path_table = os.path.join(log_files_path, f'{table_name}')
             mf.create_path(log_files_path_table)
             #Defining LogFileName 
-            log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+            log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
             filename = os.path.join(log_files_path_table, log_filename)
             
             if(mf.check_table_existence(f"de_identified_{table_name}",db_file_path)==True):
@@ -316,7 +316,7 @@ def Export(db_file_path):
                 log_files_path_table = os.path.join(log_files_path, f'{table_name}')
                 mf.create_path(log_files_path_table)
                 #Defining LogFileName 
-                log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+                log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
                 filename = os.path.join(log_files_path_table, log_filename)
 
                 run_end = datetime.datetime.now()
@@ -331,7 +331,7 @@ def Export(db_file_path):
             log_files_path_table = os.path.join(log_files_path, f'{table_name}')
             mf.create_path(log_files_path_table)
             #Defining LogFileName 
-            log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+            log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
             filename = os.path.join(log_files_path_table, log_filename)
 
             run_end = datetime.datetime.now()
@@ -345,7 +345,7 @@ def Export(db_file_path):
         log_files_path_table = os.path.join(log_files_path, f'{table_name}')
         mf.create_path(log_files_path_table)
         #Defining LogFileName 
-        log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + "_logfile.log"
+        log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
         filename = os.path.join(log_files_path_table, log_filename)
 
         run_end = datetime.datetime.now()
@@ -367,7 +367,7 @@ def Logs():
         log_files_path_table = os.path.join(log_files_path, f'{table_name}')
 
         log_filename_obj = datetime.datetime.strptime(log_date, "%Y-%m-%d")
-        log_filename = log_filename_obj.strftime("%Y-%m-%d") + "_logfile.log"
+        log_filename = log_filename_obj.strftime("%Y-%m-%d") + ".log"
         filename = os.path.join(log_files_path_table, log_filename)
         print(filename)
         mf.show_log(filename)

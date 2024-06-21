@@ -92,6 +92,89 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
         }
 
+
+        //private void btnForFinish_Click(object sender, EventArgs e)
+        //{
+        //    string connectionString = $"server={this.txtForServer.Text};" +
+        //                              //$"database={this.txtForDatabase.Text}; " +
+        //                              $"user id={this.txtForUsername.Text};" +
+        //                              $"password={this.txtForPassword.Text};" +
+        //                              $"connection timeout=30";
+
+        //    using (SqlConnection myConnection = new SqlConnection(connectionString))
+        //    {
+        //        try
+        //        {
+        //            myConnection.Open();
+        //            //MessageBox.Show("Connection opened");
+
+        //            // Query to get all database names
+        //            string query = "SELECT name FROM sys.databases";
+
+        //            using (SqlCommand cmd = new SqlCommand(query, myConnection))
+        //            {
+        //                using (SqlDataReader reader = cmd.ExecuteReader())
+        //                {
+        //                    // Use a StringBuilder to collect all database names
+        //                    StringBuilder databaseNames = new StringBuilder();
+
+        //                    while (reader.Read())
+        //                    {
+        //                        databaseNames.AppendLine(reader["name"].ToString());
+        //                    }
+
+        //                    //MessageBox.Show($"Databases on the server:\n{databaseNames.ToString()}", "Databases", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //                }
+        //            }
+        //            DbtableForm dbTableForm = new DbtableForm(connectionString,labelName);
+        //            dbTableForm.Show();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show($"Connection failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //    }
+        //}
+        //private void btnForFinish_Click(object sender, EventArgs e)
+        //{
+        //    string connectionString = $"server={this.txtForServer.Text};" +
+        //                              $"user id={this.txtForUsername.Text};" +
+        //                              $"password={this.txtForPassword.Text};" +
+        //                              $"connection timeout=30";
+
+        //    using (SqlConnection myConnection = new SqlConnection(connectionString))
+        //    {
+        //        try
+        //        {
+        //            myConnection.Open();
+
+        //            string query = "SELECT name FROM sys.databases";
+
+        //            using (SqlCommand cmd = new SqlCommand(query, myConnection))
+        //            {
+        //                using (SqlDataReader reader = cmd.ExecuteReader())
+        //                {
+        //                    StringBuilder databaseNames = new StringBuilder();
+
+        //                    while (reader.Read())
+        //                    {
+        //                        databaseNames.AppendLine(reader["name"].ToString());
+        //                    }
+        //                }
+        //            }
+
+        //            DbtableForm dbTableForm = new DbtableForm(connectionString, selectedNode, projectData, homeForm);
+        //            dbTableForm.ShowDialog();
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show($"Connection failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //    }
+        //    this.Hide();
+        //}
+
         private void btnForFinish_Click(object sender, EventArgs e)
         {
             string projectName = labelName;
@@ -133,7 +216,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     // Pass the model to the DbtableForm constructor
                     DbtableForm dbTableForm = new DbtableForm(model);
-                    dbTableForm.ShowDialog();                    
+                    dbTableForm.ShowDialog();
                 }
                 catch (Exception ex)
                 {

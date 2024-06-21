@@ -24,4 +24,5 @@ if __name__ == "__main__":
             d.delete_tables(db_file_path,table_name)
             print("success")
     else:
-        print(f"The table {table_name} doest exist in sqlite")
+        d.delete_tables(db_file_path,table_name)
+        print("success")

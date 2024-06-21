@@ -129,8 +129,6 @@ def main():
     
             mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_start, run_end=run_end, status=Status, duration=run_time, comment=Comment)
 
-            # Generate name based on parameters
-            # name = generate_name(filePath, project_name, logFile)
             print(Status) 
         else:
             Status, Comment = i.Import_CSV_Data_To_SqLite(db_file_path, csvfilePath, n, table_name, table_name_folder_path, delimiter, quotechar, project_name)

@@ -5,6 +5,7 @@ import os
 import re
 import json
 import Miscellaneous_Functions as mf
+import datetime
 
 
 def convert_to_json_format(input_string):
@@ -57,10 +58,7 @@ def keep_n_rows_in_table(db_path, table_name, n):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-
-
-
-
+    
 
 def fetch_data_from_sql_server(server, database, table_name, batch_size, offset, username, password):
     conn_sql_server = pyodbc.connect(
@@ -80,17 +78,14 @@ def fetch_data_from_sql_server(server, database, table_name, batch_size, offset,
     conn_sql_server.close()
     return df
  
-def insert_data_into_sqlite(db_file_path, df, temp_table_name):
-    #print("insert_data_into_sqlite function")
+def insert_data_into_sqlite(db_file_path, df, temp_table_name,extr_para):
     try:
         conn_sqlite = sqlite3.connect(db_file_path)
-        df.to_sql(temp_table_name, conn_sqlite, if_exists='append', index=False)
+        df.to_sql(temp_table_name, conn_sqlite, if_exists=extr_para, index=False)
         
-        #print("successfully inserted data",temp_table_name)
-        #print(df)
         return "success"
     except Exception as e:
-        print(e)
+        return e
     finally:
         conn_sqlite.close()
  
@@ -98,39 +93,27 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
     offset = 0
     batch_count = 0
     batchRowCount=0
-    #relationshipsList = correct_json_format(relationshipsList)
     if isinstance(relationshipsList, str):
         relationshipsList = json.loads(relationshipsList)
-
-# Verify the structure of relationshipsList
-    #print(type(relationshipsList))
-    #print(relationshipsList)
-
-# Parse the JSON string into a Python object (list of dictionaries)
-
 
     sqlite_table_name = table_name.split('.')[1]
     while batchRowCount<rowCount:
         
         df = fetch_data_from_sql_server(server, database, table_name, batch_size, offset, username, password)
         batchRowCount+=len(df)
-        #print(server, database, table_name, batch_size, offset, username, password)
         if df.empty:
             print("df is empty")
             break
         print(df)
         
-        res=insert_data_into_sqlite(db_file_path, df, sqlite_table_name)
+        res=insert_data_into_sqlite(db_file_path, df, sqlite_table_name,'append')
         if(res!="success"):
             return "Failed inserting the data into sqlite"
        
         # Perform joins in SQLite
         conn_sqlite = sqlite3.connect(db_file_path)
        
-        #df = pd.read_sql_query(f"select * from {sqlite_table_name}", conn_sqlite)
-        #print("inserted data",df)
         join_query = f"""SELECT {sqlite_table_name}.* FROM {sqlite_table_name} """
-        #print(relationshipsList)
         for relationship in relationshipsList:
             if isinstance(relationship, dict):
                 existing_table = relationship["ExistingTable"]
@@ -142,7 +125,10 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
                 ON {source_table}.{source_column} = {existing_table}.{existing_column}
                 """
         print(join_query)
-        conn_sqlite.execute(join_query)
+        df = pd.read_sql_query(join_query, conn_sqlite)
+        res=insert_data_into_sqlite(db_file_path, df, sqlite_table_name,'replace')
+        if(res!="success"):
+            return "Failed inserting the data into sqlite"
         df2 = pd.read_sql_query(f"select * from {sqlite_table_name}", conn_sqlite)
         print(df2)
         conn_sqlite.commit()
@@ -160,9 +146,8 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
     keep_n_rows_in_table(db_file_path,sqlite_table_name,rowCount)
     
 
-    return "success"
+    return "success","Succesfuly imported related data"
  
-    #print(f"Processed {batch_count} batches and inserted data into {table_name}")
 import sys 
 if __name__ == "__main__":
     # Define parameters
@@ -175,19 +160,33 @@ if __name__ == "__main__":
     relationshipsList=sys.argv[7]
     rowCount=sys.argv[8]
 
-    #print(relationshipsList)
     relationshipsList = convert_to_json_format(relationshipsList)
     relationshipsList = json.loads(relationshipsList)
     relationshipsList = json.dumps(relationshipsList, indent=4)
-    #print("After")
-    #print(relationshipsList)
-    #print("end")
-
-  
+      
     rowCount=int(rowCount)
     batch_size = 10000
+    print(table_name)
+    sqlite_table_name = table_name.split('.')[1]
 
     db_file_path=mf.tool_path+'\\'+project_name+'\\TablesData'+'\\Data.db'
-    #print(db_file_path)
-    res=process_batches(server, database, table_name,batch_size, db_file_path, username, password, relationshipsList,rowCount)
-    print(res)
+
+
+    run_start = datetime.datetime.now()
+    log_files_path = os.path.join(mf.tool_path, project_name)	
+
+    log_files_path_table = os.path.join(log_files_path, sqlite_table_name, "LogFile")
+    mf.create_path(log_files_path_table)
+
+    log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
+    filename = os.path.join(log_files_path_table, log_filename)
+
+    
+    Status, Comment = process_batches(server, database, table_name,batch_size, db_file_path, username, password, relationshipsList,rowCount)
+    run_end = datetime.datetime.now()
+    run_time = run_end - run_start
+    
+    mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_start, run_end=run_end, status=Status, duration=run_time, comment=Comment)
+
+    print(Status)
+    

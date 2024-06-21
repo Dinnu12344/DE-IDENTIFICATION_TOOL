@@ -16,17 +16,17 @@ def main():
     try:
         # Extract arguments passed from command line
         server_name = sys.argv[1]
-        database_name = sys.argv[1]
-        sql_server_password = sys.argv[1]
-        sql_server_username = sys.argv[1]
-        schema_name = sys.argv[1]
-        project_name = sys.argv[2]
-        # n = sys.argv[3]
-        table_name = sys.argv[4]
-
-        sqlserver_table_name = sys.argv[1]
-
-
+        database_name = sys.argv[2]
+        sql_server_password = sys.argv[3]
+        sql_server_username = sys.argv[4]
+        schema_name = sys.argv[5]
+        project_name = sys.argv[6]
+    
+        table_name = sys.argv[7]
+ 
+        sqlserver_table_name = sys.argv[8]
+ 
+ 
         username = getpass.getuser()
         tool_path = f'C:\\Users\\{username}\\AppData\\Roaming\\DeidentificationTool'
         mf.create_path(tool_path)

@@ -41,7 +41,20 @@ public class PythonService
         var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
         return ExecutePythonScript(command);
     }
-    public string SendSqlImportDataToPython(string server, string DatabaseName, string password, string userId, string projectName, string EnteredText, string tableName,string schemaName, string pythonScriptPath)
+    //projectName,server, DatabaseName, userId, password, TableName, jsonData, Enterno, savePythonScriptPath
+    public string SendSqlDataToPython(string projectName, string server, string DatabaseName, string userId, string password, string TableName, string jsonData, string Enterno, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{projectName}\" \"{server}\" \"{DatabaseName}\" \"{userId}\"  \"{password}\" \"{TableName}\" \"{jsonData}\" \"{Enterno}\"";
+        return ExecutePythonScript(command);
+    }
+
+
+    public string SendSqlImportDataToPython(string server, string DatabaseName, string password, string userId, string projectName, string EnteredText, string tableName, string schemaName, string pythonScriptPath)
     {
         if (!File.Exists(pythonScriptPath))
         {
@@ -102,10 +115,11 @@ public class PythonService
             return "Error: Python script file not found.";
         }
 
-        var command = $"\"{savePythonScriptPath}\" \"{server}\" \"{projectName}\" \"{database}\" \"{password}\" \"{UserId}\" \"{schemaName}\" \"{projectName}\" \"{mainTableName}\" \"{tableName}\"";
+        var command = $"\"{savePythonScriptPath}\" \"{server}\" \"{database}\" \"{password}\" \"{UserId}\" \"{schemaName}\" \"{projectName}\" \"{mainTableName}\" \"{tableName}\"";
         return ExecutePythonScript(command);
 
     }
+
     private string ExecutePythonScript(string command)
     {
         using (Process process = new Process())

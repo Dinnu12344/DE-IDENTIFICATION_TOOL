@@ -262,25 +262,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.btnForSavePullreleatedData.TabIndex = 17;
             this.btnForSavePullreleatedData.Text = "Save";
             this.btnForSavePullreleatedData.UseVisualStyleBackColor = true;
-            //this.btnForSavePullreleatedData.Click += new System.EventHandler(this.btnForSavePullreleatedData_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(76, 165);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(71, 16);
-            this.label7.TabIndex = 15;
-            this.label7.Text = "Row Count";
-            // 
-            // btnForSavePullreleatedData
-            // 
-            this.btnForSavePullreleatedData.Location = new System.Drawing.Point(451, 536);
-            this.btnForSavePullreleatedData.Name = "btnForSavePullreleatedData";
-            this.btnForSavePullreleatedData.Size = new System.Drawing.Size(75, 23);
-            this.btnForSavePullreleatedData.TabIndex = 17;
-            this.btnForSavePullreleatedData.Text = "Save";
-            this.btnForSavePullreleatedData.UseVisualStyleBackColor = true;
            // this.btnForSavePullreleatedData.Click += new System.EventHandler(this.btnForSavePullreleatedData_Click);
             // 
             // DbtableForm

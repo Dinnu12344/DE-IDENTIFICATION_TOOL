@@ -214,9 +214,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string schemaName = tableSchemas[tableName];
 
             // Define the Python script path for the checkbox-checked scenario
-            string savePythonScriptName = "your_python_script.py";
+            string savePythonScriptName = "ExportSqlConnection.py";
             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-            string savePythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", savePythonScriptName);
+            string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
 
             // Send data to Python script and capture the response
             string savePythonResponse = pythonService.SendSqlExportDataToPython(server, database, password, UserId, schemaName, projectName, mainTableName, tableName, savePythonScriptPath);
