@@ -5,6 +5,7 @@ import hashlib
 from datetime import datetime
 import numpy as np
 import Miscellaneous_Functions as mf
+import re
 
 #-----------------------------------------------------------------------------------------------------------------
 
@@ -32,6 +33,7 @@ def validate_UserGiven_DataTypes(json_file,df):
                     return "Cannot convert to Specified data type choose compatable data type"
             elif(data_type=="String"):
                 try:
+                    print(data_type,column_name)
                     df[column_name] = df[column_name].astype(str)
                 except:
                     return "Cannot convert to Specified data type choose compatable data type"
@@ -59,23 +61,71 @@ def pseudonymization(column_name, df):
     df[column_name] = df[column_name].map(pseudonym_map)
     
     return df
+
+
+
+
 #-----------------------------------------------------------------------------------------------------------
 #Masking
 
+
+
+def is_email(value):
+    """
+    Simple check to see if the string is an email address.
+    """
+    return bool(re.match(r"[^@]+@[^@]+\.[^@]+", value))
+
+def mask_email(email):
+    """
+    Mask the email address while preserving structure.
+    """
+    username, domain = email.split('@')
+    domain_name, domain_tld = domain.rsplit('.', 1)
+
+    if len(username) <= 3:
+        masked_username = '*' * len(username)
+    else:
+        masked_username = username[0] + '*' * (len(username) - 2) + username[-1]
+
+    masked_domain_name = domain_name[0] + '*' * (len(domain_name) - 2) + domain_name[-1]
+
+    return f"{masked_username}@{masked_domain_name}.{domain_tld}"
+
+def mask_value(value):
+    """
+    Mask non-email values by their length and structure.
+    """
+    if len(value) <= 3:
+        return '*' * len(value)
+    else:
+        return value[:2] + 'X' * (len(value) - 3) + value[-1]
+
 def masking(column_name, df):
-    df[column_name]= df[column_name].astype(str)
-    distinct_names = df[column_name].unique()
+    df[column_name] = df[column_name].astype(str)
+    distinct_values = df[column_name].unique()
     masking_map = {}
-    for name in distinct_names:
-        if len(name) <= 3:
-            masked_name = '*' * len(name)
+
+    for value in distinct_values:
+        if is_email(value):
+            masked_value = mask_email(value)
         else:
-            masked_name = name[:2] + 'X' * (len(name) - 3) + name[-1]
-        masking_map[name] = masked_name
+            masked_value = mask_value(value)
+        masking_map[value] = masked_value
 
     df[column_name] = df[column_name].map(masking_map)
 
     return df
+
+
+def masking(column_name, df):
+    df[column_name]= df[column_name].astype(str)
+    masked_df = masking(column_name, df)
+
+    return masked_df
+
+
+
 #-----------------------------------------------------------------------------------------------------------
 #anonymization
 
@@ -154,23 +204,31 @@ def dateTimeAddRange(column_name,df):
     # Display the DataFrame with perturbed datetime values
     # print(df)
 #-----------------------------------------------------------------------------------------------------------
-def generate_hash(value):
+def generate_hash(value,key):
+    print("generate fun")
   
     # Convert both the value and key to strings
     value_str = str(value)
-    # key_str = str(key)
+    key_str = str(key)
     # Combine the value and key
-    combined = value_str #+ key_str
+    combined = value_str + key_str
     # Use SHA-256 hash function to generate the hash key
     hash_key = hashlib.sha256(combined.encode()).hexdigest()
     return hash_key
 #------------------------------------------------------------------------------------------------------------
 
 #This function maps the each column to the respective technique function
-def process_column_info(column_name, data_type, technique, df, primaryKey):
+def process_column_info(column_name, data_type, technique, df, primaryKey,keys_path):
     print("Process Fun")
     if(primaryKey=="Yes"):
-        df[f'{column_name}_hash_key'] = df[column_name].apply(generate_hash)
+        
+        key=""
+        print(keys_path)
+        # Open and read the file
+        with open(keys_path, 'r') as file:
+            key = file.read()
+        print(key)
+        df[f'{column_name}_hash_key'] = df[column_name].apply(lambda x: generate_hash(x, key))
 
     if technique == "Pseudonymization":
         df = pseudonymization(column_name, df)
@@ -193,7 +251,7 @@ def process_column_info(column_name, data_type, technique, df, primaryKey):
 #------------------------------------------------------------------------------------------------------------
 
 #This is the main function for the total procass of deidentification process
-def de_Identification_Main(config_files_path,table_name,db_file_path):
+def de_Identification_Main(config_files_path,table_name,db_file_path,keys_path):
 
     try:
         
@@ -215,7 +273,7 @@ def de_Identification_Main(config_files_path,table_name,db_file_path):
                     technique = column_info["Technique"]
                     primaryKey = column_info["Keys"]
                     
-                    df = process_column_info(column_name, data_type, technique, df, primaryKey)
+                    df = process_column_info(column_name, data_type, technique, df, primaryKey,keys_path)
 
             # Display the DataFrame
             # print(df)

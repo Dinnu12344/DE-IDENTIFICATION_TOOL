@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
@@ -19,6 +20,14 @@ namespace DE_IDENTIFICATION_TOOL
         private void BtnCreateProject_Click(object sender, EventArgs e)
         {
             ProjectName = txtProjectName.Text;
+            string username = Environment.UserName;
+            string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{ProjectName}";
+            // Ensure the directory exists
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             DialogResult = DialogResult.OK;
             Close();
         }

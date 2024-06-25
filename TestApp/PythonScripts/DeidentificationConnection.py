@@ -43,9 +43,9 @@ if __name__ == "__main__":
     filename = os.path.join(log_files_path_table, log_filename)
 
     result = check_json_file_presence(config_file_path)
-
+    keys_path=mf.tool_path+"\\"+project_name+"\\keys.txt"
     if result=='File present':
-        Status,Comment=de.de_Identification_Main(config_file_path,table_name,db_file_path)
+        Status,Comment=de.de_Identification_Main(config_file_path,table_name,db_file_path,keys_path)
         run_end = datetime.datetime.now()
         run_time = run_end - run_start
         mf.append_logs_to_file(file_path = filename,job_name="De-identify", run_start =run_start, run_end = run_end, status = Status, duration  = run_time, comment = Comment)
