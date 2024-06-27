@@ -38,11 +38,14 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 string oldName = selectedNode.Text;
                 selectedNode.Text = newName;
 
-                // Update the JSON file
-                UpdateJsonFile(oldName, newName);
-
                 // Rename the project folder
                 RenameProjectFolder(oldName, newName);
+
+                //// Update the JSON file
+                //UpdateJsonFile(oldName, newName);
+
+                //// Rename the project folder
+                //RenameProjectFolder(oldName, newName);
 
                 MessageBox.Show("Project name updated successfully.");
                 this.Close();
@@ -53,6 +56,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 this.Close();
             }
         }
+        //private string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projectData.json");
 
         private void UpdateJsonFile(string oldName, string newName)
         {
@@ -65,9 +69,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 // Find the project with the old name and update it
                 foreach (var project in jsonArray)
                 {
-                    if (project["name"]?.ToString() == oldName)
+                    if (project["Name"]?.ToString() == oldName)
                     {
-                        project["name"] = newName;
+                        project["Name"] = newName;
                         break;
                     }
                 }
@@ -82,6 +86,35 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 MessageBox.Show($"Error updating JSON file: {ex.Message}");
             }
         }
+
+        //private void UpdateJsonFile(string oldName, string newName)
+        //{
+        //    try
+        //    {
+        //        // Read the JSON file
+        //        var jsonData = File.ReadAllText(jsonFilePath);
+        //        var jsonArray = JArray.Parse(jsonData);
+
+        //        // Find the project with the old name and update it
+        //        foreach (var project in jsonArray)
+        //        {
+        //            if (project["name"]?.ToString() == oldName)
+        //            {
+        //                project["name"] = newName;
+        //                break;
+        //            }
+        //        }
+
+        //        // Write the updated JSON back to the file
+        //        File.WriteAllText(jsonFilePath, jsonArray.ToString());
+
+        //        MessageBox.Show("JSON data updated successfully.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error updating JSON file: {ex.Message}");
+        //    }
+        //}
 
         //private void RenameProjectFolder(string oldName, string newName)
         //{
@@ -125,6 +158,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         {
                             Directory.Move(oldFolderPath, newFolderPath);
                             renameSuccessful = true;
+
+                            // Update the JSON file
+                            UpdateJsonFile(oldName, newName);
                             break;
                         }
                         catch (IOException ex)

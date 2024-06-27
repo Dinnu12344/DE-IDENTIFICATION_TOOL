@@ -237,14 +237,6 @@ namespace DE_IDENTIFICATION_TOOL
                 return;
             }
 
-
-
-
-
-
-
-
-
             string savePythonScriptName = "checkDeidentifiedTable.py";
             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
             string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
