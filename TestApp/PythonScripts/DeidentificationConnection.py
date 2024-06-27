@@ -17,9 +17,12 @@ def check_json_file_presence(file_path):
         if os.path.isfile(file_path):
             return "File present"
         else:
-            return "File not present"
+            return "config is not done or key is not given"
     except Exception as e:
         return f"An error occurred: {e}"
+
+
+    
     
 
 if __name__ == "__main__":
@@ -42,9 +45,10 @@ if __name__ == "__main__":
     log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
     filename = os.path.join(log_files_path_table, log_filename)
 
-    result = check_json_file_presence(config_file_path)
+    result1 = check_json_file_presence(config_file_path)
     keys_path=mf.tool_path+"\\"+project_name+"\\keys.txt"
-    if result=='File present':
+    result2 = check_json_file_presence(keys_path)
+    if result1=='File present' and result2=='File present':
         Status,Comment=de.de_Identification_Main(config_file_path,table_name,db_file_path,keys_path)
         run_end = datetime.datetime.now()
         run_time = run_end - run_start
@@ -57,4 +61,4 @@ if __name__ == "__main__":
         run_time = run_end - run_start
         mf.append_logs_to_file(file_path = filename,job_name="De-Identify", run_start =run_start, run_end = run_end, status = Status, duration  = run_time, comment = Comment)
        
-        print(result)
+        print(result1)

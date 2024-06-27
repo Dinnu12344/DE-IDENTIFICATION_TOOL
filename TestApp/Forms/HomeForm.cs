@@ -34,15 +34,15 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void PopulateTreeView()
         {
-            if (treeView == null)
+            if (treeViewPanel == null)
             {
                 MessageBox.Show("TreeView is not initialized.");
                 return;
             }
 
-            treeView.Nodes.Clear();
+            treeViewPanel.Nodes.Clear();
             TreeNode rootNode = new TreeNode("Projects");
-            treeView.Nodes.Add(rootNode);
+            treeViewPanel.Nodes.Add(rootNode);
 
             if (projectData == null)
             {
@@ -83,6 +83,7 @@ namespace DE_IDENTIFICATION_TOOL
             editProjectItem.Click += ImportProjectItem_Click;
             deleteProjectItem.Click += DeleteProjectItem_Click;
             keyProjectItem.Click += KeyProjectItem_Click;
+            renameProjectItem.Click += ReNameProjectItem_Click;
             createdProjectsContextMenu.Items.Add(editProjectItem);
             createdProjectsContextMenu.Items.Add(keyProjectItem);
             createdProjectsContextMenu.Items.Add(deleteProjectItem);
@@ -117,7 +118,7 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void ConfigMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
             if (selectedNode != null)
             {
                 TreeNode parentNode = selectedNode.Parent;
@@ -153,9 +154,18 @@ namespace DE_IDENTIFICATION_TOOL
             }
         }
 
+        private void ReNameProjectItem_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
+            ReNameForm reNameForm = new ReNameForm(selectedNode);
+            reNameForm.Show();
+            //this.Close();
+            
+        }
+
         private void DeIdentifyMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
             TreeNode parentnode = selectedNode.Parent;
             if (selectedNode != null)
             {
@@ -171,7 +181,7 @@ namespace DE_IDENTIFICATION_TOOL
                 }
                 else
                 {
-                    MessageBox.Show("Python response is not deidentified : " + getpythonResponse);
+                    MessageBox.Show(getpythonResponse);
                 }
 
             }
@@ -179,7 +189,7 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void ViewSourceMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
             if (selectedNode == null)
             {
                 MessageBox.Show("No node is selected.");
@@ -213,7 +223,7 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void ViewDataMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
             if (selectedNode == null)
             {
                 MessageBox.Show("No node is selected.");
@@ -227,31 +237,57 @@ namespace DE_IDENTIFICATION_TOOL
                 return;
             }
 
-            string pythonScriptName = "ViewDeidentifiedDataConnection.py";
+
+
+
+
+
+
+
+
+            string savePythonScriptName = "checkDeidentifiedTable.py";
             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-            string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+            string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
 
-            //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ViewDeidentifiedDataConnection.py";
-            string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
-            Console.WriteLine("Python Response: " + getpythonResponse);
+            // Send data to Python script and capture the response
+            //string savePythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, savePythonScriptPath, jsonData);
+            string savePythonResponse = pythonService.checkDeidentifiedTable(selectedNode.Text, parentnode.Text, savePythonScriptPath);
 
-            if (IsValidPythonResponse(getpythonResponse))
+            if (savePythonResponse.Contains("True"))
             {
-                ViewSourceDeIdentifyForm viewData = new ViewSourceDeIdentifyForm(getpythonResponse);
-                viewData.Show();
+
+
+                string pythonScriptName = "ViewDeidentifiedDataConnection.py";
+                projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+
+                //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ViewDeidentifiedDataConnection.py";
+                string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
+                Console.WriteLine("Python Response: " + getpythonResponse);
+
+                if (IsValidPythonResponse(getpythonResponse))
+                {
+                    ViewSourceDeIdentifyForm viewData = new ViewSourceDeIdentifyForm(getpythonResponse);
+                    viewData.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Python response is not valid: " + getpythonResponse);
+                }
             }
             else
             {
-                MessageBox.Show("Python response is not valid: " + getpythonResponse);
-            }
+                MessageBox.Show("table is not didentify");
+            }            
         }
+
         private bool IsValidPythonResponse(string response)
         {
             return !string.IsNullOrEmpty(response);
         }
         private void KeyProjectItem_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
             if (selectedNode != null)
             {
                 KeyForm keyForm = new KeyForm(selectedNode);
@@ -260,7 +296,7 @@ namespace DE_IDENTIFICATION_TOOL
         }
         private void LogMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
             TreeNode parentNode = selectedNode.Parent;
 
             using (LogViewForm logViewForm = new LogViewForm(selectedNode, parentNode))
@@ -272,20 +308,20 @@ namespace DE_IDENTIFICATION_TOOL
         {
             if (e.Button == MouseButtons.Right)
             {
-                treeView.SelectedNode = e.Node;
+                treeViewPanel.SelectedNode = e.Node;
                 if (e.Node != null)
                 {
                     if (e.Node.Parent == null)
                     {
-                        treeView.ContextMenuStrip = projectsContextMenu;
+                        treeViewPanel.ContextMenuStrip = projectsContextMenu;
                     }
                     else if (e.Node.Parent.Text == "Projects")
                     {
-                        treeView.ContextMenuStrip = createdProjectsContextMenu;
+                        treeViewPanel.ContextMenuStrip = createdProjectsContextMenu;
                     }
                     else
                     {
-                        treeView.ContextMenuStrip = tableContextMenu;
+                        treeViewPanel.ContextMenuStrip = tableContextMenu;
                     }
                 }
             }
@@ -305,7 +341,7 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void ImportProjectItem_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
 
             if (selectedNode != null)
             {
@@ -384,7 +420,7 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void DeleteSelectedNode()
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
 
             if (selectedNode == null) return;
 
@@ -464,12 +500,30 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void ExportMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
             TreeNode parentNode = selectedNode.Parent;
             string tablename = selectedNode.Text;
             string projectName = parentNode.Text;
-            ExportForm deIdentifyForm = new ExportForm(tablename, projectName);
-            deIdentifyForm.ShowDialog();
+
+            string savePythonScriptName = "checkDeidentifiedTable.py";
+            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+            string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
+
+            // Send data to Python script and capture the response
+            //string savePythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, savePythonScriptPath, jsonData);
+            string savePythonResponse = pythonService.checkDeidentifiedTable(tablename,projectName,  savePythonScriptPath);
+
+            if (savePythonResponse.Contains("True"))
+            {
+
+
+                ExportForm deIdentifyForm = new ExportForm(tablename, projectName);
+                deIdentifyForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("table is not didentify");
+            }
         }
     }
 }

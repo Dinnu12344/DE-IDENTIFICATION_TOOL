@@ -39,8 +39,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 string textToSave = textBox1.Text;
                 File.WriteAllText(filePath, textToSave);
                 MessageBox.Show("File saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                HomeForm form1 = new HomeForm();
-                form1.ShowDialog();
+                //HomeForm form1 = new HomeForm();
+                //form1.ShowDialog();
                 this.Close();
             }
             catch (Exception ex)

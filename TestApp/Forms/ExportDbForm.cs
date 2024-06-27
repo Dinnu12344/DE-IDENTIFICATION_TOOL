@@ -228,7 +228,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
             else
             {
-                MessageBox.Show("Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to save data\n "+savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return; // Exit the method if it fails to save data
             }
         }

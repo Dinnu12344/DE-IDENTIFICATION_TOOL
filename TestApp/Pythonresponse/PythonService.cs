@@ -31,6 +31,17 @@ public class PythonService
         return null;
     }
 
+
+    public string checkDeidentifiedTable(string table, string project, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
+        return ExecutePythonScript(command);
+    }
     public string SendDataToPython(string table, string project, string pythonScriptPath)
     {
         if (!File.Exists(pythonScriptPath))
@@ -39,6 +50,19 @@ public class PythonService
         }
 
         var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
+        return ExecutePythonScript(command);
+    }
+
+
+
+    public string RenameDataToPython(string project, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{project}\"";
         return ExecutePythonScript(command);
     }
     //projectName,server, DatabaseName, userId, password, TableName, jsonData, Enterno, savePythonScriptPath
@@ -64,11 +88,11 @@ public class PythonService
         var command = $"\"{pythonScriptPath}\" \"{server}\" \"{DatabaseName}\" \"{password}\" \"{userId}\"  \"{projectName}\" \"{EnteredText}\" \"{tableName}\" \"{schemaName}\"";
         return ExecutePythonScript(command);
     }
-    public string SendDataToPython(string filePath, string project,string table, string pythonScriptPath)        
+    public string SendDataToPython(string filePath, string project, string table, string pythonScriptPath)
     {
         if (!File.Exists(pythonScriptPath))
         {
-               return "Error: Python script file not found.";
+            return "Error: Python script file not found.";
         }
 
         var command = $"\"{pythonScriptPath}\" \"{filePath}\" \"{project}\" \"{table}\"";

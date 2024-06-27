@@ -21,9 +21,7 @@ def main():
         sql_server_username = sys.argv[4]
         schema_name = sys.argv[5]
         project_name = sys.argv[6]
-    
         table_name = sys.argv[7]
- 
         sqlserver_table_name = sys.argv[8]
  
  
@@ -42,7 +40,7 @@ def main():
         mf.create_path(log_files_path_table)
         log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
         filename = os.path.join(log_files_path_table, log_filename)
-        if not mf.check_table_existence(table_name, db_file_path):    
+        if mf.check_table_existence(table_name, db_file_path)=="True":    
             Status, Comment = ex.export_to_sql_server_user_defined(server_name,database_name,db_file_path , table_name,sqlserver_table_name, sql_server_username,sql_server_password,schema_name)
             run_end = datetime.datetime.now()
             run_time = run_end - run_start

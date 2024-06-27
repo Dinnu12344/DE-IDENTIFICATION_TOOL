@@ -35,7 +35,7 @@ if __name__ == "__main__":
     filename = os.path.join(log_files_path_table, log_filename)
     
     res=mf.check_table_existence("de_identified_"+table_name,db_file_path)
-    if(res==True):
+    if(res=="True"):
         print(res)
         Status,Comment=ex.export_to_csv(table_name,db_file_path,saveFilePath)
         run_end = datetime.datetime.now()

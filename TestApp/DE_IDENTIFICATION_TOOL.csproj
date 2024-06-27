@@ -78,6 +78,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\AdditionalTechnique.cs" />
+    <Compile Include="Enums\DataType.cs" />
+    <Compile Include="Enums\KeysOption.cs" />
+    <Compile Include="Enums\Technique.cs" />
     <Compile Include="Forms\ConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +148,12 @@
     <Compile Include="Forms\LogViewForm.Designer.cs">
       <DependentUpon>LogViewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ReNameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReNameForm.Designer.cs">
+      <DependentUpon>ReNameForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ViewSourceDeIdentifyForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LogViewForm.resx">
       <DependentUpon>LogViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReNameForm.resx">
+      <DependentUpon>ReNameForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ViewSourceDeIdentifyForm.resx">
       <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
@@ -244,10 +257,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PythonScripts\checkDeidentifiedTable.py" />
     <Content Include="PythonScripts\DisplayDeidentifyConnection.py" />
     <Content Include="PythonScripts\DisplaySourceDataConnection.py" />
     <Content Include="PythonScripts\GetSourceTableNames.py" />
     <Content Include="PythonScripts\ImportRelatedSqlDataConnection.py" />
+    <Content Include="PythonScripts\RenameFolderConnection.py" />
+    <Content Include="PythonScripts\RenameTableConnection.py" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

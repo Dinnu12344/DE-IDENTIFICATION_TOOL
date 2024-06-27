@@ -11,7 +11,7 @@ if __name__ == "__main__":
     table_name = sys.argv[2]
     db_file_path = mf.tool_path + "\\" + project_name + "\\TablesData\\Data.db"
         
-    if mf.check_table_existence(table_name, db_file_path):
+    if mf.check_table_existence(table_name, db_file_path)=="True":
         pd.set_option('display.max_rows', None)
         pd.set_option('display.max_columns', None)
         response = mf.SqlLite_Data_To_Df(db_file_path, table_name)

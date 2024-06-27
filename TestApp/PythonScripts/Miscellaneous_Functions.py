@@ -119,16 +119,16 @@ def tables_list_Of_sqlite(database_path):
 #---------------------------------------------------------------------------------------------------------
 #**************** This method is used for  checking whether the table is exist or not ****************
 def check_table_existence(table_name, database_path):
-    # print("check_table_existence fun")
+    #print("check_table_existence fun")
     table_names = tables_list_Of_sqlite(database_path)
+    #print(table_names)
     # print(table_names)
     if table_name in table_names:
-        return True
+        #print("returning true")
+        return "True"
         #return "Table is Present"
-    elif table_name=="":
-        Comment = "Table does not specified"
-        return Comment
     else:
+        
         Comment = f"{table_name} does not exist"
         return Comment  
 

@@ -23,12 +23,12 @@ namespace DE_IDENTIFICATION_TOOL
             base.Dispose(disposing);
         }
 
-        private TreeView treeView;
+        private TreeView treeViewPanel;
 
         private void InitializeComponent()
         {
             ComponentResourceManager resources = new ComponentResourceManager(typeof(HomeForm));
-            this.treeView = new TreeView();
+            this.treeViewPanel = new TreeView();
             this.menuStrip1 = new MenuStrip();
             this.fileToolStripMenuItem = new ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new ToolStripMenuItem();
@@ -42,13 +42,14 @@ namespace DE_IDENTIFICATION_TOOL
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // treeView
+            // treeViewPanel
             // 
-            this.treeView.Location = new Point(1, 32);
-            this.treeView.Name = "treeView";
-            this.treeView.Size = new Size(211, 532);
-            this.treeView.TabIndex = 0;
-            this.treeView.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
+            this.treeViewPanel.Location = new Point(1, 32);
+            this.treeViewPanel.Name = "treeViewPanelPanel";
+            this.treeViewPanel.Size = new Size(211, 532);
+            this.treeViewPanel.TabIndex = 0;
+            this.treeViewPanel.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left);
+            this.treeViewPanel.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
             // 
             // menuStrip1
             // 
@@ -128,7 +129,7 @@ namespace DE_IDENTIFICATION_TOOL
             // HomeForm
             // 
             this.ClientSize = new Size(953, 564);
-            this.Controls.Add(this.treeView);
+            this.Controls.Add(this.treeViewPanel);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
