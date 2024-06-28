@@ -6,6 +6,7 @@ from datetime import datetime
 import numpy as np
 import Miscellaneous_Functions as mf
 import re
+from faker import Faker
 
 #-----------------------------------------------------------------------------------------------------------------
 
@@ -50,16 +51,54 @@ def validate_UserGiven_DataTypes(json_file,df):
 #-----------------------------------------------------------------------------------------------------------
 # Pesudomyzation
 
-def pseudonymization(column_name, df):
-    # Get distinct values from the specified column
-    distinct_names = df[column_name].unique()
+def pseudonymization(column_name, df,hippa_related_column):
+    print("pseudo staring")
+    fake = Faker()
+    faker_methods = {
+    "name": fake.name,
+    "first_name": fake.first_name,
+    "last_name": fake.last_name,
+    "address": fake.address,
+    "street_address":fake.street_address,
+    "city": fake.city,
+    "state": fake.state,
+    "postcode": fake.postcode,
+    "zipcode":fake.zipcode,
+    "latitude": fake.latitude,
+    "longitude": fake.longitude,
+    "date_of_birth": fake.date_of_birth,
+    "date_this_century": fake.date_this_century,
+    "phone_number": fake.phone_number,
+    "email": fake.email,
+    "ssn": fake.ssn,
+    "random_number": lambda: fake.random_number(digits=10),  # Example with 10 digits
+    "license_plate": fake.license_plate,
+    "url": fake.url,
+    "ipv4": fake.ipv4,
+    "image_url": fake.image_url,
 
-    # Create a dictionary to map original names to pseudonyms
-    pseudonym_map = {name: f"{column_name}{i+1}" for i, name in enumerate(distinct_names)}
+    'id': fake.uuid4,
+    'gender': fake.random_element(elements=('Male', 'Female', 'Other')),
+    'marital_status': fake.random_element(elements=('Single', 'Married', 'Divorced', 'Widowed')),
+    'word': fake.word,
+    'sentence': fake.sentence,
+    'bank_account_number': fake.bban,
+    }
 
-    # Replace values in the 'Name' column with pseudonyms
-    df[column_name] = df[column_name].map(pseudonym_map)
-    
+    if hippa_related_column in faker_methods:
+        faker_method = faker_methods[hippa_related_column]
+        
+        # Get unique values from the column
+        unique_values = df[column_name].unique()
+        
+        # Generate fake data for each unique value
+        fake_data = {val: faker_method() for val in unique_values}
+        
+        # Map the fake data back to the original column
+        df[column_name] = df[column_name].map(fake_data)
+    else:
+        print(f"Faker method '{hippa_related_column}' not found.")
+    print("pseduo ending")
     return df
 
 
@@ -218,7 +257,7 @@ def generate_hash(value,key):
 #------------------------------------------------------------------------------------------------------------
 
 #This function maps the each column to the respective technique function
-def process_column_info(column_name, data_type, technique, df, primaryKey,keys_path):
+def process_column_info(column_name, data_type, technique, df,HippaRelatedColumn, primaryKey,keys_path):
     print("Process Fun")
     if(primaryKey=="Yes"):
         
@@ -231,7 +270,8 @@ def process_column_info(column_name, data_type, technique, df, primaryKey,keys_p
         df[f'{column_name}_hash_key'] = df[column_name].apply(lambda x: generate_hash(x, key))
 
     if technique == "Pseudonymization":
-        df = pseudonymization(column_name, df)
+        
+        df = pseudonymization(column_name, df,HippaRelatedColumn)
     elif technique == "Masking":
         df = masking(column_name, df)
     elif technique == "Anonymization":
@@ -271,9 +311,11 @@ def de_Identification_Main(config_files_path,table_name,db_file_path,keys_path):
                     column_name = column_info["Column"]
                     data_type = column_info["DataType"]
                     technique = column_info["Technique"]
+                    HippaRelatedColumn=column_info["HippaRelatedColumn"]
                     primaryKey = column_info["Keys"]
                     
-                    df = process_column_info(column_name, data_type, technique, df, primaryKey,keys_path)
+                    print(HippaRelatedColumn)
+                    df = process_column_info(column_name, data_type, technique, df,HippaRelatedColumn, primaryKey,keys_path)
 
             # Display the DataFrame
             # print(df)

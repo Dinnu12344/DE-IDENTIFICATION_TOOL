@@ -55,10 +55,11 @@ if __name__ == "__main__":
         mf.append_logs_to_file(file_path = filename,job_name="De-identify", run_start =run_start, run_end = run_end, status = Status, duration  = run_time, comment = Comment)
         print(Status)
     else:
+        print("config file is missing or give the key in the project level")
         Status = "Failure"
         Comment = "Failed with one or more exceptions"
         run_end = datetime.datetime.now()
         run_time = run_end - run_start
         mf.append_logs_to_file(file_path = filename,job_name="De-Identify", run_start =run_start, run_end = run_end, status = Status, duration  = run_time, comment = Comment)
        
-        print(result1)
+        
