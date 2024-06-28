@@ -98,7 +98,7 @@ namespace DE_IDENTIFICATION_TOOL
             ToolStripMenuItem viewDeidentifiedData = new ToolStripMenuItem("View De-identified Data");
             ToolStripMenuItem logMenuItem = new ToolStripMenuItem("Log");
             ToolStripMenuItem exportMenuItem = new ToolStripMenuItem("Export");
-            ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename");
+            ToolStripMenuItem refreshMenuItem = new ToolStripMenuItem("Refresh");
             configMenuItem.Click += ConfigMenuItem_Click;
             deIdentifyMenuItem.Click += DeIdentifyMenuItem_Click;
             deleteMenuItem.Click += DeleteMenuItem_Click;
@@ -106,7 +106,6 @@ namespace DE_IDENTIFICATION_TOOL
             viewSourceDataMenuItem.Click += ViewSourceMenuItem_Click;
             viewDeidentifiedData.Click += ViewDataMenuItem_Click;
             exportMenuItem.Click += ExportMenuItem_Click;
-            renameMenuItem.Click += ReNameTableItem_Click;
             tableContextMenu.Items.Add(configMenuItem);
             tableContextMenu.Items.Add(deIdentifyMenuItem);
             tableContextMenu.Items.Add(deleteMenuItem);
@@ -114,7 +113,7 @@ namespace DE_IDENTIFICATION_TOOL
             tableContextMenu.Items.Add(viewDeidentifiedData);
             tableContextMenu.Items.Add(logMenuItem);
             tableContextMenu.Items.Add(exportMenuItem);
-            tableContextMenu.Items.Add(renameMenuItem);
+            tableContextMenu.Items.Add(refreshMenuItem);
         }
 
         private void ConfigMenuItem_Click(object sender, EventArgs e)
@@ -159,15 +158,9 @@ namespace DE_IDENTIFICATION_TOOL
         {
             TreeNode selectedNode = treeViewPanel.SelectedNode;
             ReNameForm reNameForm = new ReNameForm(selectedNode);
-            reNameForm.ShowDialog(); // ShowDialog blocks until the form is closed
-        }
-
-        private void ReNameTableItem_Click(object sender, EventArgs e)
-        {
-            TreeNode selectedNode = treeViewPanel.SelectedNode;
-            TreeNode parentNode = selectedNode.Parent;
-            ReNameForm reNameForm = new ReNameForm(selectedNode, parentNode);
-            reNameForm.ShowDialog(); // ShowDialog blocks until the form is closed
+            reNameForm.Show();
+            //this.Close();
+            
         }
 
         private void DeIdentifyMenuItem_Click(object sender, EventArgs e)
@@ -523,23 +516,6 @@ namespace DE_IDENTIFICATION_TOOL
             {
                 MessageBox.Show("table is not didentify");
             }
-        }
-
-        private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CreateProjectForm createProjectForm = new CreateProjectForm();
-            if (createProjectForm.ShowDialog() == DialogResult.OK)
-            {
-                var newProject = new ProjectData { Name = createProjectForm.ProjectName, Tables = new List<string>() };
-                projectData.Add(newProject);
-                SaveProjectData();
-                PopulateTreeView();
-            }
-        }
-
-        private void exportDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projectData.json");
         }
     }
 }
