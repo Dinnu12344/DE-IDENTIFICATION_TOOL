@@ -47,53 +47,125 @@ public class PythonService
     //        throw new Exception("Python executable not found at " + pythonExePath);
     //    }
     //}
+    //public string GetPythonExePath()
+    //{
+    //    // Search in PATH environment variable
+    //    string pathEnv = Environment.GetEnvironmentVariable("PATH");
+    //    if (!string.IsNullOrEmpty(pathEnv))
+    //    {
+    //        string[] paths = pathEnv.Split(';');
+    //        foreach (string path in paths)
+    //        {
+    //            string pythonPath = Path.Combine(path, "python.exe");
+    //            if (File.Exists(pythonPath))
+    //            {
+    //                return pythonPath;
+    //            }
+    //        }
+    //    }
+
+    //    // Search in registry
+    //    string pythonPathFromRegistry = GetPythonPathFromRegistry();
+    //    if (!string.IsNullOrEmpty(pythonPathFromRegistry) && File.Exists(pythonPathFromRegistry))
+    //    {
+    //        return pythonPathFromRegistry;
+    //    }
+
+    //    throw new Exception("Python executable not found in PATH or registry.");
+    //}
+
+    //private string GetPythonPathFromRegistry()
+    //{
+    //    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Python\PythonCore"))
+    //    {
+    //        if (key != null)
+    //        {
+    //            foreach (var subkey in key.GetSubKeyNames())
+    //            {
+    //                using (RegistryKey subKey = key.OpenSubKey(subkey))
+    //                {
+    //                    if (subKey != null)
+    //                    {
+    //                        using (RegistryKey installPathKey = subKey.OpenSubKey("InstallPath"))
+    //                        {
+    //                            if (installPathKey != null)
+    //                            {
+    //                                string pythonExePath = Path.Combine(installPathKey.GetValue("").ToString(), "python.exe");
+    //                                if (File.Exists(pythonExePath))
+    //                                {
+    //                                    return pythonExePath;
+    //                                }
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //    return null;
+    //}
     public string GetPythonExePath()
     {
-        // Search in PATH environment variable
-        string pathEnv = Environment.GetEnvironmentVariable("PATH");
-        if (!string.IsNullOrEmpty(pathEnv))
+        string pythonExePath = FindPythonInPath() ?? FindPythonInRegistry();
+
+        if (!string.IsNullOrEmpty(pythonExePath) && File.Exists(pythonExePath))
         {
-            string[] paths = pathEnv.Split(';');
-            foreach (string path in paths)
+            return pythonExePath;
+        }
+
+throw new Exception("Python executable not found in PATH or registry.");
+    }
+
+    private static string FindPythonInPath()
+{
+    string[] possibleExeNames = { "python.exe", "python3.exe", "python39.exe", "python310.exe", "python311.exe" };
+    string pathEnv = Environment.GetEnvironmentVariable("PATH");
+
+    if (!string.IsNullOrEmpty(pathEnv))
+    {
+        foreach (string path in pathEnv.Split(';'))
+        {
+            foreach (string exeName in possibleExeNames)
             {
-                string pythonPath = Path.Combine(path, "python.exe");
+                string pythonPath = Path.Combine(path, exeName);
                 if (File.Exists(pythonPath))
                 {
                     return pythonPath;
                 }
             }
         }
-
-        // Search in registry
-        string pythonPathFromRegistry = GetPythonPathFromRegistry();
-        if (!string.IsNullOrEmpty(pythonPathFromRegistry) && File.Exists(pythonPathFromRegistry))
-        {
-            return pythonPathFromRegistry;
-        }
-
-        throw new Exception("Python executable not found in PATH or registry.");
     }
 
-    private string GetPythonPathFromRegistry()
+    return null;
+}
+
+private static string FindPythonInRegistry()
+{
+    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Python\PythonCore"))
     {
-        using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Python\PythonCore"))
+        if (key != null)
         {
-            if (key != null)
+            foreach (var subkey in key.GetSubKeyNames())
             {
-                foreach (var subkey in key.GetSubKeyNames())
+                using (RegistryKey subKey = key.OpenSubKey(subkey))
                 {
-                    using (RegistryKey subKey = key.OpenSubKey(subkey))
+                    if (subKey != null)
                     {
-                        if (subKey != null)
+                        using (RegistryKey installPathKey = subKey.OpenSubKey("InstallPath"))
                         {
-                            using (RegistryKey installPathKey = subKey.OpenSubKey("InstallPath"))
+                            if (installPathKey != null)
                             {
-                                if (installPathKey != null)
+                                string path = installPathKey.GetValue("")?.ToString();
+                                if (!string.IsNullOrEmpty(path))
                                 {
-                                    string pythonExePath = Path.Combine(installPathKey.GetValue("").ToString(), "python.exe");
-                                    if (File.Exists(pythonExePath))
+                                    string[] possibleExeNames = { "python.exe", "python3.exe", "python39.exe", "python310.exe", "python311.exe" };
+                                    foreach (string exeName in possibleExeNames)
                                     {
-                                        return pythonExePath;
+                                        string pythonExePath = Path.Combine(path, exeName);
+                                        if (File.Exists(pythonExePath))
+                                        {
+                                            return pythonExePath;
+                                        }
                                     }
                                 }
                             }
@@ -102,8 +174,10 @@ public class PythonService
                 }
             }
         }
-        return null;
     }
+
+    return null;
+}
 
 public string SendDataToPython(string table, string project, string pythonScriptPath)
     {
