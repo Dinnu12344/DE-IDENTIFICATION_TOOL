@@ -84,7 +84,7 @@ def Import_SqlServer_Data_To_SqLite(server,database,table_name,n, db_file_path,p
     
 #Function for importing the CSV data to the DataFrame
 
-def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_path,delimeter,quotechar,project_name):
+def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_path,delimiter,quotechar,project_name):
     # print("SqLite Function")
     n=int(n)
     try:
@@ -94,20 +94,28 @@ def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_p
         # Calculate the rows to skip
         skip_rows = sorted(random.sample(range(1, total_rows + 1), total_rows - n))
         
-        if(delimeter==","):
-            delimeter = ","
+        if(delimiter==","):
+            delimiter = ","
 
-        if(delimeter==";"):
-            delimeter = ";"
+        if(delimiter==";"):
+            delimiter = ";"
+
+        if delimiter == "tab":
+            delimiter = "\t"  # For tab
+
+        if delimiter == "|":
+            delimiter = "|"
 
         if(quotechar=="\""):
             quotechar = "\""
         
         if(quotechar=="\'"):
             quotechar = "\'"
+
+
         
         # Read the sample of the CSV file
-        df = pd.read_csv(path, skiprows=skip_rows,delimiter=delimeter,quotechar=quotechar)
+        df = pd.read_csv(path, skiprows=skip_rows,delimiter=delimiter,quotechar=quotechar)
        
         df.replace('    ', pd.NA, inplace=True)
 

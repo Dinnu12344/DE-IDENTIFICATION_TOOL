@@ -99,15 +99,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
-                        MessageBox.Show("The exporte is success and the export path is : " + pythonResponse);
+                        Directory.Move(oldFolderPath, newFolderPath);
+                        MessageBox.Show("Renamed success");
                         this.Close();
                     }
                     else
                     {
-                        MessageBox.Show("the Export is not done");
+                        MessageBox.Show("rRename Unsuccess"+pythonResponse);
                     }
 
-                    Directory.Move(oldFolderPath, newFolderPath);
+                    
                 }
             }
             catch (Exception ex)

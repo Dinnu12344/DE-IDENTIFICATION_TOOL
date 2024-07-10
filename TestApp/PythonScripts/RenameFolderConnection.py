@@ -1,5 +1,6 @@
 ﻿import os
 import sys
+import Miscellaneous_Functions as mf
 
 def rename_folder(current_name, new_name):
     try:
@@ -17,5 +18,6 @@ if __name__ == "__main__":
     current_name = sys.argv[1]
     new_name = sys.argv[2]
 
+    db_file_path=mf.tool_path+'\\'+project_name+'\\TablesData'+'\\Data.db'
      
     rename_folder(current_name, new_name)

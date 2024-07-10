@@ -246,10 +246,6 @@
     <None Include="PythonScripts\Main.py" />
     <None Include="PythonScripts\Miscellaneous_Functions.py" />
     <None Include="PythonScripts\TableColumnsConnection.py" />
-    <None Include="PythonScripts\Test.py" />
-    <None Include="PythonScripts\Test1.py" />
-    <None Include="PythonScripts\Test2.py" />
-    <None Include="PythonScripts\Test3.py" />
     <None Include="PythonScripts\ViewDeidentifiedDataConnection.py" />
     <None Include="PythonScripts\ViewSourceDataConnection.py" />
   </ItemGroup>
