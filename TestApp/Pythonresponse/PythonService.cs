@@ -53,6 +53,16 @@ public class PythonService
         return ExecutePythonScript(command);
     }
 
+    public string RenameTableDataToPython(string projectName, string oldTableName , string newTableName, string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        var command = $"\"{pythonScriptPath}\" \"{projectName}\" \"{oldTableName}\" \"{newTableName}\"";
+        return ExecutePythonScript(command);
+    }
 
 
     public string RenameDataToPython(string project, string pythonScriptPath)

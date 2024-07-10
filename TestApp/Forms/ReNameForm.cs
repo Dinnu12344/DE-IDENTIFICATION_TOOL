@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using DE_IDENTIFICATION_TOOL.Pythonresponse;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
 {
@@ -9,12 +10,14 @@ namespace DE_IDENTIFICATION_TOOL.Forms
     {
         private TreeNode selectedNode;
         private TreeNode parentNode;
+        private PythonService pythonService;
         private string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projectData.json");
         private string projectsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeidentificationTool");
 
         public ReNameForm(TreeNode selectedNode, TreeNode parentNode = null)
         {
             InitializeComponent();
+            pythonService = new PythonService();
             this.selectedNode = selectedNode;
             this.parentNode = parentNode;
             txtBoxForRename.Text = selectedNode.Text;
@@ -85,6 +88,25 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 if (Directory.Exists(oldFolderPath))
                 {
+                    //string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                    string pythonScriptName = "RenameTableConnection.py";
+                    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                    string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+
+
+                    string pythonResponse = pythonService.RenameTableDataToPython(parentName, oldTableName , newTableName, pythonScriptPath);
+
+                    if (pythonResponse.ToLower().Contains("success"))
+                    {
+                        MessageBox.Show("The exporte is success and the export path is : " + pythonResponse);
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("the Export is not done");
+                    }
+
                     Directory.Move(oldFolderPath, newFolderPath);
                 }
             }
