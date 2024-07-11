@@ -126,7 +126,7 @@ namespace DE_IDENTIFICATION_TOOL
                 }
                 else
                 {
-                    MessageBox.Show("The CSV file is not valid. Error: " + pythonResponse, "Error");
+                    MessageBox.Show("The python response is failed. Error: " + pythonResponse, "Error");
                 }
             }
         }
