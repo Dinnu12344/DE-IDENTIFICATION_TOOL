@@ -292,18 +292,6 @@
     <None Include="PythonScripts\TableColumnsConnection.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="PythonScripts\Test.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="PythonScripts\Test1.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="PythonScripts\Test2.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="PythonScripts\Test3.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="PythonScripts\ViewDeidentifiedDataConnection.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
