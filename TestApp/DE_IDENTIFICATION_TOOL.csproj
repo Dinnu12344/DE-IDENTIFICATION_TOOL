@@ -423,6 +423,10 @@
     <Content Include="PythonEmbedded\vcruntime140_1.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="PythonScripts\RenameFolderConnection.py" />
+    <Content Include="PythonScripts\RenameTableConnection.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\python-3.12.4-amd64.exe" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,3 @@
-import De_Identification as de
-import Export as ex
 import sqlite3
 import getpass
 import os
