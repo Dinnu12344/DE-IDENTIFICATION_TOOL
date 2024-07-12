@@ -32,8 +32,6 @@ def get_column_names(db_path, table_name):
         
     finally:
         # Close the connection
-        if cursor:
-            cursor.close()
         if conn:
             conn.close()
 
