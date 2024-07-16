@@ -25,15 +25,15 @@ def get_column_names(db_path, table_name):
         
         # Extract column names
         column_names = [description[0] for description in cursor.description]  
-        # print(db_file_path)      
+        # print(db_file_path) 
+        cursor.close()
+        conn.close()
         return column_names
     except sqlite3.Error as e:
         return f"An error occurred: {e}"
         
-    finally:
-        # Close the connection
-        if conn:
-            conn.close()
+    
+            
 
 # Example usage
 
