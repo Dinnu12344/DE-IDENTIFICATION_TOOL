@@ -164,6 +164,70 @@ def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_p
         return Status+f"{e}",Comment
 #-------------------------------------------------------------------------------------------------------------
 
+def Import_JSON_Data_To_SqLite(db_file_path, path, n, table_name, project_name):
+    #print("SqLite Function")
+    n = int(n)
+    try:
+        data = ''
+        # Load the JSON data
+        with open(path, 'r') as f:
+            data = json.load(f)
+            print(data)
+ 
+        json_string = json.dumps(data)  # Convert the JSON object to a JSON string
+        processed_data = json.loads(json_string)  # Parse the JSON string to a Python object
+       
+        # Convert the JSON data to a Pandas DataFrame
+        df = pd.json_normalize(processed_data)
+ 
+        print("Normalized df: " + str(df))
+ 
+        # Get the total number of rows in the DataFrame
+        total_rows = len(df)
+ 
+        # Calculate the rows to skip
+        skip_rows = sorted(random.sample(range(0, total_rows), total_rows - n))
+ 
+        # Select the desired number of rows
+        df = df.drop(df.index[skip_rows])
+ 
+        # Handle nulls and convert data types
+        for column in df.columns:
+            if df[column].dtype == 'object':  # Handle object (string) columns
+                df[column].fillna('NA', inplace=True)  # Fill nulls with 'NA' for string columns
+ 
+            elif df[column].dtype == 'int64':  # Handle integer columns
+                df[column].fillna(0, inplace=True)  # Fill nulls with 0 for integer columns
+ 
+            elif df[column].dtype == 'float64':  # Handle float columns
+                df[column].fillna(0.0, inplace=True)  # Fill nulls with 0.0 for float columns
+                # Convert float columns to integer if all values are integers
+                if df[column].apply(lambda x: x.is_integer()).all():
+                    df[column] = df[column].astype(int)
+ 
+            elif df[column].dtype == 'datetime64':  # Handle datetime columns
+                df[column].fillna(pd.to_datetime('1900-01-01'), inplace=True)  # Fill nulls with a default date
+ 
+        # Add more conditions for handling other data types as needed
+ 
+        print(df)
+ 
+        mf.Df_Data_To_Sqlite(db_file_path, df, table_name)
+ 
+        Comment = f"Successfully imported file : {path} as a table : {table_name} inside the project : {project_name}"
+        Status = "Success"
+        # print(Comment,Status)
+        return Status, Comment
+ 
+    except Exception as e:
+        Status = "Failed"
+        Comment = f"Import file : {path} Failed with one or more data exception : {e}"
+        print(Comment)
+        return Status, Comment
+
+
+#-------------------------------------------------------------------------------------------------------------
+
 def Import_CSV_Relational_Data_To_SqLite(relationshipsList,csv_path,db_file_path,n,table_name,project_name,delimeter,quotechar):
 
     try:

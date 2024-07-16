@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DE_IDENTIFICATION_TOOL.Models;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -200,6 +201,16 @@ private static string FindPythonInRegistry()
         var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
         return ExecutePythonScript(command);
     }
+    public string JsonImport( string path ,string  projectName, string TableName, string n,string pythonScriptPath)
+    {
+        if (!File.Exists(pythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+        var command = $"\"{pythonScriptPath}\" \"{path}\" \"{projectName}\" \"{TableName}\"\"{n}\"";
+        return ExecutePythonScript(command);
+    }
+
 
     public string RenameTableDataToPython(string projectName, string oldTableName , string newTableName, string pythonScriptPath)
     {

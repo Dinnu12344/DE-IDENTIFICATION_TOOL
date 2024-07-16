@@ -1,4 +1,5 @@
-﻿using DE_IDENTIFICATION_TOOL.Models;
+﻿using DE_IDENTIFICATION_TOOL.Forms;
+using DE_IDENTIFICATION_TOOL.Models;
 using DE_IDENTIFICATION_TOOL.Pythonresponse;
 using System;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace DE_IDENTIFICATION_TOOL
         private readonly string labelName;
         private PythonService pythonService;
         public readonly CSVLocationFormModel csvLocationFormModel;
+        
         private readonly string pythonScriptsDirectory;
 
         public CSVLocationForm(string labelName)
@@ -100,6 +102,7 @@ namespace DE_IDENTIFICATION_TOOL
                                                       !string.IsNullOrEmpty(csvLocationFormModel.EnteredText) &&
                                                       !string.IsNullOrEmpty(csvLocationFormModel.TableName);
         }
+
         private void FinishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
         {
             string projectName = labelName;
@@ -138,6 +141,11 @@ namespace DE_IDENTIFICATION_TOOL
         private void BtnForBack_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void CSVLocationForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

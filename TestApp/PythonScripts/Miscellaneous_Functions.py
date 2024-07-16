@@ -156,23 +156,27 @@ def create_path(path):
 #------------------------------------------------------------------------------------------------------------------
 
 #--------------------Appending the log information into the specified path under the respected project------------------
-def append_logs_to_file(file_path, job_name,run_start, run_end, status, duration, comment):
+def append_logs_to_file(file_path, job_name, run_start, run_end, status, duration, comment):
+    log_message = f"\nJob Name: {job_name}\nRun start: {run_start}\nRun End: {run_end}\nStatus: {status}\nDuration: {duration}\nComment: {comment}\n"
     try:
         # Open the file in append mode
         with open(file_path, "a+") as file:
-
-            # Format the log message
-            log_message = f"\nJob Name: {job_name}\nRun start: {run_start}\nRun End: {run_end}\nStatus: {status}\nDuration: {duration}\nComment: {comment}\n"
-
             # Append the formatted log message to the file
             file.write(log_message)
-
     except Exception as e:
+        # If an error occurs, update the log message with the error information
+        error_log_message = f"\nRun start: {run_start}\nRun End: {run_end}\nStatus: {status}\nDuration: {duration}\nError_Comment: {e}\n"
+        try:
+            # Attempt to open the file again and write the error log message
+            with open(file_path, "a+") as file:
+                file.write(error_log_message)
+        except Exception as inner_e:
+            # If another exception occurs, print the error message
+            print(f"Failed to write error log: {inner_e}")
 
-        log_message = f"\nRun start: {run_start}\nRun End: {run_end}\nStatus: {status}\nDuration: {duration}\nError_Comment: {e}\n"
+# Example usage:
+append_logs_to_file("logfile.txt", "ExampleJob", "2024-07-10 10:00:00", "2024-07-10 10:05:00", "Success", "5 minutes", "Job completed successfully.")
 
-        file.write(log_message)
-        #print(f"An error occurred: {e}")
 
 #--------------------Displaying log using the specified path ------------------
 

@@ -373,6 +373,28 @@ namespace DE_IDENTIFICATION_TOOL
                         dbLocationForm.ShowDialog();
                         dbLocationForm.Hide();
                     }
+                    else if (selectedOption == "Json")
+                    {
+                        //CSVLocationForm jsonLocationForm = new CSVLocationForm(selectedNode.Text);
+                        JsonLocationForm jsonLocationForm = new JsonLocationForm(selectedNode.Text);
+
+
+                        if (jsonLocationForm.ShowDialog() == DialogResult.OK)
+                        {
+                            string tableName = jsonLocationForm.txtForTblName.Text;
+                            TreeNode tableNode = new TreeNode(tableName);
+                            selectedNode.Nodes.Add(tableNode);
+                            selectedNode.Expand();
+
+                            var project = projectData.Find(p => p.Name == selectedNode.Text);
+                            if (project != null)
+                            {
+                                project.Tables.Add(tableName);
+                                SaveProjectData();
+                            }
+                        }
+
+                    }
                 }
             }
         }

@@ -97,6 +97,12 @@
     <Compile Include="Enums\DataType.cs" />
     <Compile Include="Enums\KeysOption.cs" />
     <Compile Include="Enums\Technique.cs" />
+    <Compile Include="Forms\Calender.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Calender.Designer.cs">
+      <DependentUpon>Calender.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +157,12 @@
     <Compile Include="Forms\ImportForm.Designer.cs">
       <DependentUpon>ImportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\JsonLocationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\JsonLocationForm.Designer.cs">
+      <DependentUpon>JsonLocationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KeyForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,12 +189,16 @@
     </Compile>
     <Compile Include="Models\CSVLocationFormModel.cs" />
     <Compile Include="Models\DbtableFormModel.cs" />
+    <Compile Include="Models\JsonLocationFormModel.cs" />
     <Compile Include="Models\ProjectData.cs" />
     <Compile Include="Models\SelectedTableData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pythonresponse\PythonScriptFilePath.cs" />
     <Compile Include="Pythonresponse\PythonService.cs" />
+    <EmbeddedResource Include="Forms\Calender.resx">
+      <DependentUpon>Calender.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportForm.resx">
       <DependentUpon>ImportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\JsonLocationForm.resx">
+      <DependentUpon>JsonLocationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KeyForm.resx">
       <DependentUpon>KeyForm.cs</DependentUpon>
@@ -378,6 +397,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PythonScripts\checkDeidentifiedTable.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="PythonScripts\DisplayDeidentifyConnection.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -386,6 +408,9 @@
     </Content>
     <Content Include="PythonScripts\GetSourceTableNames.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PythonScripts\ImportJsonConnection.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="PythonScripts\ImportRelatedSqlDataConnection.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

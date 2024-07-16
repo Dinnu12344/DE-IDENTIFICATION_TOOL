@@ -14,7 +14,7 @@ namespace DE_IDENTIFICATION_TOOL
         }
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            buttonNext.Enabled = radioCheckCSV.Checked || radioCheckDatabase.Checked;
+            buttonNext.Enabled = radioCheckCSV.Checked || radioCheckDatabase.Checked || radioCheckJson.Checked;
         }
         private void NextButton_Click(object sender, EventArgs e)
         {
@@ -25,6 +25,11 @@ namespace DE_IDENTIFICATION_TOOL
             else if (radioCheckDatabase.Checked)
             {
                 SelectedImportOption = "Database";
+            }
+
+            else if (radioCheckJson.Checked)
+            {
+                SelectedImportOption = "Json";
             }
 
             this.DialogResult = DialogResult.OK;
@@ -45,5 +50,15 @@ namespace DE_IDENTIFICATION_TOOL
         private RadioButton radioCheckDatabase;
         private Button buttonNext;
         private Button buttonCancel;
+
+        private void radioCheckDatabase_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
