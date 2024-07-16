@@ -35,16 +35,15 @@ namespace DE_IDENTIFICATION_TOOL
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.monitoeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.userManualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeViewPanel
             // 
-            this.treeViewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.treeViewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.treeViewPanel.Location = new System.Drawing.Point(1, 32);
             this.treeViewPanel.Name = "treeViewPanel";
@@ -58,13 +57,10 @@ namespace DE_IDENTIFICATION_TOOL
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.viewToolStripMenuItem,
-            this.monitoeToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(953, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(953, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -76,58 +72,54 @@ namespace DE_IDENTIFICATION_TOOL
             this.exportDataToolStripMenuItem,
             this.reToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.newProjectToolStripMenuItem.Text = "New Project";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project";
             // 
             // exportDataToolStripMenuItem
             // 
             this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
-            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.exportDataToolStripMenuItem.Text = "Export Data";
             this.exportDataToolStripMenuItem.Click += new System.EventHandler(this.exportDataToolStripMenuItem_Click);
             // 
             // reToolStripMenuItem
             // 
             this.reToolStripMenuItem.Name = "reToolStripMenuItem";
-            this.reToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.reToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.reToolStripMenuItem.Text = "Exit";
-            // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
-            this.editToolStripMenuItem.Text = "Edit";
-            // 
-            // viewToolStripMenuItem
-            // 
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
-            this.viewToolStripMenuItem.Text = "View";
-            // 
-            // monitoeToolStripMenuItem
-            // 
-            this.monitoeToolStripMenuItem.Name = "monitoeToolStripMenuItem";
-            this.monitoeToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
-            this.monitoeToolStripMenuItem.Text = "Monitor";
             // 
             // helpToolStripMenuItem
             // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator1,
+            this.userManualToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // userManualToolStripMenuItem
+            // 
+            this.userManualToolStripMenuItem.Name = "userManualToolStripMenuItem";
+            this.userManualToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.userManualToolStripMenuItem.Text = "User Manual";
             // 
             // HomeForm
             // 
@@ -151,10 +143,9 @@ namespace DE_IDENTIFICATION_TOOL
         private ToolStripMenuItem openProjectToolStripMenuItem;
         private ToolStripMenuItem exportDataToolStripMenuItem;
         private ToolStripMenuItem reToolStripMenuItem;
-        private ToolStripMenuItem editToolStripMenuItem;
-        private ToolStripMenuItem viewToolStripMenuItem;
-        private ToolStripMenuItem monitoeToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem userManualToolStripMenuItem;
     }
 }
 

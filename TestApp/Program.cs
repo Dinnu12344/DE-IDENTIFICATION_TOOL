@@ -1,6 +1,8 @@
-﻿using System;
+﻿using DE_IDENTIFICATION_TOOL.Forms;
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
@@ -12,7 +14,6 @@ namespace DE_IDENTIFICATION_TOOL
         {
             string logFilePath = null;
             string scriptPath = null;
-
             try
             {
                 string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -35,27 +36,51 @@ namespace DE_IDENTIFICATION_TOOL
 
                 File.AppendAllText(logFilePath, $"Starting application at {DateTime.Now}\n");
 
-                // Initialize PythonService and check if Python is installed
-                PythonService pythonService = new PythonService();
-                string pythonPath = null;
-                try
-                {
-                    pythonPath = pythonService.GetPythonExePath();
-                }
-                catch (Exception ex)
-                {
-                    File.AppendAllText(logFilePath, $"Python not found: {ex.Message}\n");
-                    File.AppendAllText(logFilePath, $"Executing script: {scriptPath}\n");
-                    ExecuteBatchScript(scriptPath, logFilePath);
-                    pythonPath = pythonService.GetPythonExePath();
-                }
-
-                // Python installation completed or already present, launching application
-                File.AppendAllText(logFilePath, $"Python installation completed. Launching application...\n");
-
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new HomeForm());
+
+                if (!IsPythonInstalled())
+                {
+                    LoadingForm loadingForm = new LoadingForm();
+                    loadingForm.Show();
+
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            ExecuteBatchScript(scriptPath, logFilePath);
+                            loadingForm.Invoke(new Action(() =>
+                            {
+                                loadingForm.Close();
+                                DialogResult result = MessageBox.Show("Python installed successfully. Launching application...", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                if (result == DialogResult.OK)
+                                {
+                                    Application.Run(new HomeForm());
+                                }
+                            }));
+                        }
+                        catch (Exception ex)
+                        {
+                            loadingForm.Invoke(new Action(() =>
+                            {
+                                loadingForm.Close();
+                                DialogResult result = MessageBox.Show($"Error installing Python: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                if (result == DialogResult.OK)
+                                {
+                                    Application.Exit();
+                                }
+                            }));
+                        }
+                    });
+
+                    Application.Run(loadingForm);
+                }
+                else
+                {
+                    File.AppendAllText(logFilePath, $"Python is already installed. Launching application...\n");
+                    ExecuteBatchScript(scriptPath, logFilePath);
+                    Application.Run(new HomeForm());
+                }
 
                 File.AppendAllText(logFilePath, $"Application exited normally at {DateTime.Now}\n");
             }
@@ -64,12 +89,46 @@ namespace DE_IDENTIFICATION_TOOL
                 if (logFilePath != null)
                 {
                     File.AppendAllText(logFilePath, $"Error: {ex.Message}\n");
+                    if (ex.InnerException != null)
+                    {
+                        File.AppendAllText(logFilePath, $"Inner Exception: {ex.InnerException.Message}\n");
+                    }
                 }
                 Console.WriteLine($"Error: {ex.Message}");
                 if (ex.InnerException != null)
                 {
                     Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
                 }
+            }
+        }
+
+        private static bool IsPythonInstalled()
+        {
+            try
+            {
+                using (Process process = new Process())
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        FileName = "cmd.exe",
+                        Arguments = "/c \"python --version\"",
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    };
+                    process.StartInfo = startInfo;
+
+                    process.Start();
+                    process.WaitForExit();
+
+                    return process.ExitCode == 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception occurred while checking Python installation: {ex.Message}");
+                return false;
             }
         }
 

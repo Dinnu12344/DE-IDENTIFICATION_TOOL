@@ -171,6 +171,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7EB6B5AA39454084A525791005534F4D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_845805569E70423FAF322832B0F3AB1F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -238,12 +244,6 @@
         "Entry"
         {
         "MsmKey" = "8:_97C3260A7E8F476A9E1198DB356C81A6"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A210ED6D45674E78BCF7E200E8B2DE83"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -993,6 +993,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7EB6B5AA39454084A525791005534F4D"
+            {
+            "SourcePath" = "8:..\\TestApp\\bin\\Debug\\Scripts\\install_python.bat"
+            "TargetName" = "8:install_python.bat"
+            "Tag" = "8:"
+            "Folder" = "8:_F601014795864101AC5BE7B51BA1BFAC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_845805569E70423FAF322832B0F3AB1F"
             {
             "SourcePath" = "8:..\\TestApp\\PythonScripts\\Export.py"
@@ -1124,26 +1144,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A210ED6D45674E78BCF7E200E8B2DE83"
-            {
-            "SourcePath" = "8:..\\TestApp\\bin\\Debug\\Scripts\\install_python.bat"
-            "TargetName" = "8:install_python.bat"
-            "Tag" = "8:"
-            "Folder" = "8:_F601014795864101AC5BE7B51BA1BFAC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A2F125A7C774477186C0D47907F932DE"
@@ -1609,7 +1609,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:DeIdentificationToolSetup"
         "ProductCode" = "8:{2A2E7297-046D-4A85-B7D2-1C5F2955B9CD}"
-        "PackageCode" = "8:{D2044C6A-0290-452B-85E3-3F9B35AEAF3A}"
+        "PackageCode" = "8:{258514C2-883D-4FDB-9FF2-135E8294B224}"
         "UpgradeCode" = "8:{2E31340C-B27D-4CEA-B42E-8790F09179B4}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
