@@ -13,41 +13,21 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             selectNode = parentNode;
             InitializeComponent();
             InitializeForm();
+            LoadExistingKeyData();
         }
 
         private void InitializeForm()
         {
-            btnForSave.Enabled = false; 
-            textBoxForKey.TextChanged += TextBox1_TextChanged; 
-            btnForSave.Click += SaveKeyData; 
+            btnForSave.Enabled = false;
+            textBoxForKey.TextChanged += TextBox1_TextChanged;
+            btnForSave.Click -= SaveKeyData; // Detach any existing event handler
+            btnForSave.Click += SaveKeyData; // Attach the new event handler
         }
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
             btnForSave.Enabled = !string.IsNullOrWhiteSpace(textBoxForKey.Text);
         }
-
-        //private void SaveKeyData(object sender, EventArgs e)
-        //{
-        //    string project = selectNode.Text;
-        //    string projectDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeidentificationTool", project);
-
-        //    try
-        //    {
-        //        Directory.CreateDirectory(projectDirectory);
-        //        string filePath = Path.Combine(projectDirectory, "keys.txt");
-        //        string textToSave = textBoxForKey.Text;
-        //        File.WriteAllText(filePath, textToSave);
-        //        MessageBox.Show("File saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        //HomeForm form1 = new HomeForm();
-        //        //form1.ShowDialog();
-        //        this.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
 
         private void SaveKeyData(object sender, EventArgs e)
         {
@@ -81,5 +61,24 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
         }
 
+        private void LoadExistingKeyData()
+        {
+            string project = selectNode.Text;
+            string projectDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeidentificationTool", project);
+            string filePath = Path.Combine(projectDirectory, "keys.txt");
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    string existingKeyData = File.ReadAllText(filePath);
+                    textBoxForKey.Text = existingKeyData;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading existing key data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

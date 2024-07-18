@@ -54,9 +54,9 @@ if "%PYTHON_VERSION_INSTALLED:~7,5%"=="3.12." (
 REM Install required Python packages
 echo Installing required Python packages...
 "%PYTHON_EXE%" -m pip install --upgrade pip
-"%PYTHON_EXE%" -m pip install pandas numpy requests pyodbc sqlalchemy tabulate
+"%PYTHON_EXE%" -m pip install pandas numpy requests pyodbc sqlalchemy tabulate faker
  
 REM Verify package installation
-"%PYTHON_EXE%" -c "import pandas, numpy, requests, pyodbc, sqlalchemy, tabulate; print('Packages installed successfully')"
+"%PYTHON_EXE%" -c "import pandas, numpy, requests, pyodbc, sqlalchemy, tabulate, faker; print('Packages installed successfully')"
  
 :end

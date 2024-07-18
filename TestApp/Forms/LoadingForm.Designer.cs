@@ -8,7 +8,7 @@
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Button okButton;
+        //private System.Windows.Forms.Button okButton;
 
 
         /// <summary>

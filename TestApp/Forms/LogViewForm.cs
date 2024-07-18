@@ -38,6 +38,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             PopulateDateList();
 
             dateListBox.SelectedIndexChanged += DateListBox_SelectedIndexChanged;
+            this.Resize += LogViewForm_Resize; // Handle the Resize event
         }
 
         private void ReadLogsFromDirectory()
@@ -101,6 +102,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     logTextBox.Text = "No logs available for selected date.";
                 }
             }
+        }
+
+        private void LogViewForm_Resize(object sender, EventArgs e)
+        {
+            // Custom resizing logic if needed
         }
 
         protected override void OnShown(EventArgs e)

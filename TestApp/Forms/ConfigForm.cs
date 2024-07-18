@@ -1,4 +1,5 @@
 ﻿using DE_IDENTIFICATION_TOOL.Enums;
+using DE_IDENTIFICATION_TOOL.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,7 @@ namespace DE_IDENTIFICATION_TOOL
 
             // Create and add Save button
             Button saveButton = new Button();
-            saveButton.Text = "SaveFinish";
+            saveButton.Text = "Save";
             saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right; // Anchoring to the bottom and left
             saveButton.Click += new EventHandler(SaveBtn_Click);
             saveButton.Location = new Point(600, 10); // Adjust location within the button panel
@@ -97,7 +98,6 @@ namespace DE_IDENTIFICATION_TOOL
             headerPanel.Controls.Add(headerTableLayoutPanel);
         }
 
-
         private void InitializeDynamicControls()
         {
             // Fetch columns from Python backend
@@ -123,6 +123,9 @@ namespace DE_IDENTIFICATION_TOOL
                 tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
 
                 int row = 1;
+
+                // Load existing configuration if it exists
+                List<ColumnConfig> existingConfig = LoadExistingConfig();
 
                 foreach (string column in columns)
                 {
@@ -152,7 +155,7 @@ namespace DE_IDENTIFICATION_TOOL
                     tableLayoutPanel.Controls.Add(techniqueComboBox, 3, row);
 
                     ComboBox techniqueComboBoxForData = new ComboBox();
-                    techniqueComboBoxForData.Items.AddRange(Enum.GetNames(typeof(AdditionalTechnique))); ;
+                    techniqueComboBoxForData.Items.AddRange(Enum.GetNames(typeof(AdditionalTechnique)));
                     techniqueComboBoxForData.Dock = DockStyle.Fill;
                     techniqueComboBoxForData.MaxDropDownItems = 5;
                     techniqueComboBoxForData.Enabled = false; // Initially hidden
@@ -162,6 +165,20 @@ namespace DE_IDENTIFICATION_TOOL
                     keysComboBox.Items.AddRange(Enum.GetNames(typeof(KeysOption)));
                     keysComboBox.Dock = DockStyle.Fill;
                     tableLayoutPanel.Controls.Add(keysComboBox, 5, row);
+
+                    // Load existing data if available
+                    ColumnConfig config = existingConfig?.Find(c => c.Column == column);
+                    if (config != null)
+                    {
+                        dataTypeComboBox.SelectedItem = config.DataType;
+                        techniqueComboBox.SelectedItem = config.Technique;
+                        if (config.Technique == "Pseudonymization")
+                        {
+                            techniqueComboBoxForData.Enabled = true;
+                            techniqueComboBoxForData.SelectedItem = config.HippaRelatedColumn;
+                        }
+                        keysComboBox.SelectedItem = config.Keys;
+                    }
 
                     controlMap.Add(checkBox, new Control[] { columnLabel, dataTypeComboBox, techniqueComboBox, techniqueComboBoxForData, keysComboBox });
 
@@ -229,6 +246,20 @@ namespace DE_IDENTIFICATION_TOOL
             return columns;
         }
 
+        private List<ColumnConfig> LoadExistingConfig()
+        {
+            string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeidentificationTool", projectName.Text, tabelName.Text, "ConfigFile");
+            string filePath = Path.Combine(directoryPath, $"{tabelName.Text}.json");
+
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                return JsonConvert.DeserializeObject<List<ColumnConfig>>(json);
+            }
+
+            return null;
+        }
+
         private void CancelButton_Click(object sender, EventArgs e)
         {
             homeForm.Show();
@@ -288,4 +319,13 @@ namespace DE_IDENTIFICATION_TOOL
             this.Close();
         }
     }
+
+    //public class ColumnConfig
+    //{
+    //    public string Column { get; set; }
+    //    public string DataType { get; set; }
+    //    public string Technique { get; set; }
+    //    public string HippaRelatedColumn { get; set; }
+    //    public string Keys { get; set; }
+    //}
 }

@@ -193,6 +193,7 @@
     <Compile Include="Forms\ViewSourceDeIdentifyForm.Designer.cs">
       <DependentUpon>ViewSourceDeIdentifyForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\ColumnConfig.cs" />
     <Compile Include="Models\CSVLocationFormModel.cs" />
     <Compile Include="Models\DbtableFormModel.cs" />
     <Compile Include="Models\JsonLocationFormModel.cs" />
