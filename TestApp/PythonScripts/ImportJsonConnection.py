@@ -1,84 +1,118 @@
-﻿import sqlite3
-import getpass
+﻿import json
+import pandas as pd
+import sqlite3
+from typing import Any, Dict, List, Union
+import random
+import sys
 import os
 import Miscellaneous_Functions as mf
-import datetime
-import pandas as pd
-import Import as i
-import sys
+import getpass
 
-def generate_name(filePath, projectName, logFile):
-    # Combine the parameters to generate a name
-    name = f"Name generated from parameters: {filePath}, {projectName}, {logFile}"
-    return name
+def load_json(file_path: str) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    with open(file_path, 'r') as f:
+        return json.load(f)
 
-def main():
-    run_starts = datetime.datetime.now()  # Initialize run_starts
-    log_files_path_table = ""
-    filename = ""
+def normalize_nested_json(data: Any, parent_key: str = '', sep: str = '_') -> Dict[str, Any]:
+    items = []
+    if isinstance(data, dict):
+        for k, v in data.items():
+            new_key = f"{parent_key}{sep}{k}" if parent_key else k
+            if isinstance(v, dict):
+                items.extend(normalize_nested_json(v, new_key, sep=sep).items())
+            elif isinstance(v, list):
+                for i, item in enumerate(v):
+                    items.extend(normalize_nested_json(item, f"{new_key}{sep}{i}", sep=sep).items())
+            else:
+                items.append((new_key, v))
+    elif isinstance(data, list):
+        for i, item in enumerate(data):
+            items.extend(normalize_nested_json(item, f"{parent_key}{sep}{i}", sep=sep).items())
+    else:
+        items.append((parent_key, data))
+    return dict(items)
 
-    try:
-        # Extract arguments passed from command line
-        filePath = sys.argv[1]
-        project_name = sys.argv[2]
-        table_name = sys.argv[3]
-        n = sys.argv[4]
-        
-       
+def process_single_table(json_data: Union[Dict[str, Any], List[Dict[str, Any]]], table_name: str) -> Dict[str, pd.DataFrame]:
+    if isinstance(json_data, dict):
+        data = json_data[table_name]
+    else:
+        data = json_data
+    return {table_name: pd.json_normalize(data)}
 
-        username = getpass.getuser()
-        tool_path = f'C:\\Users\\{username}\\AppData\\Roaming\\DeidentificationTool'
-        mf.create_path(tool_path)
+def process_multiple_tables(json_data: Dict[str, Any], parent_key: str = '') -> Dict[str, pd.DataFrame]:
+    data_frames = {}
+    for table_name, data in json_data.items():
+        if isinstance(data, list):
+            df = pd.json_normalize(data, sep='_')
+            for col in df.columns:
+                if isinstance(df[col].dropna().iloc[0], (dict, list)):
+                    nested_df = pd.json_normalize(df[col].dropna().apply(lambda x: normalize_nested_json(x)), sep='_')
+                    nested_table_name = f"{table_name}_{col}"
+                    data_frames[nested_table_name] = nested_df
+                    df.drop(columns=[col], inplace=True)
+            data_frames[table_name] = df
+        elif isinstance(data, dict):
+            nested_frames = process_multiple_tables(data, parent_key=table_name)
+            for nested_table_name, nested_df in nested_frames.items():
+                full_table_name = f"{table_name}_{nested_table_name}" if parent_key else nested_table_name
+                data_frames[full_table_name] = nested_df
+    return data_frames
 
-        project_path = os.path.join(tool_path, project_name)
-        mf.create_path(project_path)
+def save_to_sqlite(data_frames: Dict[str, pd.DataFrame], db_name: str, n: int) -> List[str]:
+    new_tables = []
+    with sqlite3.connect(db_name) as conn:
+        for table_name, df in data_frames.items():
+            if n > 0 and len(df) > n:
+                df = df.sample(n=n).reset_index(drop=True)
+            df.to_sql(table_name, conn, if_exists='replace', index=False)
+            new_tables.append(table_name)
+    return new_tables
 
-        tables_data_path = os.path.join(tool_path, project_name, 'TablesData')
-        mf.create_path(tables_data_path)
+def generate_unique_table_name(existing_tables: List[str], base_name: str = 'table') -> str:
+    index = 1
+    while f"{base_name}{index}" in existing_tables:
+        index += 1
+    return f"{base_name}{index}"
 
-        db_file_path = os.path.join(tables_data_path, 'Data.db')
+def main(file_path: str, db_name: str, n: int):
+    json_data = load_json(file_path)
+    existing_tables = get_all_tables(db_name)
+    new_tables = []
 
-        table_name_folder_path = os.path.join(project_path, table_name)
-        
-        run_starts = datetime.datetime.now()
-        log_files_path = os.path.join(tool_path, project_name)	
+    if isinstance(json_data, dict):
+        data_frames = process_multiple_tables(json_data)
+        saved_tables = save_to_sqlite(data_frames, db_name, n)
+        new_tables.extend(saved_tables)
+    elif isinstance(json_data, list):
+        new_table_name = generate_unique_table_name(existing_tables + new_tables)
+        data_frames = process_single_table(json_data, new_table_name)
+        saved_tables = save_to_sqlite(data_frames, db_name, n)
+        new_tables.extend(saved_tables)
+    print("success")
+    print(new_tables)
 
-        log_files_path_table = os.path.join(log_files_path, table_name, "LogFile")
-        mf.create_path(log_files_path_table)
-        
-        log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
-        filename = os.path.join(log_files_path_table, log_filename)
+def get_all_tables(database_path: str) -> List[str]:
+    with sqlite3.connect(database_path) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = cursor.fetchall()
+    return [table[0] for table in tables]
 
-        if not mf.check_table_existence(table_name, db_file_path):    
-            Status, Comment = i.Import_JSON_Data_To_SqLite(db_file_path, filePath, n, table_name, project_name)
-            run_end = datetime.datetime.now()
-            run_time = run_end - run_starts
-    
-            mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_starts, run_end=run_end, status=Status, duration=run_time, comment=Comment)
+if __name__ == '__main__':
+    file_path = sys.argv[1]
+    project_name = sys.argv[2]
+    n = sys.argv[3]
 
-            print(Status) 
-        else:
-            Status, Comment = i.Import_JSON_Data_To_SqLite(db_file_path, filePath, n, table_name, project_name)
+    n = int(n)
+    username = getpass.getuser()
+    tool_path = f'C:\\Users\\{username}\\AppData\\Roaming\\DeidentificationTool'
+    mf.create_path(tool_path)
 
+    project_path = os.path.join(tool_path, project_name)
+    mf.create_path(project_path)
 
-            run_end = datetime.datetime.now()
-            run_time = run_end - run_starts
-    
-            mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_starts, run_end=run_end, status=Status, duration=run_time, comment=Comment)
+    tables_data_path = os.path.join(project_path, 'TablesData')
+    mf.create_path(tables_data_path)
 
-            # Generate name based on parameters
-            # name = generate_name(filePath, project_name, logFile)
-            print(Comment)  # Output the status
+    db_name = os.path.join(tables_data_path, 'Data.db')
 
-    except Exception as e:
-        run_end = datetime.datetime.now()
-        run_time = run_end - run_starts
-
-        error_message = f"Error: {str(e)}"
-        mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_starts, run_end=run_end, status="Failure", duration=run_time, comment=error_message)
-        
-        # print("Failure")
-        print(error_message)
-
-if __name__ == "__main__":
-    main()
+    main(file_path, db_name, n)

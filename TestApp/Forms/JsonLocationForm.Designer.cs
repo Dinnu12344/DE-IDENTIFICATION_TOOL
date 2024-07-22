@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(JsonLocationForm));
-            this.txtForTblName = new System.Windows.Forms.TextBox();
-            this.lblForTblName = new System.Windows.Forms.Label();
             this.lblForNoofColumns = new System.Windows.Forms.Label();
             this.txtForNoofColumns = new System.Windows.Forms.TextBox();
             this.LocationBrowseButton = new System.Windows.Forms.Button();
@@ -41,26 +39,6 @@
             this.btnForBack = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // txtForTblName
-            // 
-            this.txtForTblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtForTblName.Location = new System.Drawing.Point(180, 236);
-            this.txtForTblName.Name = "txtForTblName";
-            this.txtForTblName.Size = new System.Drawing.Size(282, 27);
-            this.txtForTblName.TabIndex = 23;
-            this.txtForTblName.TextChanged += new System.EventHandler(this.TxtForTblName_TextChanged);
-            // 
-            // lblForTblName
-            // 
-            this.lblForTblName.AutoSize = true;
-            this.lblForTblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForTblName.Location = new System.Drawing.Point(38, 243);
-            this.lblForTblName.Name = "lblForTblName";
-            this.lblForTblName.Size = new System.Drawing.Size(99, 20);
-            this.lblForTblName.TabIndex = 22;
-            this.lblForTblName.Text = "Table Name";
-            this.lblForTblName.Click += new System.EventHandler(this.lblForTblName_Click);
-            // 
             // lblForNoofColumns
             // 
             this.lblForNoofColumns.AutoSize = true;
@@ -70,7 +48,6 @@
             this.lblForNoofColumns.Size = new System.Drawing.Size(100, 20);
             this.lblForNoofColumns.TabIndex = 21;
             this.lblForNoofColumns.Text = "Rows Count";
-
             // 
             // txtForNoofColumns
             // 
@@ -80,7 +57,6 @@
             this.txtForNoofColumns.Size = new System.Drawing.Size(100, 27);
             this.txtForNoofColumns.TabIndex = 20;
             this.txtForNoofColumns.TextChanged += new System.EventHandler(this.TxtForNoofColumns_TextChanged);
-
             // 
             // LocationBrowseButton
             // 
@@ -127,7 +103,6 @@
             this.finishButtonInCsvlocationWindow.Text = "Finish";
             this.finishButtonInCsvlocationWindow.UseVisualStyleBackColor = true;
             this.finishButtonInCsvlocationWindow.Click += new System.EventHandler(this.FinishButtonInCsvlocationWindow_Click);
-
             // 
             // btnForBack
             // 
@@ -146,8 +121,6 @@
             this.Controls.Add(this.CanclebtnforClear);
             this.Controls.Add(this.finishButtonInCsvlocationWindow);
             this.Controls.Add(this.btnForBack);
-            this.Controls.Add(this.txtForTblName);
-            this.Controls.Add(this.lblForTblName);
             this.Controls.Add(this.lblForNoofColumns);
             this.Controls.Add(this.txtForNoofColumns);
             this.Controls.Add(this.LocationBrowseButton);
@@ -162,9 +135,6 @@
         }
 
         #endregion
-
-        public System.Windows.Forms.TextBox txtForTblName;
-        private System.Windows.Forms.Label lblForTblName;
         private System.Windows.Forms.Label lblForNoofColumns;
         private System.Windows.Forms.TextBox txtForNoofColumns;
         private System.Windows.Forms.Button LocationBrowseButton;
