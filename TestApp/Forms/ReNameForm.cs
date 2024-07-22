@@ -41,8 +41,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 else
                 {
                     // Renaming a table
-                    RenameTableInProject(oldName, newName, parentNode);
-                    UpdateJsonFile(oldName, newName, isProject: false);
+                    if(RenameTableInProject(oldName, newName, parentNode) == "Success")
+                    {
+                        UpdateJsonFile(oldName, newName, isProject: false);
+                    }
+                   
                 }
 
                 MessageBox.Show("Name updated successfully.");
@@ -71,7 +74,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
         }
 
-        private void RenameTableInProject(string oldTableName, string newTableName, TreeNode parentNode)
+        private string RenameTableInProject(string oldTableName, string newTableName, TreeNode parentNode)
         {
             string parentName = parentNode.Text;
             string oldFolderPath = Path.Combine(projectsDirectory, parentName, oldTableName);
@@ -83,7 +86,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 if (oldFolderPath.Equals(newFolderPath, StringComparison.OrdinalIgnoreCase))
                 {
                     MessageBox.Show("The old and new table names are the same. Please enter a different name.", "Error");
-                    return;
+                    return "Failed";
                 }
 
                 if (Directory.Exists(oldFolderPath))
@@ -102,19 +105,23 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         Directory.Move(oldFolderPath, newFolderPath);
                         MessageBox.Show("Renamed success");
                         this.Close();
+                        return "Success";
                     }
                     else
                     {
                         MessageBox.Show("rRename Unsuccess"+pythonResponse);
+                        
                     }
 
-                    
+                   
                 }
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error renaming table folder: {ex.Message}");
             }
+            return "Failed";
         }
 
         private void UpdateJsonFile(string oldName, string newName, bool isProject)

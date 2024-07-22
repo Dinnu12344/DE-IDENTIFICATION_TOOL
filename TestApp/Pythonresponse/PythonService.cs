@@ -127,13 +127,13 @@ public class PythonService
         var command = $"\"{pythonScriptPath}\" \"{project}\" \"{table}\"";
         return ExecutePythonScript(command);
     }
-    public string JsonImport( string path ,string  projectName, string TableName, string n,string pythonScriptPath)
+    public string JsonImport( string path ,string  projectName, string n,string pythonScriptPath)
     {
         if (!File.Exists(pythonScriptPath))
         {
             return "Error: Python script file not found.";
         }
-        var command = $"\"{pythonScriptPath}\" \"{path}\" \"{projectName}\" \"{TableName}\"\"{n}\"";
+        var command = $"\"{pythonScriptPath}\" \"{path}\" \"{projectName}\" \"{n}\"";
         return ExecutePythonScript(command);
     }
 

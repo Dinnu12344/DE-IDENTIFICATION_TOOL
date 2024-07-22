@@ -18,7 +18,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         public readonly JsonLocationFormModel jsonLocationFormModel;
         private readonly string labelName;
         private PythonService pythonService;
-        public JsonLocationForm(string labelName)
+        public JsonLocationForm(string labelName, TreeNode selectedNode, List<ProjectData> projectData, HomeForm homeForm)
         {
             InitializeComponent();
             pythonService = new PythonService();
@@ -29,11 +29,14 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             //QuoteLabel.Visible = false;
             //QuoteComboBox.Visible = false;
             jsonLocationFormModel = new JsonLocationFormModel();
-            //finishButtonInCsvlocationWindow.Visible = false;
+            jsonLocationFormModel.homeForm = homeForm;
+            jsonLocationFormModel.projectData = projectData;
+            jsonLocationFormModel.selectedNode  = selectedNode;
+            finishButtonInCsvlocationWindow.Visible = false;
             lblForNoofColumns.Visible = false;
             txtForNoofColumns.Visible = false;
-            lblForTblName.Visible = false;
-            txtForTblName.Visible = false;
+            //lblForTblName.Visible = false;
+            //txtForTblName.Visible = false;
 
             this.labelName = labelName;
             //pythonScriptsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PythonScripts");
@@ -56,15 +59,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         //}
 
-        private void txtForNoofColumns_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblForTblName_Click(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void TxtForNoofColumns_TextChanged(object sender, EventArgs e)
         {
@@ -82,17 +77,17 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
 
             jsonLocationFormModel.EnteredText = txtForNoofColumns.Text;
+            
             UpdateFinishButtonVisibility();
         }
-        private void TxtForTblName_TextChanged(object sender, EventArgs e)
-        {
-            jsonLocationFormModel.TableName = txtForTblName.Text;
-            UpdateFinishButtonVisibility();
-        }
+        //private void TxtForTblName_TextChanged(object sender, EventArgs e)
+        //{
+        //    jsonLocationFormModel.TableName = txtForTblName.Text;
+        //    UpdateFinishButtonVisibility();
+        //}
         private void UpdateFinishButtonVisibility()
         {
-            finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(jsonLocationFormModel.EnteredText)&&
-                                                      !string.IsNullOrEmpty(jsonLocationFormModel.TableName);
+            finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(jsonLocationFormModel.EnteredText);
         }
 
         private void FinishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
@@ -102,20 +97,80 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             if (!string.IsNullOrEmpty(jsonLocationFormModel.SelectedCsvFilePath))
             {
                 string username = Environment.UserName;
-                string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{jsonLocationFormModel.TableName}\LogFile";
-                // Ensure the directory exists
-                if (!Directory.Exists(directoryPath))
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
+
+                // Capture start time
+                DateTime startTime = DateTime.Now;
 
                 string pythonScriptName = "ImportJsonConnection.py";
                 string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                 string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
-                string pythonResponse = pythonService.JsonImport(jsonLocationFormModel.SelectedCsvFilePath, projectName, jsonLocationFormModel.TableName, jsonLocationFormModel.EnteredText, pythonScriptPath);
+                string pythonResponse = pythonService.JsonImport(jsonLocationFormModel.SelectedCsvFilePath, projectName, jsonLocationFormModel.EnteredText, pythonScriptPath);
+
+                // Capture end time
+                DateTime endTime = DateTime.Now;
+                TimeSpan duration = endTime - startTime;
 
                 if (pythonResponse.ToLower().Contains("success"))
                 {
+                    // Extract the list of table names from the pythonResponse
+                    string tableNamesPart = pythonResponse.Split('\n')[1]; // Get the part after the newline
+
+                    // Remove the brackets, spaces, and quotes by replacing unwanted characters and trimming spaces
+                    tableNamesPart = tableNamesPart.Replace("[", "").Replace("]", "").Replace("'", "").Trim();
+
+                    // Split the string by comma and trim each name, ensuring any leading/trailing spaces are removed
+                    string[] tableNames = tableNamesPart.Split(',')
+                                                         .Select(name => name.Trim())
+                                                         .ToArray();
+
+                    // Get the current date in yyyy-MM-dd format
+                    string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+
+                    // Add each table name as a node to the tree
+                    foreach (string table in tableNames)
+                    {
+                        TreeNode tableNode = new TreeNode(table);
+                        jsonLocationFormModel.selectedNode.Nodes.Add(tableNode);
+
+                        // Create directory path
+                        string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{jsonLocationFormModel.selectedNode.Text}\{table}\LogFile";
+
+                        // Ensure the directory exists
+                        if (!Directory.Exists(directoryPath))
+                        {
+                            Directory.CreateDirectory(directoryPath);
+                        }
+
+                        // Create the text file with today's date
+                        string filePath = Path.Combine(directoryPath, $"{currentDate}.log");
+
+                        // Write details to the file
+                        string logContent = $@"Job Name: Import
+                        Run start: {startTime.ToString("yyyy-MM-dd HH:mm:ss.ffffff")}
+                        Run End: {endTime.ToString("yyyy-MM-dd HH:mm:ss.ffffff")}
+                        Status: success
+                        Duration: {duration.TotalSeconds}
+                        Comment: Successfully imported file : {jsonLocationFormModel.SelectedCsvFilePath} as a table : {table} inside the project : {jsonLocationFormModel.selectedNode.Text}";
+
+                        File.WriteAllText(filePath, logContent);
+                    }
+
+                    jsonLocationFormModel.selectedNode.Expand();
+
+                    var project = jsonLocationFormModel.projectData.Find(p => p.Name == jsonLocationFormModel.selectedNode.Text);
+                    if (project != null)
+                    {
+                        // Add each table name to the project
+                        foreach (string table in tableNames)
+                        {
+                            if (!project.Tables.Contains(table))
+                            {
+                                project.Tables.Add(table);
+                            }
+                        }
+                        jsonLocationFormModel.homeForm.SaveProjectData();
+                    }
+
                     this.DialogResult = DialogResult.OK;
                     this.Hide();
                 }
@@ -124,9 +179,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     MessageBox.Show("The python response is failed. Error: " + pythonResponse, "Error");
                 }
             }
-
         }
-        
+
+
 
         private void LocationBrowsebtn_Click(object sender, EventArgs e)
         {
@@ -150,8 +205,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 //QuoteComboBox.Visible = true;
                 lblForNoofColumns.Visible = true;
                 txtForNoofColumns.Visible = true;
-                lblForTblName.Visible = true;
-                txtForTblName.Visible = true;
+                //lblForTblName.Visible = true;
+                //txtForTblName.Visible = true;
             }
         }
     }
