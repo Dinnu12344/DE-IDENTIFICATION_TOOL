@@ -1,12 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
 {
     public partial class KeyForm : Form
     {
+        private Button btnCancel;
         private TreeNode selectNode;
+        private bool isExistingKey;
 
         public KeyForm(TreeNode parentNode)
         {
@@ -18,15 +21,19 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void InitializeForm()
         {
-            btnForSave.Enabled = false;
-            textBoxForKey.TextChanged += TextBox1_TextChanged;
-            btnForSave.Click -= SaveKeyData; // Detach any existing event handler
-            btnForSave.Click += SaveKeyData; // Attach the new event handler
+            textBoxForKey.TextChanged += TextBoxForKey_TextChanged;
+            btnForSave.Click -= SaveKeyData;
+            btnForSave.Click += SaveKeyData;
+            btnCancel.Click -= CancelButton_Click;
+            btnCancel.Click += CancelButton_Click;
         }
 
-        private void TextBox1_TextChanged(object sender, EventArgs e)
+        private void TextBoxForKey_TextChanged(object sender, EventArgs e)
         {
-            btnForSave.Enabled = !string.IsNullOrWhiteSpace(textBoxForKey.Text);
+            if (!isExistingKey)
+            {
+                btnForSave.Enabled = !string.IsNullOrWhiteSpace(textBoxForKey.Text);
+            }
         }
 
         private void SaveKeyData(object sender, EventArgs e)
@@ -36,27 +43,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             try
             {
-                // Ensure the directory exists
                 Directory.CreateDirectory(projectDirectory);
-
-                // Construct the file path
                 string filePath = Path.Combine(projectDirectory, "keys.txt");
-
-                // Get the text from the TextBox
                 string textToSave = textBoxForKey.Text;
-
-                // Write the text to the file
                 File.WriteAllText(filePath, textToSave);
 
-                // Inform the user of success
                 MessageBox.Show("File saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Close the current form
                 this.Close();
             }
             catch (Exception ex)
             {
-                // Inform the user of an error
                 MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -73,12 +69,26 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 {
                     string existingKeyData = File.ReadAllText(filePath);
                     textBoxForKey.Text = existingKeyData;
+                    textBoxForKey.ReadOnly = true;
+                    btnForSave.Enabled = false;
+                    isExistingKey = true;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error loading existing key data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            else
+            {
+                textBoxForKey.ReadOnly = false;
+                btnForSave.Enabled = false;
+                isExistingKey = false;
+            }
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

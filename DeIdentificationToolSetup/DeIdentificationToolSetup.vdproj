@@ -123,12 +123,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_483BA80FFB4AC2F87837223E6BC4DF93"
-        "OwnerKey" = "8:_97C3260A7E8F476A9E1198DB356C81A6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_4C6E31FCC383F3F5DAB668DD25F13462"
         "OwnerKey" = "8:_C62AE33ED20D7AC7641A810C1BC53723"
         "MsmSig" = "8:_UNDEFINED"
@@ -143,12 +137,6 @@
         {
         "MsmKey" = "8:_5985BD616A814827A7093CA8333A2480"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_687191D19CCD9B40848F8A1676BB64E0"
-        "OwnerKey" = "8:_97C3260A7E8F476A9E1198DB356C81A6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -243,12 +231,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_97C3260A7E8F476A9E1198DB356C81A6"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A2F125A7C774477186C0D47907F932DE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -315,18 +297,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D168148D2FD86E1117AD785EC39B46BB"
-        "OwnerKey" = "8:_97C3260A7E8F476A9E1198DB356C81A6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D168148D2FD86E1117AD785EC39B46BB"
-        "OwnerKey" = "8:_687191D19CCD9B40848F8A1676BB64E0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D325CA36AC8EC1F150FFA6C8104C73DC"
         "OwnerKey" = "8:_4634777F012E9BD1222CF5578FB5C893"
         "MsmSig" = "8:_UNDEFINED"
@@ -389,18 +359,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_97C3260A7E8F476A9E1198DB356C81A6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_687191D19CCD9B40848F8A1676BB64E0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -545,7 +503,7 @@
             {
             "Name" = "8:Primary output from BatchScriptRunner (Active)"
             "Condition" = "8:"
-            "Object" = "8:_97C3260A7E8F476A9E1198DB356C81A6"
+            "Object" = "8:"
             "FileType" = "3:2"
             "InstallAction" = "3:1"
             "Arguments" = "8:"
@@ -900,37 +858,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_687191D19CCD9B40848F8A1676BB64E0"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:DE_IDENTIFICATION_TOOL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_687191D19CCD9B40848F8A1676BB64E0"
-                    {
-                    "Name" = "8:DE_IDENTIFICATION_TOOL.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:DE_IDENTIFICATION_TOOL.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D33F4729AAE5484DB2B8E78B6BA89B68"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6AACBE8E1B654B89ADBDDF4428937177"
@@ -2179,34 +2106,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{ACA453EC-AE26-4A43-A1AB-DDFCC46E6B33}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_97C3260A7E8F476A9E1198DB356C81A6"
-            {
-            "SourcePath" = "8:..\\BatchScriptRunner\\obj\\Debug\\BatchScriptRunner.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D33F4729AAE5484DB2B8E78B6BA89B68"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{B55305CB-448D-431C-B6D8-A8B5072BE342}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

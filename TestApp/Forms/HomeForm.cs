@@ -8,6 +8,7 @@ using DE_IDENTIFICATION_TOOL.Forms;
 using System.Runtime.InteropServices;
 using System.Linq;
 using DE_IDENTIFICATION_TOOL.Pythonresponse;
+using System.Diagnostics;
 
 namespace DE_IDENTIFICATION_TOOL
 {
@@ -562,6 +563,28 @@ namespace DE_IDENTIFICATION_TOOL
         private void exportDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projectData.json");
+        }
+
+        private void userManualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string userManualPath = Path.Combine(appDirectory, "Documentation", "UserManual.docx");
+
+            if (!File.Exists(userManualPath))
+            {
+                MessageBox.Show("User manual file not found. Please make sure the file exists in the 'Documentation' folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo(userManualPath) { UseShellExecute = true });
+            }
+            catch (Exception)
+            {
+                
+                MessageBox.Show("Could not open the user manual. Please make sure the file exists and you have the necessary permissions.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
