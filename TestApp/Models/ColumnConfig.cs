@@ -13,5 +13,7 @@ namespace DE_IDENTIFICATION_TOOL.Models
         public string Technique { get; set; }
         public string HippaRelatedColumn { get; set; }
         public string Keys { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

@@ -93,6 +93,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomAction\CustomDatePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Enums\AdditionalTechnique.cs" />
     <Compile Include="Enums\DataType.cs" />
     <Compile Include="Enums\KeysOption.cs" />
