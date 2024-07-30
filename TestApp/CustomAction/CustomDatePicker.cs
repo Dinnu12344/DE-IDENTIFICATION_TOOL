@@ -28,7 +28,7 @@ namespace DE_IDENTIFICATION_TOOL.CustomAction
             {
                 this.CustomFormat = "dd/MM/yy";
                 this.Focus();
-                SendKeys.Send("{F4}"); // Open the dropdown
+                SendKeys.Send("{F4}");
 
             }
         }

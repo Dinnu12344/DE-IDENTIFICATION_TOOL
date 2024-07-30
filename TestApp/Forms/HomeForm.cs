@@ -74,7 +74,6 @@ namespace DE_IDENTIFICATION_TOOL
             projectsContextMenu.Items.Add(createProjectItem);
             projectsContextMenu.Items.Add(refreshItem);
 
-            // Context menu for created projects
             createdProjectsContextMenu = new ContextMenuStrip();
             ToolStripMenuItem editProjectItem = new ToolStripMenuItem("Import");
             ToolStripMenuItem keyProjectItem = new ToolStripMenuItem("Key");
@@ -124,7 +123,7 @@ namespace DE_IDENTIFICATION_TOOL
             if (selectedNode != null)
             {
                 TreeNode parentNode = selectedNode.Parent;
-                if (parentNode != null) // Ensure the selected node has a parent node
+                if (parentNode != null) 
                 {
                     string pythonScriptName = "TableColumnsConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
@@ -132,7 +131,6 @@ namespace DE_IDENTIFICATION_TOOL
 
                     Console.WriteLine("Python Script Path: " + pythonScriptPath);
 
-                    // Assuming SendDataToPython takes table name, project name, and script path as arguments
                     string pythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentNode.Text, pythonScriptPath);
                     if (IsValidPythonResponse(pythonResponse))
                     {
@@ -143,7 +141,6 @@ namespace DE_IDENTIFICATION_TOOL
                     {
                         MessageBox.Show("Config is not done Please Check once");
                     }
-
                 }
                 else
                 {
@@ -160,7 +157,7 @@ namespace DE_IDENTIFICATION_TOOL
         {
             TreeNode selectedNode = treeViewPanel.SelectedNode;
             ReNameForm reNameForm = new ReNameForm(selectedNode);
-            reNameForm.ShowDialog(); // ShowDialog blocks until the form is closed
+            reNameForm.ShowDialog(); 
         }
 
         private void ReNameTableItem_Click(object sender, EventArgs e)
@@ -168,7 +165,7 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode selectedNode = treeViewPanel.SelectedNode;
             TreeNode parentNode = selectedNode.Parent;
             ReNameForm reNameForm = new ReNameForm(selectedNode, parentNode);
-            reNameForm.ShowDialog(); // ShowDialog blocks until the form is closed
+            reNameForm.ShowDialog(); 
         }
 
         private void DeIdentifyMenuItem_Click(object sender, EventArgs e)
@@ -178,10 +175,8 @@ namespace DE_IDENTIFICATION_TOOL
             if (selectedNode != null)
             {
                 string pythonScriptName = "DeidentificationConnection.py";
-                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); 
                 string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
-
-                //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeIentificationConnection.py";
                 string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
                 if (getpythonResponse.ToLower().Contains("success"))
                 {
@@ -191,7 +186,6 @@ namespace DE_IDENTIFICATION_TOOL
                 {
                     MessageBox.Show(getpythonResponse);
                 }
-
             }
         }
 
@@ -212,10 +206,8 @@ namespace DE_IDENTIFICATION_TOOL
             }
 
             string pythonScriptName = "ViewSourceDataConnection.py";
-            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); 
             string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
-
-            //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ViewScourceDataConnection.py";
             string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
             Console.WriteLine("Python Response: " + getpythonResponse);
             if (IsValidPythonResponse(getpythonResponse))
@@ -246,11 +238,8 @@ namespace DE_IDENTIFICATION_TOOL
             }
 
             string savePythonScriptName = "checkDeidentifiedTable.py";
-            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); 
             string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
-
-            // Send data to Python script and capture the response
-            //string savePythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, savePythonScriptPath, jsonData);
             string savePythonResponse = pythonService.checkDeidentifiedTable(selectedNode.Text, parentnode.Text, savePythonScriptPath);
 
             if (savePythonResponse.Contains("True"))
@@ -258,10 +247,8 @@ namespace DE_IDENTIFICATION_TOOL
 
 
                 string pythonScriptName = "ViewDeidentifiedDataConnection.py";
-                projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); 
                 string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
-
-                //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ViewDeidentifiedDataConnection.py";
                 string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
                 Console.WriteLine("Python Response: " + getpythonResponse);
 
@@ -369,28 +356,21 @@ namespace DE_IDENTIFICATION_TOOL
                     }
                     else if (selectedOption == "Database")
                     {
-                        // Pass selectedNode to DBLocationForm
                         DBLocationForm dbLocationForm = new DBLocationForm(selectedNode.Text, selectedNode, projectData, this);
                         dbLocationForm.ShowDialog();
                         dbLocationForm.Hide();
                     }
                     else if (selectedOption == "Json")
                     {
-                        //CSVLocationForm jsonLocationForm = new CSVLocationForm(selectedNode.Text);
                         JsonLocationForm jsonLocationForm = new JsonLocationForm(selectedNode.Text, selectedNode, projectData, this);
-
 
                         if (jsonLocationForm.ShowDialog() == DialogResult.OK)
                         {
-                            //string tableName = jsonLocationForm.txtForTblName.Text;
-                            //TreeNode tableNode = new TreeNode(tableName);
-                            //selectedNode.Nodes.Add(tableNode);
                             selectedNode.Expand();
 
                             var project = projectData.Find(p => p.Name == selectedNode.Text);
                             if (project != null)
                             {
-                                //project.Tables.Add(tableName);
                                 SaveProjectData();
                             }
                         }
@@ -399,7 +379,6 @@ namespace DE_IDENTIFICATION_TOOL
                 }
             }
         }
-
         public void SaveProjectData()
         {
             try
@@ -430,13 +409,12 @@ namespace DE_IDENTIFICATION_TOOL
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading data: {ex.Message}");
-                projectData = new List<ProjectData>(); // Ensure projectData is initialized even if an error occurs
+                projectData = new List<ProjectData>(); 
             }
         }
 
         private void RefreshItem_Click(object sender, EventArgs e)
         {
-            // Implement refresh functionality
             MessageBox.Show("Refreshing...");
         }
 
@@ -448,7 +426,6 @@ namespace DE_IDENTIFICATION_TOOL
 
             if (selectedNode.Parent != null && selectedNode.Parent.Text == "Projects")
             {
-                // Delete Project
                 var project = projectData.Find(p => p.Name == selectedNode.Text);
 
                 if (project != null)
@@ -458,9 +435,6 @@ namespace DE_IDENTIFICATION_TOOL
                     string pythonScriptName = "DeleteProjectConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                     string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
-
-                    //string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteProjectConnection.py";
-
                     string pythonResponse = pythonService.DeleteProjectData(projecrtname, pythonScriptPath);
 
                     if (pythonResponse.ToLower().Contains("success"))
@@ -488,9 +462,6 @@ namespace DE_IDENTIFICATION_TOOL
                     string pythonScriptName = "DeleteTableConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                     string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
-
-                    //string pythonfile = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\DeleteTableConnection.py";
-
                     string pythonResponse = pythonService.DeleteData(projecrtname, tablename, pythonScriptPath);
 
                     if (pythonResponse.ToLower().Contains("success"))
@@ -531,8 +502,6 @@ namespace DE_IDENTIFICATION_TOOL
             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
             string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
 
-            // Send data to Python script and capture the response
-            //string savePythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, savePythonScriptPath, jsonData);
             string savePythonResponse = pythonService.checkDeidentifiedTable(tablename, projectName, savePythonScriptPath);
 
             if (savePythonResponse.Contains("True"))
@@ -582,7 +551,6 @@ namespace DE_IDENTIFICATION_TOOL
             }
             catch (Exception)
             {
-                
                 MessageBox.Show("Could not open the user manual. Please make sure the file exists and you have the necessary permissions.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

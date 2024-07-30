@@ -28,19 +28,15 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string newName = txtBoxForRename.Text;
             if (!string.IsNullOrEmpty(newName))
             {
-                // Rename the TreeNode
                 string oldName = selectedNode.Text;
                 selectedNode.Text = newName;
-
                 if (parentNode == null)
                 {
-                    // Renaming a project
                     RenameProjectFolder(oldName, newName);
                     UpdateJsonFile(oldName, newName, isProject: true);
                 }
                 else
                 {
-                    // Renaming a table
                     if(RenameTableInProject(oldName, newName, parentNode) == "Success")
                     {
                         UpdateJsonFile(oldName, newName, isProject: false);
@@ -82,7 +78,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             try
             {
-                // Check if the old and new paths are different
                 if (oldFolderPath.Equals(newFolderPath, StringComparison.OrdinalIgnoreCase))
                 {
                     MessageBox.Show("The old and new table names are the same. Please enter a different name.", "Error");
@@ -91,8 +86,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 if (Directory.Exists(oldFolderPath))
                 {
-                    //string selectedFolderPath = folderBrowserDialog.SelectedPath;
-
                     string pythonScriptName = "RenameTableConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                     string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
@@ -110,12 +103,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     else
                     {
                         MessageBox.Show("rRename Unsuccess"+pythonResponse);
-                        
                     }
-
-                   
                 }
-                
             }
             catch (Exception ex)
             {
@@ -128,16 +117,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         {
             try
             {
-                // Read the JSON file
                 var jsonData = File.ReadAllText(jsonFilePath);
                 var jsonArray = JArray.Parse(jsonData);
 
-                // Find the project or table with the old name and update it
                 foreach (var item in jsonArray)
                 {
                     if (isProject)
                     {
-                        // Update project name
                         if (item["Name"]?.ToString() == oldName)
                         {
                             item["Name"] = newName;
@@ -146,7 +132,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     }
                     else
                     {
-                        // Update table name within a project
                         var tablesArray = item["Tables"] as JArray;
                         if (tablesArray != null)
                         {
@@ -161,8 +146,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         }
                     }
                 }
-
-                // Write the updated JSON back to the file
                 File.WriteAllText(jsonFilePath, jsonArray.ToString());
 
                 MessageBox.Show("JSON data updated successfully.");

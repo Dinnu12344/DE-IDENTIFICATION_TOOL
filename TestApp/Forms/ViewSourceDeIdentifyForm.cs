@@ -15,12 +15,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             InitializeComponent();
             InitializeDataGridView(jsonData);
         }
+
         private void InitializeDataGridView(string jsonData)
         {
             DataGridView dataGridView = new DataGridView
             {
                 Dock = DockStyle.Fill,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 AllowUserToAddRows = false,
                 ReadOnly = true,
                 AutoGenerateColumns = true,
@@ -54,16 +55,15 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 foreach (DataGridViewColumn column in dataGridView.Columns)
                 {
                     column.MinimumWidth = 100;
-                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
-
-                this.Controls.Add(dataGridView);
             }
             else
             {
-                MessageBox.Show("Failed to convert CSV to DataTable");
+                MessageBox.Show("Failed to convert JSON to DataTable");
             }
         }
+
         private DataTable ConvertJsonToDataTable(string jsonData)
         {
             DataTable dataTable = new DataTable();
@@ -76,6 +76,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     MessageBox.Show("JSON data is empty");
                     return null;
                 }
+
                 foreach (var key in dataList[0].Keys)
                 {
                     dataTable.Columns.Add(key);

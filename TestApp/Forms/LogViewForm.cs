@@ -83,7 +83,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             foreach (DateTime date in logs.Keys)
             {
-                dateListBox.Items.Add(date.ToShortDateString());
+                dateListBox.Items.Add(date.ToString("yyyy-MM-dd"));
             }
         }
 
@@ -91,15 +91,25 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         {
             if (dateListBox.SelectedIndex != -1)
             {
-                DateTime selectedDate = DateTime.Parse(dateListBox.SelectedItem.ToString());
+                try
+                {
+                    DateTime selectedDate = DateTime.ParseExact(dateListBox.SelectedItem.ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-                if (logs.ContainsKey(selectedDate))
-                {
-                    logTextBox.Text = logs[selectedDate];
+                    if (logs.ContainsKey(selectedDate))
+                    {
+                        logTextBox.Items.Clear(); // Clear previous log entries
+                        string[] logLines = logs[selectedDate].Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                        logTextBox.Items.AddRange(logLines);
+                    }
+                    else
+                    {
+                        logTextBox.Items.Clear();
+                        logTextBox.Items.Add("No logs available for selected date.");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    logTextBox.Text = "No logs available for selected date.";
+                    MessageBox.Show($"Error displaying log content: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

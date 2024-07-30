@@ -7,13 +7,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
     partial class LogViewForm
     {
         private ListBox dateListBox;
-        private TextBox logTextBox;
+        private ListBox logTextBox;
 
         private void InitializeComponent()
         {
             ComponentResourceManager resources = new ComponentResourceManager(typeof(LogViewForm));
             this.dateListBox = new ListBox();
-            this.logTextBox = new TextBox();
+            this.logTextBox = new ListBox();
             this.SuspendLayout();
             // 
             // dateListBox
@@ -29,9 +29,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.logTextBox.Dock = DockStyle.Fill;
             this.logTextBox.Location = new Point(200, 0);
-            this.logTextBox.Multiline = true;
             this.logTextBox.Name = "logTextBox";
-            this.logTextBox.ScrollBars = ScrollBars.Vertical;
             this.logTextBox.Size = new Size(600, 450);
             this.logTextBox.TabIndex = 1;
             // 
@@ -44,7 +42,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.Name = "LogViewForm";
             this.Text = "LogView";
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
     }
 }

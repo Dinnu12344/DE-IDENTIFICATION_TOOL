@@ -11,13 +11,9 @@ using System.Windows.Forms;
 using System;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
-
 {
-
     public partial class DbtableForm : Form
-
     {
-
         private readonly DbtableFormModel _properties;
         private PythonService pythonService;
         private Button btnNew;
@@ -31,8 +27,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             LoadDatabases();
 
-            // Initialize New and Delete buttons
-
             btnNew = new Button { Text = "+ New", Visible = false };
 
             btnNew.Click += BtnNew_Click;
@@ -45,169 +39,92 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             Controls.Add(btnDelete);
 
-            btnForFinish.Enabled = true/*false*/;
-
+            btnForFinish.Enabled = true;
         }
 
         private void LoadDatabases()
-
         {
-
             string connectionString = _properties.ConnectionString;
-
             using (SqlConnection myConnection = new SqlConnection(connectionString))
-
             {
-
                 try
-
                 {
-
                     myConnection.Open();
-
-                    // Query to get all database names
-
                     string query = "SELECT name FROM sys.databases";
-
                     using (SqlCommand cmd = new SqlCommand(query, myConnection))
-
                     {
-
                         using (SqlDataReader reader = cmd.ExecuteReader())
-
                         {
-
                             while (reader.Read())
-
                             {
-
                                 cmbDatabases.Items.Add(reader["name"].ToString());
-
                             }
-
                         }
-
                     }
-
                 }
-
                 catch (Exception ex)
-
                 {
-
                     MessageBox.Show($"Failed to load databases: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                 }
-
             }
-
         }
-
         private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
 
         {
-
             _properties.dbName = cmbDatabases.SelectedItem.ToString();
-
             UpdateFinishButtonVisibility();
-
             string selectedDatabase = cmbDatabases.SelectedItem.ToString();
-
             LoadTables(selectedDatabase);
-
         }
 
         private void cmbTables_SelectedIndexChanged(object sender, EventArgs e)
 
         {
-
             _properties.tableName = cmbTables.SelectedItem.ToString();
-
             UpdateFinishButtonVisibility();
-
         }
 
         private void txtForNoofColumns_TextChanged(object sender, EventArgs e)
-
         {
-
             _properties.rowCount = txtForNoofColumns.Text;
-
             UpdateFinishButtonVisibility();
-
         }
 
         private void UpdateFinishButtonVisibility()
-
         {
-
             btnForFinish.Enabled = !string.IsNullOrEmpty(_properties.dbName) &&
 
                                    !string.IsNullOrEmpty(_properties.tableName) &&
 
                                    !string.IsNullOrEmpty(_properties.rowCount);
-
         }
-
-
         private Dictionary<string, string> tableSchemas = new Dictionary<string, string>();
 
         private Dictionary<string, List<string>> tableColumns = new Dictionary<string, List<string>>();
 
         private void LoadTables(string database)
-
         {
-
             string connectionStringWithDatabase = $"{_properties.ConnectionString};database={database}";
-
             using (SqlConnection myConnection = new SqlConnection(connectionStringWithDatabase))
-
             {
-
                 try
-
                 {
-
                     myConnection.Open();
-
-                    // Query to get all table names, schemas, and columns
-
                     string query = @"
-
-                        SELECT 
-
-                            TABLE_SCHEMA, 
-
-                            TABLE_NAME, 
-
-                            COLUMN_NAME 
-
-                        FROM 
-
-                            INFORMATION_SCHEMA.COLUMNS 
-
-                        WHERE 
-
-                            TABLE_NAME IN (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')";
+                        SELECT TABLE_SCHEMA,TABLE_NAME,COLUMN_NAME 
+                        FROM INFORMATION_SCHEMA.COLUMNS 
+                        WHERE TABLE_NAME IN 
+                        (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')";
 
                     using (SqlCommand cmd = new SqlCommand(query, myConnection))
-
                     {
-
                         using (SqlDataReader reader = cmd.ExecuteReader())
-
                         {
-
                             cmbTables.Items.Clear();
-
                             tableSchemas.Clear();
-
-                            tableColumns.Clear(); // Initialize tableColumns dictionary
-
+                            tableColumns.Clear();
                             while (reader.Read())
-
                             {
-
                                 string schema = reader["TABLE_SCHEMA"].ToString();
 
                                 string tableName = reader["TABLE_NAME"].ToString();
@@ -217,312 +134,28 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                                 string fullTableName = $"{schema}.{tableName}";
 
                                 if (!cmbTables.Items.Contains(fullTableName))
-
                                 {
 
                                     cmbTables.Items.Add(fullTableName);
 
                                     tableSchemas[tableName] = schema;
-
                                 }
-
                                 if (!tableColumns.ContainsKey(fullTableName))
-
                                 {
-
                                     tableColumns[fullTableName] = new List<string>();
-
                                 }
-
                                 tableColumns[fullTableName].Add(columnName);
-
                             }
-
-                            cmbTables.Show(); // Show the tables dropdown once it's populated
-
+                            cmbTables.Show();
                         }
-
                     }
-
                 }
-
                 catch (Exception ex)
-
                 {
-
                     MessageBox.Show($"Failed to load tables: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                 }
-
             }
-
         }
-
-
-        //private void btnForFinish_Click(object sender, EventArgs e)
-
-        //{
-
-        //    string projectName = _properties.SelectedNode.Text;
-
-        //    string TableName = cmbTables.Text;
-
-        //    string tableName = TableName.Split('.')[1]; // Extract the table name
-
-        //    string schemaName = tableSchemas[tableName]; // Get the schema name from the dictionary
-
-        //    string DatabaseName = cmbDatabases.Text;
-
-        //    string connectionString = _properties.ConnectionString;
-
-        //    string Enterno = txtForNoofColumns.Text;
-
-        //    string serverPattern = @"server\s*=\s*([^;]+)";
-
-        //    string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
-
-        //    string passwordPattern = @"password\s*=\s*([^;]+)";
-
-        //    string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
-
-        //    string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //    string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //    string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //    string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //    string pythonScriptName = "ImportSqlConnection.py";
-
-        //    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-
-        //    string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-
-        //    string pythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, pythonScriptPath);
-
-        //    if (pythonResponse.ToLower().Contains("success"))
-
-        //    {
-
-        //        if (_properties.SelectedNode == null)
-
-        //        {
-
-        //            MessageBox.Show("Selected node is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-        //            return;
-
-        //        }
-
-        //        if (_properties.ProjectData == null)
-
-        //        {
-
-        //            MessageBox.Show("Project data is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-        //            return;
-
-        //        }
-
-        //        if (_properties.HomeForm == null)
-
-        //        {
-
-        //            MessageBox.Show("Home form reference is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-        //            return;
-
-        //        }
-
-        //        Add the table to the selected node in the TreeView
-
-        //        TreeNode tableNode = new TreeNode(tableName);
-
-        //        _properties.SelectedNode.Nodes.Add(tableNode);
-
-        //        _properties.SelectedNode.Expand();
-
-        //        var project = _properties.ProjectData.Find(p => p.Name == _properties.SelectedNode.Text);
-
-        //        if (project != null)
-
-        //        {
-
-        //            project.Tables.Add(tableName);
-
-        //            _properties.HomeForm.SaveProjectData();
-
-        //        }
-
-        //        this.DialogResult = DialogResult.OK;
-
-        //        this.Hide();
-
-        //    }
-
-        //    else
-
-        //    {
-
-        //        MessageBox.Show("The CSV file is not valid. Error: " + pythonResponse, "Error");
-
-        //    }
-
-        //}
-
-
-        //private void btnForFinish_Click(object sender, EventArgs e)
-        //{
-
-        //    // Extract common information
-
-        //    string projectName = _properties.SelectedNode.Text;
-
-        //    string TableName = cmbTables.Text;
-
-        //    string tableName = TableName.Split('.')[1]; // Extract the table name
-
-        //    string schemaName = tableSchemas[tableName]; // Get the schema name from the dictionary
-
-        //    string DatabaseName = cmbDatabases.Text;
-
-        //    string connectionString = _properties.ConnectionString;
-
-        //    string Enterno = txtForNoofColumns.Text;
-
-        //    string serverPattern = @"server\s*=\s*([^;]+)";
-
-        //    string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
-
-        //    string passwordPattern = @"password\s*=\s*([^;]+)";
-
-        //    string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
-
-        //    string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //    string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //    string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //    string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-        //    try
-        //    {
-
-        //        if (checkBoxforPullreleateddata.Checked)
-        //        {
-
-        //            var selectedData = new List<SelectedTableData>();
-
-        //            // Ensure all collections have the same count
-
-        //            int count = _properties.SelectedCheck.Count;
-
-        //            if (_properties.ExistingTableCombos.Count != count ||
-        //                _properties.KeyCombos.Count != count ||
-        //                _properties.SourceTableCombos.Count + _properties.SourceTableTextBoxs.Count != count ||
-        //                _properties.SourceKeyCombos.Count != count)
-        //            {
-        //                throw new InvalidOperationException("Collection counts are not synchronized.");
-        //            }
-        //            for (int i = 0; i < count; i++)
-        //            {
-        //                if (_properties.SelectedCheck[i].Checked)
-        //                {
-        //                    var data = new SelectedTableData
-        //                    {
-        //                        ExistingTable = _properties.ExistingTableCombos[i].Text,
-        //                        ExistingColumn = _properties.KeyCombos[i].Text,
-        //                        SourceTable = _properties.SourceTableCombos.Count > i
-        //                                      ? _properties.SourceTableCombos[i].Text
-        //                                      : _properties.SourceTableTextBoxs[i - _properties.SourceTableCombos.Count].Text,
-        //                        SourceColumn = _properties.SourceKeyCombos[i].Text
-        //                    };
-        //                    selectedData.Add(data);
-        //                }
-        //            }
-
-        //            string jsonData = JsonConvert.SerializeObject(selectedData);
-
-
-        //            MessageBox.Show(jsonData);
-
-        //            // Define the Python script path for the checkbox-checked scenario
-
-        //            string savePythonScriptName = "ImportRelatedSqlDataConnection.py";
-        //            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-        //            string savePythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", savePythonScriptName);
-
-        //            // Send data to Python script and capture the response
-        //            string savePythonResponse = pythonService.SendSqlDataToPython(projectName, server, DatabaseName, userId, password, TableName, jsonData, Enterno, savePythonScriptPath);
-        //            // Handle the response from the Python script
-
-        //            if (savePythonResponse.ToLower().Contains("success"))
-        //            {
-        //                MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //                return; // Exit the method if it fails to save data
-        //            }
-        //            // Define the Python script path for the default scenario
-        //            string importPythonScriptName = "ImportSqlConnection.py";
-        //            string importProjectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-        //            string importPythonScriptPath = Path.Combine(importProjectRootDirectory, "PythonScripts", importPythonScriptName);
-        //            string importPythonResponse = pythonService.SendSqlDataToPython(projectName, server, DatabaseName, userId, password, TableName, jsonData, Enterno, savePythonScriptPath);
-        //            if (importPythonResponse.ToLower().Contains("success"))
-        //            {
-
-        //                if (_properties.SelectedNode == null)
-        //                {
-        //                    MessageBox.Show("Selected node is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //                    return;
-        //                }
-
-        //                if (_properties.ProjectData == null)
-        //                {
-        //                    MessageBox.Show("Project data is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //                    return;
-        //                }
-
-        //                if (_properties.HomeForm == null)
-        //                {
-        //                    MessageBox.Show("Home form reference is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //                    return;
-        //                }
-
-        //                // Add the table to the selected node in the TreeView
-
-        //                TreeNode tableNode = new TreeNode(tableName);
-        //                _properties.SelectedNode.Nodes.Add(tableNode);
-        //                _properties.SelectedNode.Expand();
-        //                var project = _properties.ProjectData.Find(p => p.Name == _properties.SelectedNode.Text);
-        //                if (project != null)
-        //                {
-        //                    project.Tables.Add(tableName);
-        //                    _properties.HomeForm.SaveProjectData();
-        //                }
-        //                this.DialogResult = DialogResult.OK;
-        //                this.Hide();
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("The CSV file is not valid. Error: " + importPythonResponse, "Error");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Failed to save data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
-
-
-
-
-
-
         private void btnForFinish_Click(object sender, EventArgs e)
         {
             string projectName = _properties.SelectedNode.Text;
@@ -549,7 +182,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 {
                     var selectedData = new List<SelectedTableData>();
 
-                    // Ensure all collections have the same count
                     int count = _properties.SelectedCheck.Count;
                     if (_properties.ExistingTableCombos.Count != count ||
                         _properties.KeyCombos.Count != count ||
@@ -583,9 +215,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     string savePythonScriptName = "ImportRelatedSqlDataConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                     string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
-
-                    // Send data to Python script and capture the response
-                    //string savePythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, savePythonScriptPath, jsonData);
                     string savePythonResponse = pythonService.SendSqlDataToPython(projectName, server, DatabaseName, userId, password, TableName, jsonData, Enterno, savePythonScriptPath);
 
                     if (savePythonResponse.ToLower().Contains("success"))
@@ -623,7 +252,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
                 else
                 {
-                    // Define the Python script path for the default scenario
                     string importPythonScriptName = "ImportSqlConnection.py";
                     string importProjectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                     string importPythonScriptPath = Path.Combine(importProjectRootDirectory, importPythonScriptName);
@@ -635,7 +263,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                         string username = Environment.UserName;
                         string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{tableName}\LogFile";
-                        // Ensure the directory exists
                         if (!Directory.Exists(directoryPath))
                         {
                             Directory.CreateDirectory(directoryPath);
@@ -660,7 +287,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                             return;
                         }
 
-                        // Add the table to the selected node in the TreeView
                         TreeNode tableNode = new TreeNode(tableName);
                         _properties.SelectedNode.Nodes.Add(tableNode);
                         _properties.SelectedNode.Expand();
@@ -706,7 +332,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         {
 
-            // Remove all dynamically added ComboBox and TextBox controls
 
             var controlsToRemove = panelForPullreleatedData.Controls.OfType<Control>()
 
@@ -721,9 +346,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 panelForPullreleatedData.Controls.Remove(control);
 
             }
-
-            // Clear the lists holding references to the dynamic controls
-
             _properties.SelectedCheck.Clear();
 
             _properties.ExistingTableCombos.Clear();
@@ -734,24 +356,19 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             _properties.SourceKeyCombos.Clear();
 
-            _properties.SourceTableTextBoxs.Clear(); // Assuming you also need to clear this list
-
+            _properties.SourceTableTextBoxs.Clear();
         }
 
         private void HideNewAndDeleteButtons()
 
         {
-
             btnNew.Visible = false;
-
             btnDelete.Visible = false;
-
         }
 
         private void ShowNewAndDeleteButtons()
 
         {
-
             btnNew.Location = new Point(22, 14);
 
             btnNew.Visible = true;
@@ -763,7 +380,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             btnDelete.Visible = true;
 
             panelForPullreleatedData.Controls.Add(btnDelete);
-
         }
 
         private void ShowHeadersAndDropDowns(/*string response*/)
@@ -772,19 +388,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             string projectName = _properties.ProjectName;
 
-            // Get the base directory of the currently executing application domain
-
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            // Construct the dynamic path to the JSON file
 
             string jsonFilePath = Path.Combine(baseDirectory, "projectData.json");
 
-            // Get the list of tables from JSON file
-
             List<string> existingTables = GetAllTablesFromJson(jsonFilePath, projectName);
-
-            // Initial setup for the keys, assuming the first table is selected
 
             string selectedTable = existingTables.FirstOrDefault();
 
@@ -1207,20 +815,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             _properties.SourceKeyCombos.Add(cbSourceKey);
 
         }
-
-
         private void BtnDelete_Click(object sender, EventArgs e)
-
         {
-
             for (int i = _properties.SelectedCheck.Count - 1; i >= 0; i--)
 
             {
-
                 if (_properties.SelectedCheck[i].Checked)
-
                 {
-
                     int index = (int)_properties.SelectedCheck[i].Tag;
 
                     panelForPullreleatedData.Controls.Remove(_properties.SelectedCheck[i]);
@@ -1243,12 +844,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     _properties.SourceKeyCombos.RemoveAt(index);
 
-                    // Adjust tags for remaining controls
-
                     for (int j = i; j < _properties.SelectedCheck.Count; j++)
 
                     {
-
                         _properties.SelectedCheck[j].Tag = j;
 
                         _properties.ExistingTableCombos[j].Tag = j;
@@ -1258,7 +856,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         _properties.SourceTableCombos[j].Tag = j;
 
                         _properties.SourceKeyCombos[j].Tag = j;
-
                     }
 
                 }
@@ -1266,1266 +863,5 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
 
         }
-
-
-
-
-        //private void btnForSavePullreleatedData_Click(object sender, EventArgs e)
-
-        //{
-
-        //    try
-
-        //    {
-
-        //        var selectedData = new List<SelectedTableData>();
-
-        //        // Ensure all collections have the same count
-
-        //        int count = _properties.SelectedCheck.Count;
-
-        //        if (_properties.ExistingTableCombos.Count != count ||
-
-        //            _properties.KeyCombos.Count != count ||
-
-        //            _properties.SourceTableCombos.Count + _properties.SourceTableTextBoxs.Count != count ||
-
-        //            _properties.SourceKeyCombos.Count != count)
-
-        //        {
-
-        //            throw new InvalidOperationException("Collection counts are not synchronized.");
-
-        //        }
-
-        //        for (int i = 0; i < count; i++)
-
-        //        {
-
-        //            if (_properties.SelectedCheck[i].Checked)
-
-        //            {
-
-        //                var data = new SelectedTableData
-
-        //                {
-
-        //                    ExistingTable = _properties.ExistingTableCombos[i].Text,
-
-        //                    ExistingColumn = _properties.KeyCombos[i].Text,
-
-        //                    SourceTable = _properties.SourceTableCombos.Count > i
-
-        //                                  ? _properties.SourceTableCombos[i].Text
-
-        //                                  : _properties.SourceTableTextBoxs[i - _properties.SourceTableCombos.Count].Text,
-
-        //                    SourceColumn = _properties.SourceKeyCombos[i].Text
-
-        //                };
-
-        //                selectedData.Add(data);
-
-        //            }
-
-        //        }
-
-        //        string jsonData = JsonConvert.SerializeObject(selectedData);
-
-        //        // Extract information from properties
-
-        //        string projectName = _properties.ProjectName;
-
-        //        string tableName = cmbTables.Text.Split('.')[1]; // Extract the table name
-
-        //                                                         //string schemaName = _properties.TableSchemas[tableName]; // Get the schema name from the dictionary
-
-        //        string databaseName = cmbDatabases.Text;
-
-        //        string connectionString = _properties.ConnectionString;
-
-        //        //string rowCount = _properties.RowCount;
-
-        //        // Extract details from connection string
-
-        //        string serverPattern = @"server\s*=\s*([^;]+)";
-
-        //        string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
-
-        //        string passwordPattern = @"password\s*=\s*([^;]+)";
-
-        //        string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
-
-        //        string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //        string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //        string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //        string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-        //        // Display the serialized JSON data (for debugging purposes)
-
-        //        MessageBox.Show(jsonData);
-
-        //        // Define the Python script path
-
-        //        string pythonScriptName = "your_python_script.py";
-
-        //        string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-
-        //        string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-
-        //        // Send data to Python script and capture the response
-
-        //        string pythonResponse = "";// pythonService.SendSqlDataToPython(server, databaseName, password, userId, projectName, rowCount, tableName, schemaName, pythonScriptPath, jsonData);
-
-        //        // Handle the response from the Python script
-
-        //        if (pythonResponse.ToLower().Contains("success"))
-
-        //        {
-
-        //            btnForSavePullreleatedData.Enabled = false;
-
-        //            btnForFinish.Enabled = true;
-
-        //            MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        //        }
-
-        //        else
-
-        //        {
-
-        //            MessageBox.Show("Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-        //            btnForSavePullreleatedData.Enabled = false;
-
-        //            btnForFinish.Enabled = true;
-
-        //        }
-
-        //    }
-
-        //    catch (Exception ex)
-
-        //    {
-
-        //        MessageBox.Show($"Failed to save data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-        //    }
-
-        //}
-
     }
-
 }
-
-////using DE_IDENTIFICATION_TOOL.Models;
-////using System;
-////using System.Collections.Specialized;
-////using System.Data.SqlClient;
-////using System.Drawing;
-////using System.Windows.Forms;
-////using System.Web;
-////using System.Text.RegularExpressions;
-////using System.Collections.Generic;
-////using DE_IDENTIFICATION_TOOL.Pythonresponse;
-////using System.IO;
-
-////namespace DE_IDENTIFICATION_TOOL.Forms
-////{
-////    public partial class DbtableForm : Form
-////    {
-////        private string _connectionString;
-////        private readonly string labelName;
-////        private PythonService pythonService;
-
-////        private TreeNode _selectedNode;
-////        private List<ProjectData> _projectData;
-////        private HomeForm _homeForm;
-////        public string EnteredText { get; set; }
-
-////        public DbtableForm(string connectionString, TreeNode selectednode, List<ProjectData> projectData, HomeForm homeForm)
-////        {
-////            InitializeComponent();
-////            pythonService = new PythonService();
-////            _connectionString = connectionString;
-////            _selectedNode = selectednode;
-////            _homeForm = homeForm;
-////            _projectData = projectData;
-////            LoadDatabases();
-////            this.labelName = labelName;
-////        }
-
-////        private void LoadDatabases()
-////        {
-////            using (SqlConnection myConnection = new SqlConnection(_connectionString))
-////            {
-////                try
-////                {
-////                    myConnection.Open();
-
-////                    // Query to get all database names
-////                    string query = "SELECT name FROM sys.databases";
-
-////                    using (SqlCommand cmd = new SqlCommand(query, myConnection))
-////                    {
-////                        using (SqlDataReader reader = cmd.ExecuteReader())
-////                        {
-////                            while (reader.Read())
-////                            {
-////                                cmbDatabases.Items.Add(reader["name"].ToString());
-////                            }
-////                        }
-////                    }
-////                }
-////                catch (Exception ex)
-////                {
-////                    MessageBox.Show($"Failed to load databases: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-////                }
-////            }
-////        }
-
-////        private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
-////        {
-////            string selectedDatabase = cmbDatabases.SelectedItem.ToString();
-////            LoadTables(selectedDatabase);
-////        }
-
-////        private Dictionary<string, string> tableSchemas = new Dictionary<string, string>();
-
-////        private void LoadTables(string database)
-////        {
-////            string connectionStringWithDatabase = $"{_connectionString};database={database}";
-
-////            using (SqlConnection myConnection = new SqlConnection(connectionStringWithDatabase))
-////            {
-////                try
-////                {
-////                    myConnection.Open();
-
-////                    // Query to get all table names and schemas
-////                    string query = "SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'";
-
-////                    using (SqlCommand cmd = new SqlCommand(query, myConnection))
-////                    {
-////                        using (SqlDataReader reader = cmd.ExecuteReader())
-////                        {
-////                            cmbTables.Items.Clear();
-////                            tableSchemas.Clear();
-////                            while (reader.Read())
-////                            {
-////                                string schema = reader["TABLE_SCHEMA"].ToString();
-////                                string tableName = reader["TABLE_NAME"].ToString();
-////                                cmbTables.Items.Add($"{schema}.{tableName}");
-////                                tableSchemas[tableName] = schema;
-////                            }
-////                            cmbTables.Show(); // Show the tables dropdown once it's populated
-////                        }
-////                    }
-////                }
-////                catch (Exception ex)
-////                {
-////                    MessageBox.Show($"Failed to load tables: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-////                }
-////            }
-////        }
-////        //private void LoadTables(string database)
-////        //{
-////        //    string connectionStringWithDatabase = $"{_connectionString};database={database}";
-
-////        //    using (SqlConnection myConnection = new SqlConnection(connectionStringWithDatabase))
-////        //    {
-////        //        try
-////        //        {
-////        //            myConnection.Open();
-
-////        //            // Query to get all table names
-////        //            string query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'";
-
-////        //            using (SqlCommand cmd = new SqlCommand(query, myConnection))
-////        //            {
-////        //                using (SqlDataReader reader = cmd.ExecuteReader())
-////        //                {
-////        //                    cmbTables.Items.Clear();
-////        //                    while (reader.Read())
-////        //                    {
-////        //                        cmbTables.Items.Add(reader["TABLE_NAME"].ToString());
-////        //                    }
-////        //                    cmbTables.Show(); // Show the tables dropdown once it's populated
-////        //                }
-////        //            }
-////        //        }
-////        //        catch (Exception ex)
-////        //        {
-////        //            MessageBox.Show($"Failed to load tables: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-////        //        }
-////        //    }
-////        //}
-
-////        private void btnForAddingColumns_Click(object sender, EventArgs e)
-////        {
-////            AddColumns();
-////        }
-
-////        private void AddColumns()
-////        {
-
-////        }
-
-////        private void btnForFinish_Click(object sender, EventArgs e)
-////        {
-////            string projectName = _selectedNode.Text;
-////            string TableName = cmbTables.Text;
-////            string tableName = TableName.Split('.')[1]; // Extract the table name
-////            string schemaName = tableSchemas[tableName]; // Get the schema name from the dictionary
-////            string DatabaseName = cmbDatabases.Text;
-////            string connectionString = _connectionString;
-////            string Enterno = txtForNoofColumns.Text;
-
-////            string serverPattern = @"server\s*=\s*([^;]+)";
-////            string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
-////            string passwordPattern = @"password\s*=\s*([^;]+)";
-////            string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
-
-////            string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-////            string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-////            string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-////            string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-////            //MessageBox.Show("Server: " + server);
-////            //MessageBox.Show("User ID: " + userId);
-////            //MessageBox.Show("Password: " + password);
-////            //MessageBox.Show("Connection Timeout: " + connectionTimeout);
-////            //MessageBox.Show("Project name is: " + projectName + " and table name is: " + tableName);
-
-////            string pythonScriptName = "ImportSqlConnection.py";
-////            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-////            string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-
-////            //string pythonScriptPath = @"E:\DE-IDENTIFICATION TOOL\DE_IDENTIFICATION_TOOL\TestApp\PythonScripts\ImportSqlConnection.py";
-////            string pythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, pythonScriptPath);
-
-////            if (pythonResponse.ToLower().Contains("success"))
-////            {
-////                if (_selectedNode == null)
-////                {
-////                    MessageBox.Show("Selected node is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-////                    return;
-////                }
-
-////                if (_projectData == null)
-////                {
-////                    MessageBox.Show("Project data is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-////                    return;
-////                }
-
-////                if (_homeForm == null)
-////                {
-////                    MessageBox.Show("Home form reference is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-////                    return;
-////                }
-
-////                // Add the table to the selected node in the TreeView
-////                TreeNode tableNode = new TreeNode(tableName);
-////                _selectedNode.Nodes.Add(tableNode);
-////                _selectedNode.Expand();
-
-////                var project = _projectData.Find(p => p.Name == _selectedNode.Text);
-////                if (project != null)
-////                {
-////                    project.Tables.Add(tableName);
-////                    _homeForm.SaveProjectData();
-////                }
-
-////                this.DialogResult = DialogResult.OK;
-////                this.Hide();
-////            }
-////            else
-////            {
-////                MessageBox.Show("The CSV file is not valid. Error: " + pythonResponse, "Error");
-////            }
-////        }
-////    }
-////}
-
-
-//using DE_IDENTIFICATION_TOOL.Models;
-//using System;
-//using System.Data.SqlClient;
-//using System.Drawing;
-//using System.Windows.Forms;
-//using System.Text.RegularExpressions;
-//using System.Collections.Generic;
-//using DE_IDENTIFICATION_TOOL.Pythonresponse;
-//using System.IO;
-//using System.Linq;
-//using Newtonsoft.Json;
-
-//namespace DE_IDENTIFICATION_TOOL.Forms
-//{
-//    public partial class DbtableForm : Form
-//    {
-//        private readonly DbtableFormModel _properties;
-//        private PythonService pythonService;
-//        private Button btnNew;
-//        private Button btnDelete;
-
-//        public DbtableForm(DbtableFormModel properties)
-//        {
-//            InitializeComponent();
-//            btnForSavePullreleatedData.Enabled = false;
-//            pythonService = new PythonService();
-//            _properties = properties;
-//            LoadDatabases();
-
-//            // Initialize New and Delete buttons
-//            btnNew = new Button { Text = "+ New", Visible = false };
-//            btnNew.Click += BtnNew_Click;
-//            Controls.Add(btnNew);
-
-//            btnDelete = new Button { Text = "Delete", Visible = false };
-//            btnDelete.Click += BtnDelete_Click;
-//            Controls.Add(btnDelete);
-//            btnForFinish.Enabled = true;
-//        }
-
-//        private void LoadDatabases()
-//        {
-//            string connectionString = _properties.ConnectionString;
-//            using (SqlConnection myConnection = new SqlConnection(connectionString))
-//            {
-//                try
-//                {
-//                    myConnection.Open();
-
-//                    // Query to get all database names
-//                    string query = "SELECT name FROM sys.databases";
-
-//                    using (SqlCommand cmd = new SqlCommand(query, myConnection))
-//                    {
-//                        using (SqlDataReader reader = cmd.ExecuteReader())
-//                        {
-//                            while (reader.Read())
-//                            {
-//                                cmbDatabases.Items.Add(reader["name"].ToString());
-//                            }
-//                        }
-//                    }
-//                }
-//                catch (Exception ex)
-//                {
-//                    MessageBox.Show($"Failed to load databases: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                }
-//            }
-//        }
-
-//        // Assuming _properties is a class-level field of type DbtableFormModel or a similar class
-//        //private DbtableFormModel _properties = new DbtableFormModel();
-
-//        private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            _properties.dbName = cmbDatabases.SelectedItem.ToString();
-//            UpdateFinishButtonVisibility();
-//            string selectedDatabase = cmbDatabases.SelectedItem.ToString();
-//            LoadTables(selectedDatabase);
-//        }
-
-//        private void cmbTables_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            _properties.tableName = cmbTables.SelectedItem.ToString();
-//            UpdateFinishButtonVisibility();
-//        }
-
-//        private void txtForNoofColumns_TextChanged(object sender, EventArgs e)
-//        {
-//            _properties.rowCount = txtForNoofColumns.Text;
-//            UpdateFinishButtonVisibility();
-//        }
-
-//        private void UpdateFinishButtonVisibility()
-//        {
-//            btnForFinish.Enabled = !string.IsNullOrEmpty(_properties.dbName) &&
-//                                   !string.IsNullOrEmpty(_properties.tableName) &&
-//                                   !string.IsNullOrEmpty(_properties.rowCount);
-//        }
-
-
-//        private Dictionary<string, string> tableSchemas = new Dictionary<string, string>();
-//        private Dictionary<string, List<string>> tableColumns = new Dictionary<string, List<string>>();
-//        private void LoadTables(string database)
-//        {
-//            string connectionStringWithDatabase = $"{_properties.ConnectionString};database={database}";
-
-//            using (SqlConnection myConnection = new SqlConnection(connectionStringWithDatabase))
-//            {
-//                try
-//                {
-//                    myConnection.Open();
-
-//                    // Query to get all table names, schemas, and columns
-//                    string query = @"
-//                        SELECT 
-//                            TABLE_SCHEMA, 
-//                            TABLE_NAME, 
-//                            COLUMN_NAME 
-//                        FROM 
-//                            INFORMATION_SCHEMA.COLUMNS 
-//                        WHERE 
-//                            TABLE_NAME IN (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')";
-
-//                    using (SqlCommand cmd = new SqlCommand(query, myConnection))
-//                    {
-//                        using (SqlDataReader reader = cmd.ExecuteReader())
-//                        {
-//                            cmbTables.Items.Clear();
-//                            tableSchemas.Clear();
-//                            tableColumns.Clear(); // Initialize tableColumns dictionary
-
-//                            while (reader.Read())
-//                            {
-//                                string schema = reader["TABLE_SCHEMA"].ToString();
-//                                string tableName = reader["TABLE_NAME"].ToString();
-//                                string columnName = reader["COLUMN_NAME"].ToString();
-
-//                                string fullTableName = $"{schema}.{tableName}";
-
-//                                if (!cmbTables.Items.Contains(fullTableName))
-//                                {
-//                                    cmbTables.Items.Add(fullTableName);
-//                                    tableSchemas[tableName] = schema;
-//                                }
-
-//                                if (!tableColumns.ContainsKey(fullTableName))
-//                                {
-//                                    tableColumns[fullTableName] = new List<string>();
-//                                }
-
-//                                tableColumns[fullTableName].Add(columnName);
-//                            }
-//                            cmbTables.Show(); // Show the tables dropdown once it's populated
-//                        }
-//                    }
-//                }
-//                catch (Exception ex)
-//                {
-//                    MessageBox.Show($"Failed to load tables: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                }
-//            }
-//        }
-
-
-//        //private void btnForFinish_Click(object sender, EventArgs e)
-//        //{
-//        //    string projectName = _properties.SelectedNode.Text;
-//        //    string TableName = cmbTables.Text;
-//        //    string tableName = TableName.Split('.')[1]; // Extract the table name
-//        //    string schemaName = tableSchemas[tableName]; // Get the schema name from the dictionary
-//        //    string DatabaseName = cmbDatabases.Text;
-//        //    string connectionString = _properties.ConnectionString;
-//        //    string Enterno = txtForNoofColumns.Text;
-
-//        //    string serverPattern = @"server\s*=\s*([^;]+)";
-//        //    string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
-//        //    string passwordPattern = @"password\s*=\s*([^;]+)";
-//        //    string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
-
-//        //    string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//        //    string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//        //    string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//        //    string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-//        //    string pythonScriptName = "ImportSqlConnection.py";
-//        //    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-//        //    string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-
-//        //    string pythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, pythonScriptPath);
-
-//        //    if (pythonResponse.ToLower().Contains("success"))
-//        //    {
-//        //        if (_properties.SelectedNode == null)
-//        //        {
-//        //            MessageBox.Show("Selected node is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//        //            return;
-//        //        }
-
-//        //        if (_properties.ProjectData == null)
-//        //        {
-//        //            MessageBox.Show("Project data is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//        //            return;
-//        //        }
-
-//        //        if (_properties.HomeForm == null)
-//        //        {
-//        //            MessageBox.Show("Home form reference is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//        //            return;
-//        //        }
-
-//        //        // Add the table to the selected node in the TreeView
-//        //        TreeNode tableNode = new TreeNode(tableName);
-//        //        _properties.SelectedNode.Nodes.Add(tableNode);
-//        //        _properties.SelectedNode.Expand();
-
-//        //        var project = _properties.ProjectData.Find(p => p.Name == _properties.SelectedNode.Text);
-//        //        if (project != null)
-//        //        {
-//        //            project.Tables.Add(tableName);
-//        //            _properties.HomeForm.SaveProjectData();
-//        //        }
-
-//        //        this.DialogResult = DialogResult.OK;
-//        //        this.Hide();
-//        //    }
-//        //    else
-//        //    {
-//        //        MessageBox.Show("The CSV file is not valid. Error: " + pythonResponse, "Error");
-//        //    }
-//        //}
-
-//        private void btnForFinish_Click(object sender, EventArgs e)
-//        {
-//            // Extract common information
-//            string projectName = _properties.SelectedNode.Text;
-//            string TableName = cmbTables.Text;
-//            string tableName = TableName.Split('.')[1]; // Extract the table name
-//            string schemaName = tableSchemas[tableName]; // Get the schema name from the dictionary
-//            string DatabaseName = cmbDatabases.Text;
-//            string connectionString = _properties.ConnectionString;
-//            string Enterno = txtForNoofColumns.Text;
-
-//            string serverPattern = @"server\s*=\s*([^;]+)";
-//            string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
-//            string passwordPattern = @"password\s*=\s*([^;]+)";
-//            string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
-
-//            string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//            string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//            string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//            string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-//            try
-//            {
-//                if (checkBoxforPullreleateddata.Checked)
-//                {
-//                    var selectedData = new List<SelectedTableData>();
-
-//                    // Ensure all collections have the same count
-//                    int count = _properties.SelectedCheck.Count;
-//                    if (_properties.ExistingTableCombos.Count != count ||
-//                        _properties.KeyCombos.Count != count ||
-//                        _properties.SourceTableCombos.Count + _properties.SourceTableTextBoxs.Count != count ||
-//                        _properties.SourceKeyCombos.Count != count)
-//                    {
-//                        throw new InvalidOperationException("Collection counts are not synchronized.");
-//                    }
-
-//                    for (int i = 0; i < count; i++)
-//                    {
-//                        if (_properties.SelectedCheck[i].Checked)
-//                        {
-//                            var data = new SelectedTableData
-//                            {
-//                                ExistingTable = _properties.ExistingTableCombos[i].Text,
-//                                ExistingColumn = _properties.KeyCombos[i].Text,
-//                                SourceTable = _properties.SourceTableCombos.Count > i
-//                                              ? _properties.SourceTableCombos[i].Text
-//                                              : _properties.SourceTableTextBoxs[i - _properties.SourceTableCombos.Count].Text,
-//                                SourceColumn = _properties.SourceKeyCombos[i].Text
-//                            };
-//                            selectedData.Add(data);
-//                        }
-//                    }
-
-//                    string jsonData = JsonConvert.SerializeObject(selectedData);
-//                    MessageBox.Show(jsonData);
-
-//                    // Define the Python script path for the checkbox-checked scenario
-//                    string savePythonScriptName = "your_python_script.py";
-//                    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-//                    string savePythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", savePythonScriptName);
-
-//                    // Send data to Python script and capture the response
-//                    string savePythonResponse = "";//pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, savePythonScriptPath, jsonData);
-
-//                    // Handle the response from the Python script
-//                    if (savePythonResponse.ToLower().Contains("success"))
-//                    {
-//                        MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-//                    }
-//                    else
-//                    {
-//                        MessageBox.Show("Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                        return; // Exit the method if it fails to save data
-//                    }
-//                }
-
-//                // Define the Python script path for the default scenario
-//                string importPythonScriptName = "ImportSqlConnection.py";
-//                string importProjectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-//                string importPythonScriptPath = Path.Combine(importProjectRootDirectory, "PythonScripts", importPythonScriptName);
-
-//                string importPythonResponse = pythonService.SendSqlDataToPython(server, DatabaseName, password, userId, projectName, Enterno, tableName, schemaName, importPythonScriptPath);
-
-//                if (importPythonResponse.ToLower().Contains("success"))
-//                {
-//                    if (_properties.SelectedNode == null)
-//                    {
-//                        MessageBox.Show("Selected node is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                        return;
-//                    }
-
-//                    if (_properties.ProjectData == null)
-//                    {
-//                        MessageBox.Show("Project data is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                        return;
-//                    }
-
-//                    if (_properties.HomeForm == null)
-//                    {
-//                        MessageBox.Show("Home form reference is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                        return;
-//                    }
-
-//                    // Add the table to the selected node in the TreeView
-//                    TreeNode tableNode = new TreeNode(tableName);
-//                    _properties.SelectedNode.Nodes.Add(tableNode);
-//                    _properties.SelectedNode.Expand();
-
-//                    var project = _properties.ProjectData.Find(p => p.Name == _properties.SelectedNode.Text);
-//                    if (project != null)
-//                    {
-//                        project.Tables.Add(tableName);
-//                        _properties.HomeForm.SaveProjectData();
-//                    }
-
-//                    this.DialogResult = DialogResult.OK;
-//                    this.Hide();
-//                }
-//                else
-//                {
-//                    MessageBox.Show("The CSV file is not valid. Error: " + importPythonResponse, "Error");
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                MessageBox.Show($"Failed to save data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//            }
-//        }
-
-//        private void checkBoxforPullreleateddata_CheckedChanged_1(object sender, EventArgs e)
-//        {
-//            //btnForFinish.Enabled = false;
-//            //btnForSavePullreleatedData.Enabled = true;
-//            CheckBox checkBox = sender as CheckBox;
-//            if (checkBox.Checked)
-//            {
-//                //string pythonScriptName = ".py";
-//                //string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-//                //string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-//                //string response = ""; // Call your method to get the response here
-
-//                // Show buttons and headers
-//                ShowNewAndDeleteButtons();
-//                ShowHeadersAndDropDowns(/*response*/);
-//            }
-//            else
-//            {
-//                HideNewAndDeleteButtons();
-//                ClearDynamicControls();
-//            }
-//        }
-
-//        private void ClearDynamicControls()
-//        {
-//            // Remove all dynamically added controls
-//            foreach (var control in panelForPullreleatedData.Controls.OfType<ComboBox>().ToList())
-//            {
-//                panelForPullreleatedData.Controls.Remove(control);
-//            }
-
-//            // Clear the lists holding references to the dynamic controls
-//            _properties.ExistingTableCombos.Clear();
-//            _properties.KeyCombos.Clear();
-//            _properties.SourceTableCombos.Clear();
-//            _properties.SourceKeyCombos.Clear();
-//        }
-
-//        private void ShowNewAndDeleteButtons()
-//        {
-//            btnNew.Location = new Point(22, 14);
-//            btnNew.Visible = true;
-//            panelForPullreleatedData.Controls.Add(btnNew);
-
-//            btnDelete.Location = new Point(154, 14);
-//            btnDelete.Visible = true;
-//            panelForPullreleatedData.Controls.Add(btnDelete);
-//        }
-
-//        private void HideNewAndDeleteButtons()
-//        {
-//            btnNew.Visible = false;
-//            btnDelete.Visible = false;
-//        }
-
-//        private void ShowHeadersAndDropDowns(/*string response*/)
-//        {
-//            string projectName = _properties.ProjectName;
-
-//            // Get the base directory of the currently executing application domain
-//            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-//            // Construct the dynamic path to the JSON file
-//            string jsonFilePath = Path.Combine(baseDirectory, "projectData.json");
-
-//            // Get the list of tables from JSON file
-//            List<string> existingTables = GetAllTablesFromJson(jsonFilePath, projectName);
-
-//            // Initial setup for the keys, assuming the first table is selected
-//            string selectedTable = existingTables.FirstOrDefault();
-//            if (selectedTable != null)
-//            {
-//                UpdateKeysForSelectedTable(selectedTable);
-//            }
-
-//            string sourceColumn = GetSourceColumns();
-//            List<string> sourceTblKey = tableColumns.ContainsKey(cmbTables.Text) ? tableColumns[cmbTables.Text] : new List<string>();
-
-//            AddHeaderLabels();
-
-//            // Use sourceColumns here
-//            AddDropDowns(existingTables, new List<string>(), sourceColumn, sourceTblKey);
-//        }
-
-//        private List<string> GetAllTablesFromJson(string filePath, string projectName)
-//        {
-//            try
-//            {
-//                var jsonData = File.ReadAllText(filePath);
-//                var projectDataList = JsonConvert.DeserializeObject<List<ProjectData>>(jsonData);
-
-//                // Find the project with the specified name and return its tables
-//                var project = projectDataList.FirstOrDefault(p => p.Name.Equals(projectName, StringComparison.OrdinalIgnoreCase));
-//                if (project != null)
-//                {
-//                    return project.Tables;
-//                }
-//                else
-//                {
-//                    MessageBox.Show($"Project '{projectName}' not found in JSON.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-//                    return new List<string>();
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                MessageBox.Show($"Failed to load tables from JSON: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                return new List<string>();
-//            }
-//        }
-
-//        private string GetSourceColumns()
-//        {
-//            string TableName = cmbTables.Text;
-//            string tableName = "";
-
-//            // Check if the TableName contains a dot and split accordingly
-//            if (TableName.Contains('.'))
-//            {
-//                tableName = TableName.Split('.')[1];
-//            }
-//            else
-//            {
-//                tableName = TableName; // Fallback in case there is no dot
-//            }
-
-//            // Return the list containing the table name
-//            return tableName;
-//        }
-
-//        private void AddHeaderLabels()
-//        {
-//            Label lblSelect = new Label
-//            {
-//                Text = "Select",
-//                Location = new Point(35, 83)
-//            };
-//            panelForPullreleatedData.Controls.Add(lblSelect);
-
-//            Label lblExistingTable = new Label
-//            {
-//                Text = "Existing Table",
-//                Location = new Point(142, 83)
-//            };
-//            panelForPullreleatedData.Controls.Add(lblExistingTable);
-
-//            Label lblKey = new Label
-//            {
-//                Text = "Key",
-//                Location = new Point(311, 83)
-//            };
-//            panelForPullreleatedData.Controls.Add(lblKey);
-
-//            Label lblSourceTable = new Label
-//            {
-//                Text = "Source Table",
-//                Location = new Point(478, 83)
-//            };
-//            panelForPullreleatedData.Controls.Add(lblSourceTable);
-
-//            Label lblSourceKey = new Label
-//            {
-//                Text = "Key",
-//                Location = new Point(682, 83)
-//            };
-//            panelForPullreleatedData.Controls.Add(lblSourceKey);
-//        }
-
-//        private void CbExistingTable_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            ComboBox cbExistingTable = sender as ComboBox;
-//            if (cbExistingTable != null)
-//            {
-//                string selectedTable = cbExistingTable.SelectedItem.ToString();
-//                UpdateKeysForSelectedTable(selectedTable);
-//            }
-//        }
-//        private void UpdateKeysForSelectedTable(string tableName)
-//        {
-//            string projectName = _properties.ProjectName;
-//            string username = Environment.UserName;
-
-//            string pythonScriptName = "TableColumnsConnection.py";
-//            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-//            string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-//            string pythonResponse = pythonService.SendDataToPython(tableName, projectName, pythonScriptPath);
-
-
-//            //pythonResponse = pythonResponse.Trim(new char[] { '[', ']', ' ' }).Replace("'", "");
-//            //pythonResponse = pythonResponse.Trim(new char[] { '[', ']', ' ' }).Replace("'", "");
-//            // pythonResponse = pythonResponse.Trim(new char[] { '[', ']' }).Replace("'", "").Trim();
-//            pythonResponse = pythonResponse = pythonResponse.Replace("[", "").Replace("]", "").Replace("'", "").Trim();
-
-
-
-//            // Split the cleaned string into a list of values
-//            List<string> result = pythonResponse.Split(new char[] { ',' }).Select(s => s.Trim()).ToList();
-
-//            // Get the keys from the JSON file
-//            List<string> keys = result;/*GetAllTablesColumnsFromJson(jsonFilePathForFields)*/;
-
-//            // Update the key ComboBoxes with the new keys
-//            foreach (var keyCombo in _properties.KeyCombos)
-//            {
-//                keyCombo.Items.Clear();
-//                keyCombo.Items.AddRange(keys.ToArray());
-//            }
-//        }
-
-//        //private List<string> GetAllTablesColumnsFromJson(string jsonFilePathForFields)
-//        //{
-//        //    try
-//        //    {
-//        //        if (!File.Exists(jsonFilePathForFields))
-//        //        {
-//        //            throw new FileNotFoundException($"The configuration file was not found: {jsonFilePathForFields}");
-//        //        }
-
-//        //        var jsonData = File.ReadAllText(jsonFilePathForFields);
-//        //        var tableConfig = JsonConvert.DeserializeObject<List<TableColumn>>(jsonData);
-
-//        //        // Extract the column names
-//        //        return tableConfig?.Select(tc => tc.Column).ToList() ?? new List<string>();
-//        //    }
-//        //    catch (Exception ex)
-//        //    {
-//        //        MessageBox.Show($"Failed to load columns from JSON: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//        //        return new List<string>();
-//        //    }
-//        //}
-
-//        //private void AddDropDowns(List<string> existingTables, List<string> keys, string sourceColumns, List<string> sourceTblKey)
-//        //{
-//        //    int startPositionY = 123;
-
-//        //    CheckBox selectCheckbox = new CheckBox
-//        //    {
-//        //        Location = new Point(47, startPositionY),
-//        //        Size = new Size(18, 17),
-//        //        Text = "" // or any relevant text for your checkbox
-//        //    };
-
-//        //    ComboBox cbExistingTable = new ComboBox
-//        //    {
-//        //        Location = new Point(142, startPositionY),
-//        //        Size = new Size(100, 22)
-//        //    };
-//        //    cbExistingTable.Items.AddRange(existingTables.ToArray());
-//        //    cbExistingTable.SelectedIndexChanged += CbExistingTable_SelectedIndexChanged;
-
-//        //    ComboBox cbKey = new ComboBox
-//        //    {
-//        //        Location = new Point(311, startPositionY),
-//        //        Size = new Size(70, 22)
-//        //    };
-//        //    cbKey.Items.AddRange(keys.ToArray());
-
-//        //    TextBox txtSourceTable = new TextBox
-//        //    {
-//        //        Location = new Point(478, startPositionY),
-//        //        Size = new Size(100, 22),
-//        //        Text = sourceColumns
-//        //    };
-
-//        //    ComboBox cbSourceKey = new ComboBox
-//        //    {
-//        //        Location = new Point(682, startPositionY),
-//        //        Size = new Size(70, 22)
-//        //    };
-//        //    cbSourceKey.Items.AddRange(sourceTblKey.ToArray());
-
-//        //    panelForPullreleatedData.Controls.Add(selectCheckbox);
-//        //    panelForPullreleatedData.Controls.Add(cbExistingTable);
-//        //    panelForPullreleatedData.Controls.Add(cbKey);
-//        //    panelForPullreleatedData.Controls.Add(txtSourceTable); // Add the TextBox instead of ComboBox
-//        //    panelForPullreleatedData.Controls.Add(cbSourceKey);
-
-//        //    _properties.SelectedCheck.Add(selectCheckbox);
-//        //    _properties.ExistingTableCombos.Add(cbExistingTable);
-//        //    _properties.KeyCombos.Add(cbKey);
-//        //    _properties.SourceTableTextBoxs.Add(txtSourceTable); // Change the list to hold TextBox
-//        //    _properties.SourceKeyCombos.Add(cbSourceKey);
-//        //}
-
-//        private void AddDropDowns(List<string> existingTables, List<string> keys, string sourceColumns, List<string> sourceTblKey)
-//        {
-//            int startPositionY = 123;
-
-//            CheckBox selectCheckbox = new CheckBox
-//            {
-//                Location = new Point(47, startPositionY),
-//                Size = new Size(18, 17),
-//                Text = "" // or any relevant text for your checkbox
-//            };
-
-//            ComboBox cbExistingTable = new ComboBox
-//            {
-//                Location = new Point(142, startPositionY),
-//                Size = new Size(100, 22)
-//            };
-//            cbExistingTable.Items.AddRange(existingTables.ToArray());
-//            cbExistingTable.SelectedIndexChanged += CbExistingTable_SelectedIndexChanged;
-
-//            ComboBox cbKey = new ComboBox
-//            {
-//                Location = new Point(311, startPositionY),
-//                Size = new Size(70, 22)
-//            };
-//            cbKey.Items.AddRange(keys.ToArray());
-
-//            TextBox txtSourceTable = new TextBox
-//            {
-//                Location = new Point(478, startPositionY),
-//                Size = new Size(100, 22),
-//                Text = sourceColumns
-//            };
-
-//            ComboBox cbSourceKey = new ComboBox
-//            {
-//                Location = new Point(682, startPositionY),
-//                Size = new Size(70, 22)
-//            };
-//            cbSourceKey.Items.AddRange(sourceTblKey.ToArray());
-
-//            panelForPullreleatedData.Controls.Add(selectCheckbox);
-//            panelForPullreleatedData.Controls.Add(cbExistingTable);
-//            panelForPullreleatedData.Controls.Add(cbKey);
-//            panelForPullreleatedData.Controls.Add(txtSourceTable);
-//            panelForPullreleatedData.Controls.Add(cbSourceKey);
-
-//            _properties.SelectedCheck.Add(selectCheckbox);
-//            _properties.ExistingTableCombos.Add(cbExistingTable);
-//            _properties.KeyCombos.Add(cbKey);
-//            _properties.SourceTableTextBoxs.Add(txtSourceTable);
-//            _properties.SourceKeyCombos.Add(cbSourceKey);
-//        }
-
-//        private void BtnNew_Click(object sender, EventArgs e)
-//        {
-//            int spacingY = 30; // Adjust this value based on your layout preferences
-//            int lastIndex = _properties.ExistingTableCombos.Count - 1;
-//            int startY = _properties.ExistingTableCombos.Count > 0 ? _properties.ExistingTableCombos[lastIndex].Location.Y + spacingY : 240;
-//            int newIndex = _properties.ExistingTableCombos.Count; // New index for the new controls
-
-//            // Create new checkbox
-//            CheckBox selectCheckbox = new CheckBox
-//            {
-//                Location = new Point(47, startY),
-//                Size = new Size(18, 20),
-//                Tag = newIndex
-//            };
-
-//            ComboBox cbExistingTable = new ComboBox
-//            {
-//                Location = new Point(142, startY),
-//                Size = new Size(100, 22)
-//            };
-//            cbExistingTable.Items.AddRange(_properties.ExistingTableCombos[0].Items.Cast<string>().ToArray());
-//            cbExistingTable.SelectedIndexChanged += CbExistingTable_SelectedIndexChanged;
-
-//            ComboBox cbKey = new ComboBox
-//            {
-//                Location = new Point(311, startY),
-//                Size = new Size(70, 22)
-//            };
-//            cbKey.Items.AddRange(_properties.KeyCombos[0].Items.Cast<string>().ToArray());
-
-//            ComboBox cbSourceTable = new ComboBox
-//            {
-//                Location = new Point(478, startY),
-//                Size = new Size(100, 22),
-//                Tag = newIndex
-//            };
-//            cbSourceTable.Items.AddRange(_properties.ExistingTableCombos[0].Items.Cast<string>().ToArray());
-
-//            ComboBox cbSourceKey = new ComboBox
-//            {
-//                Location = new Point(682, startY),
-//                Size = new Size(70, 22),
-//                Tag = newIndex
-//            };
-//            cbSourceKey.Items.AddRange(_properties.KeyCombos[0].Items.Cast<string>().ToArray());
-
-//            // Add them to the panel and the respective lists
-//            panelForPullreleatedData.Controls.Add(selectCheckbox);
-//            panelForPullreleatedData.Controls.Add(cbExistingTable);
-//            panelForPullreleatedData.Controls.Add(cbKey);
-//            panelForPullreleatedData.Controls.Add(cbSourceTable);
-//            panelForPullreleatedData.Controls.Add(cbSourceKey);
-
-//            _properties.SelectedCheck.Add(selectCheckbox);
-//            _properties.ExistingTableCombos.Add(cbExistingTable);
-//            _properties.KeyCombos.Add(cbKey);
-//            _properties.SourceTableCombos.Add(cbSourceTable);
-//            _properties.SourceKeyCombos.Add(cbSourceKey);
-//        }
-
-
-//        private void BtnDelete_Click(object sender, EventArgs e)
-//        {
-//            for (int i = _properties.SelectedCheck.Count - 1; i >= 0; i--)
-//            {
-//                if (_properties.SelectedCheck[i].Checked)
-//                {
-//                    int index = (int)_properties.SelectedCheck[i].Tag;
-//                    panelForPullreleatedData.Controls.Remove(_properties.SelectedCheck[i]);
-//                    panelForPullreleatedData.Controls.Remove(_properties.ExistingTableCombos[index]);
-//                    panelForPullreleatedData.Controls.Remove(_properties.KeyCombos[index]);
-//                    panelForPullreleatedData.Controls.Remove(_properties.SourceTableCombos[index]);
-//                    panelForPullreleatedData.Controls.Remove(_properties.SourceKeyCombos[index]);
-//                    _properties.SelectedCheck.RemoveAt(i);
-//                    _properties.ExistingTableCombos.RemoveAt(index);
-//                    _properties.KeyCombos.RemoveAt(index);
-//                    _properties.SourceTableCombos.RemoveAt(index);
-//                    _properties.SourceKeyCombos.RemoveAt(index);
-
-//                    // Adjust tags for remaining controls
-//                    for (int j = i; j < _properties.SelectedCheck.Count; j++)
-//                    {
-//                        _properties.SelectedCheck[j].Tag = j;
-//                        _properties.ExistingTableCombos[j].Tag = j;
-//                        _properties.KeyCombos[j].Tag = j;
-//                        _properties.SourceTableCombos[j].Tag = j;
-//                        _properties.SourceKeyCombos[j].Tag = j;
-//                    }
-//                }
-//            }
-//        }
-
-
-//        //private void btnForSavePullreleatedData_Click(object sender, EventArgs e)
-//        //{
-//        //    try
-//        //    {
-//        //        var selectedData = new List<SelectedTableData>();
-
-//        //        // Ensure all collections have the same count
-//        //        int count = _properties.SelectedCheck.Count;
-//        //        if (_properties.ExistingTableCombos.Count != count ||
-//        //            _properties.KeyCombos.Count != count ||
-//        //            _properties.SourceTableCombos.Count + _properties.SourceTableTextBoxs.Count != count ||
-//        //            _properties.SourceKeyCombos.Count != count)
-//        //        {
-//        //            throw new InvalidOperationException("Collection counts are not synchronized.");
-//        //        }
-
-//        //        for (int i = 0; i < count; i++)
-//        //        {
-//        //            if (_properties.SelectedCheck[i].Checked)
-//        //            {
-//        //                var data = new SelectedTableData
-//        //                {
-//        //                    ExistingTable = _properties.ExistingTableCombos[i].Text,
-//        //                    ExistingColumn = _properties.KeyCombos[i].Text,
-//        //                    SourceTable = _properties.SourceTableCombos.Count > i
-//        //                                  ? _properties.SourceTableCombos[i].Text
-//        //                                  : _properties.SourceTableTextBoxs[i - _properties.SourceTableCombos.Count].Text,
-//        //                    SourceColumn = _properties.SourceKeyCombos[i].Text
-//        //                };
-//        //                selectedData.Add(data);
-//        //            }
-//        //        }
-
-//        //        string jsonData = JsonConvert.SerializeObject(selectedData);
-
-//        //        // Extract information from properties
-//        //        string projectName = _properties.ProjectName;
-//        //        string tableName = cmbTables.Text.Split('.')[1]; // Extract the table name
-//        //                                                         //string schemaName = _properties.TableSchemas[tableName]; // Get the schema name from the dictionary
-//        //        string databaseName = cmbDatabases.Text;
-//        //        string connectionString = _properties.ConnectionString;
-//        //        //string rowCount = _properties.RowCount;
-
-//        //        // Extract details from connection string
-//        //        string serverPattern = @"server\s*=\s*([^;]+)";
-//        //        string userIdPattern = @"user\s*id\s*=\s*([^;]+)";
-//        //        string passwordPattern = @"password\s*=\s*([^;]+)";
-//        //        string timeoutPattern = @"connection\s*timeout\s*=\s*([^;]+)";
-
-//        //        string server = Regex.Match(connectionString, serverPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//        //        string userId = Regex.Match(connectionString, userIdPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//        //        string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-//        //        string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
-
-//        //        // Display the serialized JSON data (for debugging purposes)
-//        //        MessageBox.Show(jsonData);
-
-//        //        // Define the Python script path
-//        //        string pythonScriptName = "your_python_script.py";
-//        //        string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-//        //        string pythonScriptPath = Path.Combine(projectRootDirectory, "PythonScripts", pythonScriptName);
-
-//        //        // Send data to Python script and capture the response
-//        //        string pythonResponse = "";// pythonService.SendSqlDataToPython(server, databaseName, password, userId, projectName, rowCount, tableName, schemaName, pythonScriptPath, jsonData);
-
-//        //        // Handle the response from the Python script
-//        //        if (pythonResponse.ToLower().Contains("success"))
-//        //        {
-//        //            btnForSavePullreleatedData.Enabled = false;
-//        //            btnForFinish.Enabled = true;
-//        //            MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-//        //        }
-//        //        else
-//        //        {
-//        //            MessageBox.Show("Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//        //            btnForSavePullreleatedData.Enabled = false;
-//        //            btnForFinish.Enabled = true;
-//        //        }
-//        //    }
-//        //    catch (Exception ex)
-//        //    {
-//        //        MessageBox.Show($"Failed to save data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//        //    }
-//        //}
-//    }
-//}
