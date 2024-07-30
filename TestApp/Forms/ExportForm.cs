@@ -68,5 +68,10 @@ namespace DE_IDENTIFICATION_TOOL
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
+        private void btnForCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

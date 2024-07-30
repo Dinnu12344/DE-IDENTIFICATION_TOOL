@@ -22,12 +22,10 @@ namespace DE_IDENTIFICATION_TOOL
             ProjectName = txtProjectName.Text;
             string username = Environment.UserName;
             string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{ProjectName}";
-            // Ensure the directory exists
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }
-
             DialogResult = DialogResult.OK;
             Close();
         }

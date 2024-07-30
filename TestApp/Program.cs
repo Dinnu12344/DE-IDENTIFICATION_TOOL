@@ -190,7 +190,7 @@ namespace DE_IDENTIFICATION_TOOL
             {
                 Console.WriteLine($"Exception occurred: {ex.Message}");
                 File.AppendAllText(logFilePath, $"Exception occurred: {ex.Message}\n");
-                throw; // Rethrow the exception to propagate it up the call stack
+                throw;
             }
         }
     }

@@ -13,7 +13,6 @@ namespace DE_IDENTIFICATION_TOOL
 {
     public partial class ConfigForm : Form
     {
-        private List<ComboBox> dynamicComboBoxes;
         private HomeForm homeForm;
         private Panel scrollablePanel;
         private string pythonResponse;
@@ -31,7 +30,6 @@ namespace DE_IDENTIFICATION_TOOL
             InitializeDynamicControls();
         }
 
-        // Store references to dynamically created controls
         private List<Control> checkBoxes = new List<Control>();
         private Dictionary<Control, Control[]> controlMap = new Dictionary<Control, Control[]>();
 
@@ -49,21 +47,18 @@ namespace DE_IDENTIFICATION_TOOL
             scrollablePanel.AutoScroll = true;
             this.Controls.Add(scrollablePanel);
 
-            // Create buttonPanel and dock it at the bottom of the form and fix the height
             Panel buttonPanel = new Panel();
             buttonPanel.Dock = DockStyle.Bottom;
             buttonPanel.Height = 50;
             this.Controls.Add(buttonPanel);
 
-            // Create and add Save button
             Button saveButton = new Button();
             saveButton.Text = "Save";
-            saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right; // Anchoring to the bottom and left
+            saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right; 
             saveButton.Click += new EventHandler(SaveBtn_Click);
-            saveButton.Location = new Point(600, 10); // Adjust location within the button panel
+            saveButton.Location = new Point(600, 10); 
             buttonPanel.Controls.Add(saveButton);
 
-            // Create and add Cancel button
             Button cancelButton = new Button();
             cancelButton.Text = "Cancel";
             cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -71,7 +66,6 @@ namespace DE_IDENTIFICATION_TOOL
             cancelButton.Location = new Point(700, 10);
             buttonPanel.Controls.Add(cancelButton);
 
-            // Initialize the header panel with column names
             InitializeHeaderPanel(headerPanel);
         }
 
@@ -79,17 +73,17 @@ namespace DE_IDENTIFICATION_TOOL
         {
             TableLayoutPanel headerTableLayoutPanel = new TableLayoutPanel();
             headerTableLayoutPanel.Dock = DockStyle.Fill;
-            headerTableLayoutPanel.ColumnCount = 8; // Adjust the column count
+            headerTableLayoutPanel.ColumnCount = 8; 
             headerTableLayoutPanel.RowCount = 1;
 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); // Select
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); // Column
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); // DataType
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); // Technique
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // Data
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); // Start Date
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); // End Date
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); // Keys
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
 
             headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("Select"), 0, 0);
             headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("Column"), 1, 0);
@@ -105,7 +99,6 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void InitializeDynamicControls()
         {
-            // Fetch columns from Python backend
             List<string> columns = FetchColumnsFromPythonBackend();
 
             if (columns != null && columns.Count > 0)
@@ -113,25 +106,23 @@ namespace DE_IDENTIFICATION_TOOL
                 TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
                 tableLayoutPanel.Dock = DockStyle.Top;
                 tableLayoutPanel.AutoSize = true;
-                tableLayoutPanel.ColumnCount = 8; // Adjust the column count
+                tableLayoutPanel.ColumnCount = 8; 
                 tableLayoutPanel.RowCount = columns.Count + 1;
                 tableLayoutPanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
                 tableLayoutPanel.AutoScroll = false;
 
-                // Set column styles
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // Select
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // Column
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // DataType
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // Technique
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // Data
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // Start Date
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // End Date
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); // Keys
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
                 tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
 
                 int row = 1;
 
-                // Load existing configuration if it exists
                 List<ColumnConfig> existingConfig = LoadExistingConfig();
 
                 foreach (string column in columns)
@@ -140,7 +131,7 @@ namespace DE_IDENTIFICATION_TOOL
                     checkBox.AutoSize = true;
                     checkBox.Checked = true;
                     checkBox.Anchor = AnchorStyles.Left;
-                    checkBox.Margin = new Padding(3, 3, 3, 3); // Adding some margin to ensure it does not overlap
+                    checkBox.Margin = new Padding(3, 3, 3, 3); 
                     tableLayoutPanel.Controls.Add(checkBox, 0, row);
                     checkBoxes.Add(checkBox);
 
@@ -158,22 +149,22 @@ namespace DE_IDENTIFICATION_TOOL
                     ComboBox techniqueComboBox = new ComboBox();
                     techniqueComboBox.Items.AddRange(Enum.GetNames(typeof(Technique)));
                     techniqueComboBox.Dock = DockStyle.Fill;
-                    techniqueComboBox.SelectedIndexChanged += TechniqueComboBox_SelectedIndexChanged; // Handle selection change
+                    techniqueComboBox.SelectedIndexChanged += TechniqueComboBox_SelectedIndexChanged; 
                     tableLayoutPanel.Controls.Add(techniqueComboBox, 3, row);
 
                     ComboBox techniqueComboBoxForData = new ComboBox();
                     techniqueComboBoxForData.Items.AddRange(Enum.GetNames(typeof(AdditionalTechnique)));
                     techniqueComboBoxForData.Dock = DockStyle.Fill;
                     techniqueComboBoxForData.MaxDropDownItems = 5;
-                    techniqueComboBoxForData.Enabled = false; // Initially hidden
+                    techniqueComboBoxForData.Enabled = false; 
                     tableLayoutPanel.Controls.Add(techniqueComboBoxForData, 4, row);
 
                     CustomDatePicker startDatePicker = new CustomDatePicker();
-                    startDatePicker.Enabled = false; // Initially disabled
+                    startDatePicker.Enabled = false; 
                     tableLayoutPanel.Controls.Add(startDatePicker, 5, row);
 
                     CustomDatePicker endDatePicker = new CustomDatePicker();
-                    endDatePicker.Enabled = false; // Initially disabled
+                    endDatePicker.Enabled = false;
                     tableLayoutPanel.Controls.Add(endDatePicker, 6, row);
 
                     ComboBox keysComboBox = new ComboBox();
@@ -181,7 +172,6 @@ namespace DE_IDENTIFICATION_TOOL
                     keysComboBox.Dock = DockStyle.Fill;
                     tableLayoutPanel.Controls.Add(keysComboBox, 7, row);
 
-                    // Load existing data if available
                     ColumnConfig config = existingConfig?.Find(c => c.Column == column);
                     if (config != null)
                     {
@@ -201,18 +191,16 @@ namespace DE_IDENTIFICATION_TOOL
                         }
                         keysComboBox.SelectedItem = config.Keys;
                     }
-
-                    controlMap[checkBox] = new Control[] { columnLabel, dataTypeComboBox, techniqueComboBox, techniqueComboBoxForData, startDatePicker, endDatePicker, keysComboBox };
-
+                    controlMap[checkBox] = new Control[] 
+                    { 
+                        columnLabel, dataTypeComboBox, techniqueComboBox, techniqueComboBoxForData,
+                        startDatePicker, endDatePicker, keysComboBox 
+                    };
                     row++;
                 }
-
                 scrollablePanel.Controls.Add(tableLayoutPanel);
             }
         }
-
-
-
         private void TechniqueComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
@@ -221,11 +209,9 @@ namespace DE_IDENTIFICATION_TOOL
                 string selectedValue = comboBox.SelectedItem.ToString();
                 Technique selectedTechnique = (Technique)Enum.Parse(typeof(Technique), selectedValue);
 
-                // Find the corresponding controls for the row
                 TableLayoutPanel tableLayoutPanel = comboBox.Parent as TableLayoutPanel;
                 if (tableLayoutPanel != null)
                 {
-                    // Determine the row of the sender ComboBox
                     int row = tableLayoutPanel.GetRow(comboBox);
 
                     ComboBox techniqueComboBoxForData = tableLayoutPanel.GetControlFromPosition(4, row) as ComboBox;
@@ -234,10 +220,8 @@ namespace DE_IDENTIFICATION_TOOL
 
                     if (selectedTechnique == Technique.Pseudonymization)
                     {
-                        // Enable the additional data ComboBox
                         techniqueComboBoxForData.Enabled = true;
 
-                        // Clear and disable the date pickers
                         startDatePicker.CustomFormat = " ";
                         startDatePicker.Enabled = false;
                         endDatePicker.CustomFormat = " ";
@@ -245,11 +229,9 @@ namespace DE_IDENTIFICATION_TOOL
                     }
                     else if (selectedTechnique == Technique.DateTimeAddRange)
                     {
-                        // Disable and clear the additional data ComboBox
                         techniqueComboBoxForData.Enabled = false;
-                        techniqueComboBoxForData.SelectedIndex = -1; // Clear the selection
+                        techniqueComboBoxForData.SelectedIndex = -1; 
 
-                        // Enable the start and end date pickers
                         startDatePicker.CustomFormat = "dd/MM/yy";
                         startDatePicker.Enabled = true;
                         endDatePicker.CustomFormat = "dd/MM/yy";
@@ -258,7 +240,7 @@ namespace DE_IDENTIFICATION_TOOL
                     else
                     {
                         techniqueComboBoxForData.Enabled = false;
-                        techniqueComboBoxForData.SelectedIndex = -1; // Clear the selection
+                        techniqueComboBoxForData.SelectedIndex = -1; 
 
                         startDatePicker.CustomFormat = " ";
                         startDatePicker.Enabled = false;
@@ -268,10 +250,6 @@ namespace DE_IDENTIFICATION_TOOL
                 }
             }
         }
-
-
-
-
         private Label CreateHeaderLabel(string text)
         {
             return new Label
@@ -331,10 +309,7 @@ namespace DE_IDENTIFICATION_TOOL
                     var endDatePicker = (DateTimePicker)controls[5];
                     var keysComboBox = (ComboBox)controls[6];
 
-                    // Determine Technique value
                     string techniqueValue = techniqueComboBox.SelectedItem?.ToString();
-
-                    // Determine TechniqueData based on Technique value
                     string techniqueDataValue = null;
                     DateTime? startDateValue = null;
                     DateTime? endDateValue = null;
@@ -347,7 +322,6 @@ namespace DE_IDENTIFICATION_TOOL
                         startDateValue = startDatePicker.Value;
                         endDateValue = endDatePicker.Value;
                     }
-
                     var data = new
                     {
                         Column = columnLabel.Text,
@@ -362,16 +336,11 @@ namespace DE_IDENTIFICATION_TOOL
                     selectedData.Add(data);
                 }
             }
-
             string json = JsonConvert.SerializeObject(selectedData, Formatting.Indented);
             string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeidentificationTool", project, table, "ConfigFile");
             string filePath = Path.Combine(directoryPath, $"{table}.json");
-
-            // Ensure the directory exists
             Directory.CreateDirectory(directoryPath);
-
             File.WriteAllText(filePath, json);
-
             MessageBox.Show("JSON data has been saved to " + filePath);
             this.Close();
         }

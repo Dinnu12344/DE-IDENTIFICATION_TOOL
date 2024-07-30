@@ -74,22 +74,36 @@ namespace DE_IDENTIFICATION_TOOL
         }
         private void TxtForNoofColumns_TextChanged(object sender, EventArgs e)
         {
+            txtForNoofColumns.TextChanged -= TxtForNoofColumns_TextChanged;
+
+            bool isValid = true;
+            string errorMessage = string.Empty;
+
             if (!int.TryParse(txtForNoofColumns.Text, out int value))
             {
-                MessageBox.Show("Please enter a valid number.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtForNoofColumns.Text = ""; 
-                return;
+                errorMessage = "Please enter a valid number.";
+                isValid = false;
             }
-
-            if (value < 1 || value > 10000)
+            else if (value < 1 || value > 10000)
             {
-                MessageBox.Show("Please enter a number between 1 and 10000.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtForNoofColumns.Text = ""; // Clear the text box
+                errorMessage = "Please enter a number between 1 and 10000.";
+                isValid = false;
             }
 
-            csvLocationFormModel.EnteredText = txtForNoofColumns.Text;
-            UpdateFinishButtonVisibility();
+            if (!isValid)
+            {
+                MessageBox.Show(errorMessage, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtForNoofColumns.Text = ""; 
+            }
+            else
+            {
+                csvLocationFormModel.EnteredText = txtForNoofColumns.Text;
+                UpdateFinishButtonVisibility();
+            }
+
+            txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
         }
+
         private void TxtForTblName_TextChanged(object sender, EventArgs e)
         {
             csvLocationFormModel.TableName = txtForTblName.Text;
@@ -111,7 +125,6 @@ namespace DE_IDENTIFICATION_TOOL
             {
                 string username = Environment.UserName;
                 string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{csvLocationFormModel.TableName}\LogFile";
-                // Ensure the directory exists
                 if (!Directory.Exists(directoryPath))
                 {
                     Directory.CreateDirectory(directoryPath);

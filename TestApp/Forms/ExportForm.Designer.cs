@@ -31,20 +31,21 @@ namespace DE_IDENTIFICATION_TOOL
         /// </summary>
         private void InitializeComponent()
         {
-           ComponentResourceManager resources = new ComponentResourceManager(typeof(ExportForm));
-            this.radioBtnForCsvExport = new RadioButton();
-            this.radioBtnDatabaseExport = new RadioButton();
-            this.btnForNext = new Button();
-            this.btnForCancel = new Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExportForm));
+            this.radioBtnForCsvExport = new System.Windows.Forms.RadioButton();
+            this.radioBtnDatabaseExport = new System.Windows.Forms.RadioButton();
+            this.btnForNext = new System.Windows.Forms.Button();
+            this.btnForCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // radioBtnForCsvExport
             // 
             this.radioBtnForCsvExport.AutoSize = true;
-            this.radioBtnForCsvExport.Font = new Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioBtnForCsvExport.Location = new Point(92, 89);
+            this.radioBtnForCsvExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioBtnForCsvExport.Location = new System.Drawing.Point(69, 72);
+            this.radioBtnForCsvExport.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioBtnForCsvExport.Name = "radioBtnForCsvExport";
-            this.radioBtnForCsvExport.Size = new Size(63, 29);
+            this.radioBtnForCsvExport.Size = new System.Drawing.Size(50, 24);
             this.radioBtnForCsvExport.TabIndex = 0;
             this.radioBtnForCsvExport.TabStop = true;
             this.radioBtnForCsvExport.Text = "csv";
@@ -53,10 +54,11 @@ namespace DE_IDENTIFICATION_TOOL
             // radioBtnDatabaseExport
             // 
             this.radioBtnDatabaseExport.AutoSize = true;
-            this.radioBtnDatabaseExport.Font = new Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioBtnDatabaseExport.Location = new Point(92, 154);
+            this.radioBtnDatabaseExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioBtnDatabaseExport.Location = new System.Drawing.Point(69, 125);
+            this.radioBtnDatabaseExport.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioBtnDatabaseExport.Name = "radioBtnDatabaseExport";
-            this.radioBtnDatabaseExport.Size = new Size(117, 29);
+            this.radioBtnDatabaseExport.Size = new System.Drawing.Size(97, 24);
             this.radioBtnDatabaseExport.TabIndex = 1;
             this.radioBtnDatabaseExport.TabStop = true;
             this.radioBtnDatabaseExport.Text = "Database";
@@ -64,9 +66,10 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             // btnForNext
             // 
-            this.btnForNext.Location = new Point(145, 283);
+            this.btnForNext.Location = new System.Drawing.Point(109, 230);
+            this.btnForNext.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnForNext.Name = "btnForNext";
-            this.btnForNext.Size = new Size(75, 23);
+            this.btnForNext.Size = new System.Drawing.Size(56, 19);
             this.btnForNext.TabIndex = 2;
             this.btnForNext.Text = "Next";
             this.btnForNext.UseVisualStyleBackColor = true;
@@ -74,25 +77,26 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             // btnForCancel
             // 
-            this.btnForCancel.Location = new Point(279, 283);
+            this.btnForCancel.Location = new System.Drawing.Point(209, 230);
+            this.btnForCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnForCancel.Name = "btnForCancel";
-            this.btnForCancel.Size = new Size(75, 23);
+            this.btnForCancel.Size = new System.Drawing.Size(56, 19);
             this.btnForCancel.TabIndex = 3;
             this.btnForCancel.Text = "Cancel";
             this.btnForCancel.UseVisualStyleBackColor = true;
+            this.btnForCancel.Click += new System.EventHandler(this.btnForCancel_Click);
             // 
-            // DeIdentifyForm
+            // ExportForm
             // 
-            this.AutoScaleDimensions = new SizeF(8F, 16F);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(606, 399);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(454, 324);
             this.Controls.Add(this.btnForCancel);
             this.Controls.Add(this.btnForNext);
             this.Controls.Add(this.radioBtnDatabaseExport);
             this.Controls.Add(this.radioBtnForCsvExport);
-            this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new Padding(4, 4, 4, 4);
-            this.Name = "DeIdentifyForm";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "ExportForm";
             this.Text = "De-IdentifyForm";
             this.ResumeLayout(false);
             this.PerformLayout();
