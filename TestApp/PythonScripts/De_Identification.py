@@ -7,6 +7,8 @@ import numpy as np
 import Miscellaneous_Functions as mf
 import re
 from faker import Faker
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 
 #-----------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +22,6 @@ def validate_UserGiven_DataTypes(json_file,df):
             data_type = column_info["DataType"]
             ls.append(column_name)
             # technique = column_info["technique"]
-            
             ##
             if(data_type=="Int"):
                 try:
@@ -229,6 +230,24 @@ def month_year_generalization(column_name, df):
     df[column_name] = df[column_name].dt.strftime('%B %Y')
     return df
 
+
+#----------------------------------------------------------------------------------------------------------
+#Adding N day, months, years to date
+def add_days(df, date_column, days):
+    
+    df[date_column] = pd.to_datetime(df[date_column]) + timedelta(days=days)
+    return df
+
+def add_months(df, date_column, months):
+    
+    df[date_column] = pd.to_datetime(df[date_column]).apply(lambda x: x + relativedelta(months=months))
+    return df
+
+def add_years(df, date_column, years):
+    
+    df[date_column] = pd.to_datetime(df[date_column]).apply(lambda x: x + relativedelta(years=years))
+    return df
+
 #-----------------------------------------------------------------------------------------------------------
 #dateTimeAddRange
 
@@ -242,6 +261,17 @@ def dateTimeAddRange(column_name,df):
     return df
     # Display the DataFrame with perturbed datetime values
     # print(df)
+
+
+
+def replace_dates_within_range(df, date_column, start_date, end_date):
+    df[date_column] = pd.to_datetime(df[date_column])  # Ensure the date column is in datetime format
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    
+    date_range = (end_date - start_date).days
+    df[date_column] = df[date_column].apply(lambda x: start_date + timedelta(days=np.random.randint(0, date_range)))
+    return df
 #-----------------------------------------------------------------------------------------------------------
 def generate_hash(value,key):
     print("generate fun")
@@ -282,6 +312,14 @@ def process_column_info(column_name, data_type, technique, df,HippaRelatedColumn
         df = month_year_generalization(column_name, df)
     elif technique == 'DateToAddRange':
         df = dateTimeAddRange(column_name, df)
+    elif technique == 'replace_dates_within_range':
+        df = replace_dates_within_range(df, column_name, start_date, end_date)
+    elif technique == 'add_days':
+        df = add_days(df, date_column, n)
+    elif technique == 'add_months':
+        df = add_months(df, date_column, n)
+    elif technique == 'add_years':
+        df = add_years(df, date_column, n)
     else:
         print("pROCESS FUN GEN CONDITION")
         df = generalization(column_name, data_type, df)
