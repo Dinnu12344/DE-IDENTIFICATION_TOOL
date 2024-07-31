@@ -148,12 +148,17 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
                 File.WriteAllText(jsonFilePath, jsonArray.ToString());
 
-                MessageBox.Show("JSON data updated successfully.");
+                //MessageBox.Show("JSON data updated successfully.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error updating JSON file: {ex.Message}");
             }
+        }
+
+        private void btnForCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -45,9 +45,10 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             this.treeViewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.treeViewPanel.Location = new System.Drawing.Point(0, 27);
+            this.treeViewPanel.Location = new System.Drawing.Point(0, 24);
+            this.treeViewPanel.Margin = new System.Windows.Forms.Padding(0);
             this.treeViewPanel.Name = "treeViewPanel";
-            this.treeViewPanel.Size = new System.Drawing.Size(211, 537);
+            this.treeViewPanel.Size = new System.Drawing.Size(211, 540);
             this.treeViewPanel.TabIndex = 0;
             this.treeViewPanel.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
             // 
@@ -79,27 +80,27 @@ namespace DE_IDENTIFICATION_TOOL
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.newProjectToolStripMenuItem.Text = "New Project";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project";
             // 
             // exportDataToolStripMenuItem
             // 
             this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
-            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.exportDataToolStripMenuItem.Text = "Export Data";
             this.exportDataToolStripMenuItem.Click += new System.EventHandler(this.exportDataToolStripMenuItem_Click);
             // 
             // reToolStripMenuItem
             // 
             this.reToolStripMenuItem.Name = "reToolStripMenuItem";
-            this.reToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.reToolStripMenuItem.Text = "Exit";
             // 
             // helpToolStripMenuItem
@@ -115,17 +116,19 @@ namespace DE_IDENTIFICATION_TOOL
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(139, 6);
             // 
             // userManualToolStripMenuItem
             // 
             this.userManualToolStripMenuItem.Name = "userManualToolStripMenuItem";
-            this.userManualToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.userManualToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.userManualToolStripMenuItem.Text = "User Manual";
             this.userManualToolStripMenuItem.Click += new System.EventHandler(this.userManualToolStripMenuItem_Click);
             // 
             // HomeForm
             // 
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(953, 564);
             this.Controls.Add(this.treeViewPanel);
             this.Controls.Add(this.menuStrip1);

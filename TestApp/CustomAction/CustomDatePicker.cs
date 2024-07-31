@@ -12,24 +12,23 @@ namespace DE_IDENTIFICATION_TOOL.CustomAction
         public CustomDatePicker()
         {
             this.Format = DateTimePickerFormat.Custom;
-            this.CustomFormat = " ";
+            this.CustomFormat = " "; // Initially empty
             this.ValueChanged += CustomDateTimePicker_ValueChanged;
             this.MouseDown += CustomDateTimePicker_MouseDown;
         }
 
         private void CustomDateTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            this.CustomFormat = "dd/MM/yy";
+            this.CustomFormat = "dd-MM-yyyy"; // Set the desired format here
         }
 
         private void CustomDateTimePicker_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.CustomFormat == " ")
             {
-                this.CustomFormat = "dd/MM/yy";
+                this.CustomFormat = "dd-MM-yyyy"; // Set the desired format here
                 this.Focus();
-                SendKeys.Send("{F4}");
-
+                SendKeys.Send("{F4}"); // Opens the calendar dropdown
             }
         }
     }

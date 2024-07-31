@@ -469,6 +469,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\image1.jpg" />
+    <None Include="Resources\MicrosoftTeams-image %284%29.ico" />
+    <None Include="Resources\image11.jpg" />
+    <None Include="Resources\download.jpg" />
     <Content Include="Scripts\python-3.12.4-amd64.exe" />
   </ItemGroup>
   <ItemGroup>

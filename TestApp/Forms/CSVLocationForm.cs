@@ -11,6 +11,7 @@ namespace DE_IDENTIFICATION_TOOL
 {
     public partial class CSVLocationForm : Form
     {
+        private const int MaxTextBoxWidth = 500;
         private readonly string labelName;
         private PythonService pythonService;
         public readonly CSVLocationFormModel csvLocationFormModel;
@@ -35,9 +36,28 @@ namespace DE_IDENTIFICATION_TOOL
 
             this.labelName = labelName;
             pythonScriptsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PythonScripts");
-
+            this.Resize += new EventHandler(CSVLocationForm_Resize);
         }
+        private void CSVLocationForm_Resize(object sender, EventArgs e)
+        {
+            AdjustTextBoxWidth();
+        }
+        private void AdjustTextBoxWidth()
+        {
+            // Adjust the width of textBoxForHoldingFilePath
+            int availableWidth = this.ClientSize.Width - (LocationBrowseButton.Width + 30); // Add a buffer for padding
 
+            // Set the width of the textbox, making sure it doesn't exceed the maximum allowed width
+            textBoxForHoldingFilePath.Width = Math.Min(MaxTextBoxWidth, availableWidth);
+
+            // Adjust the width of other controls similarly if necessary
+            DelimeterComboBox.Width = textBoxForHoldingFilePath.Width;
+            QuoteComboBox.Width = textBoxForHoldingFilePath.Width;
+            txtForTblName.Width = textBoxForHoldingFilePath.Width;
+
+            // Optionally, you can adjust the position of the Browse button if necessary
+            LocationBrowseButton.Left = textBoxForHoldingFilePath.Right + 10; // Add padding between the textbox and button
+        }
         private void LocationBrowsebtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReNameForm));
             this.lblForRename = new System.Windows.Forms.Label();
             this.txtBoxForRename = new System.Windows.Forms.TextBox();
             this.btnForRename = new System.Windows.Forms.Button();
@@ -37,24 +38,30 @@
             // lblForRename
             // 
             this.lblForRename.AutoSize = true;
-            this.lblForRename.Location = new System.Drawing.Point(84, 86);
+            this.lblForRename.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblForRename.Location = new System.Drawing.Point(63, 70);
+            this.lblForRename.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblForRename.Name = "lblForRename";
-            this.lblForRename.Size = new System.Drawing.Size(129, 16);
+            this.lblForRename.Size = new System.Drawing.Size(152, 19);
             this.lblForRename.TabIndex = 0;
             this.lblForRename.Text = "Enter the New Name";
             // 
             // txtBoxForRename
             // 
-            this.txtBoxForRename.Location = new System.Drawing.Point(272, 80);
+            this.txtBoxForRename.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBoxForRename.Location = new System.Drawing.Point(232, 71);
+            this.txtBoxForRename.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtBoxForRename.Name = "txtBoxForRename";
-            this.txtBoxForRename.Size = new System.Drawing.Size(340, 22);
+            this.txtBoxForRename.Size = new System.Drawing.Size(248, 23);
             this.txtBoxForRename.TabIndex = 1;
             // 
             // btnForRename
             // 
-            this.btnForRename.Location = new System.Drawing.Point(349, 176);
+            this.btnForRename.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForRename.Location = new System.Drawing.Point(262, 143);
+            this.btnForRename.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnForRename.Name = "btnForRename";
-            this.btnForRename.Size = new System.Drawing.Size(75, 23);
+            this.btnForRename.Size = new System.Drawing.Size(87, 33);
             this.btnForRename.TabIndex = 2;
             this.btnForRename.Text = "Rename";
             this.btnForRename.UseVisualStyleBackColor = true;
@@ -62,22 +69,26 @@
             // 
             // btnForCancel
             // 
-            this.btnForCancel.Location = new System.Drawing.Point(471, 176);
+            this.btnForCancel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForCancel.Location = new System.Drawing.Point(400, 150);
+            this.btnForCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnForCancel.Name = "btnForCancel";
-            this.btnForCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnForCancel.Size = new System.Drawing.Size(80, 26);
             this.btnForCancel.TabIndex = 3;
             this.btnForCancel.Text = "Cancel";
             this.btnForCancel.UseVisualStyleBackColor = true;
             // 
             // ReNameForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.btnForCancel);
             this.Controls.Add(this.btnForRename);
             this.Controls.Add(this.txtBoxForRename);
             this.Controls.Add(this.lblForRename);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ReNameForm";
             this.Text = "ReNameForm";
             this.ResumeLayout(false);
