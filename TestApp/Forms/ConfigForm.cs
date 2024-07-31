@@ -54,9 +54,9 @@ namespace DE_IDENTIFICATION_TOOL
 
             Button saveButton = new Button();
             saveButton.Text = "Save";
-            saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right; 
+            saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             saveButton.Click += new EventHandler(SaveBtn_Click);
-            saveButton.Location = new Point(600, 10); 
+            saveButton.Location = new Point(600, 10);
             buttonPanel.Controls.Add(saveButton);
 
             Button cancelButton = new Button();
@@ -73,17 +73,17 @@ namespace DE_IDENTIFICATION_TOOL
         {
             TableLayoutPanel headerTableLayoutPanel = new TableLayoutPanel();
             headerTableLayoutPanel.Dock = DockStyle.Fill;
-            headerTableLayoutPanel.ColumnCount = 8; 
+            headerTableLayoutPanel.ColumnCount = 8;
             headerTableLayoutPanel.RowCount = 1;
 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11)); 
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11));
 
             headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("Select"), 0, 0);
             headerTableLayoutPanel.Controls.Add(CreateHeaderLabel("Column"), 1, 0);
@@ -106,19 +106,19 @@ namespace DE_IDENTIFICATION_TOOL
                 TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
                 tableLayoutPanel.Dock = DockStyle.Top;
                 tableLayoutPanel.AutoSize = true;
-                tableLayoutPanel.ColumnCount = 8; 
+                tableLayoutPanel.ColumnCount = 8;
                 tableLayoutPanel.RowCount = columns.Count + 1;
                 tableLayoutPanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
                 tableLayoutPanel.AutoScroll = false;
 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10)); 
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
                 tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
 
                 int row = 1;
@@ -131,7 +131,7 @@ namespace DE_IDENTIFICATION_TOOL
                     checkBox.AutoSize = true;
                     checkBox.Checked = true;
                     checkBox.Anchor = AnchorStyles.Left;
-                    checkBox.Margin = new Padding(3, 3, 3, 3); 
+                    checkBox.Margin = new Padding(3, 3, 3, 3);
                     tableLayoutPanel.Controls.Add(checkBox, 0, row);
                     checkBoxes.Add(checkBox);
 
@@ -149,18 +149,18 @@ namespace DE_IDENTIFICATION_TOOL
                     ComboBox techniqueComboBox = new ComboBox();
                     techniqueComboBox.Items.AddRange(Enum.GetNames(typeof(Technique)));
                     techniqueComboBox.Dock = DockStyle.Fill;
-                    techniqueComboBox.SelectedIndexChanged += TechniqueComboBox_SelectedIndexChanged; 
+                    techniqueComboBox.SelectedIndexChanged += TechniqueComboBox_SelectedIndexChanged;
                     tableLayoutPanel.Controls.Add(techniqueComboBox, 3, row);
 
                     ComboBox techniqueComboBoxForData = new ComboBox();
                     techniqueComboBoxForData.Items.AddRange(Enum.GetNames(typeof(AdditionalTechnique)));
                     techniqueComboBoxForData.Dock = DockStyle.Fill;
                     techniqueComboBoxForData.MaxDropDownItems = 5;
-                    techniqueComboBoxForData.Enabled = false; 
+                    techniqueComboBoxForData.Enabled = false;
                     tableLayoutPanel.Controls.Add(techniqueComboBoxForData, 4, row);
 
                     CustomDatePicker startDatePicker = new CustomDatePicker();
-                    startDatePicker.Enabled = false; 
+                    startDatePicker.Enabled = false;
                     tableLayoutPanel.Controls.Add(startDatePicker, 5, row);
 
                     CustomDatePicker endDatePicker = new CustomDatePicker();
@@ -191,10 +191,10 @@ namespace DE_IDENTIFICATION_TOOL
                         }
                         keysComboBox.SelectedItem = config.Keys;
                     }
-                    controlMap[checkBox] = new Control[] 
-                    { 
+                    controlMap[checkBox] = new Control[]
+                    {
                         columnLabel, dataTypeComboBox, techniqueComboBox, techniqueComboBoxForData,
-                        startDatePicker, endDatePicker, keysComboBox 
+                        startDatePicker, endDatePicker, keysComboBox
                     };
                     row++;
                 }
@@ -230,7 +230,7 @@ namespace DE_IDENTIFICATION_TOOL
                     else if (selectedTechnique == Technique.DateTimeAddRange)
                     {
                         techniqueComboBoxForData.Enabled = false;
-                        techniqueComboBoxForData.SelectedIndex = -1; 
+                        techniqueComboBoxForData.SelectedIndex = -1;
 
                         startDatePicker.CustomFormat = "dd/MM/yy";
                         startDatePicker.Enabled = true;
@@ -240,7 +240,7 @@ namespace DE_IDENTIFICATION_TOOL
                     else
                     {
                         techniqueComboBoxForData.Enabled = false;
-                        techniqueComboBoxForData.SelectedIndex = -1; 
+                        techniqueComboBoxForData.SelectedIndex = -1;
 
                         startDatePicker.CustomFormat = " ";
                         startDatePicker.Enabled = false;
@@ -311,17 +311,19 @@ namespace DE_IDENTIFICATION_TOOL
 
                     string techniqueValue = techniqueComboBox.SelectedItem?.ToString();
                     string techniqueDataValue = null;
-                    DateTime? startDateValue = null;
-                    DateTime? endDateValue = null;
+                    string startDateValue = null;
+                    string endDateValue = null;
+
                     if (techniqueValue == "Pseudonymization")
                     {
                         techniqueDataValue = techniqueComboBoxForData.SelectedItem?.ToString();
                     }
                     else if (techniqueValue == "DateTimeAddRange")
                     {
-                        startDateValue = startDatePicker.Value;
-                        endDateValue = endDatePicker.Value;
+                        startDateValue = startDatePicker.Value.ToString("yyyy-MM-dd");
+                        endDateValue = endDatePicker.Value.ToString("yyyy-MM-dd");
                     }
+
                     var data = new
                     {
                         Column = columnLabel.Text,
@@ -336,6 +338,7 @@ namespace DE_IDENTIFICATION_TOOL
                     selectedData.Add(data);
                 }
             }
+
             string json = JsonConvert.SerializeObject(selectedData, Formatting.Indented);
             string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DeidentificationTool", project, table, "ConfigFile");
             string filePath = Path.Combine(directoryPath, $"{table}.json");
