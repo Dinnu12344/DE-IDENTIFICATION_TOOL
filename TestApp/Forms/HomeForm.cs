@@ -80,10 +80,13 @@ namespace DE_IDENTIFICATION_TOOL
             ToolStripMenuItem renameProjectItem = new ToolStripMenuItem("Rename");
             ToolStripMenuItem refreshProjectItem = new ToolStripMenuItem("Refresh");
             ToolStripMenuItem deleteProjectItem = new ToolStripMenuItem("Delete");
+            ToolStripMenuItem exportAllProjectItem = new ToolStripMenuItem("ExportAll");
+            createdProjectsContextMenu.Items.Add(exportAllProjectItem); 
             editProjectItem.Click += ImportProjectItem_Click;
             deleteProjectItem.Click += DeleteProjectItem_Click;
             keyProjectItem.Click += KeyProjectItem_Click;
             renameProjectItem.Click += ReNameProjectItem_Click;
+            exportAllProjectItem.Click += ExportAllProjectItem_Click;
             createdProjectsContextMenu.Items.Add(editProjectItem);
             createdProjectsContextMenu.Items.Add(keyProjectItem);
             createdProjectsContextMenu.Items.Add(deleteProjectItem);
@@ -115,6 +118,17 @@ namespace DE_IDENTIFICATION_TOOL
             tableContextMenu.Items.Add(logMenuItem);
             tableContextMenu.Items.Add(exportMenuItem);
             tableContextMenu.Items.Add(renameMenuItem);
+        }
+
+        private void ExportAllProjectItem_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = treeViewPanel.SelectedNode;
+            //throw new NotImplementedException();
+            DbtableFormModel dbtableFormModel = new DbtableFormModel();
+            //dbtableFormModel.exportAll = true;
+            ExportForm exportForm = new ExportForm(selectedNode.Text,true);
+            exportForm.Show();
+
         }
 
         private void ConfigMenuItem_Click(object sender, EventArgs e)

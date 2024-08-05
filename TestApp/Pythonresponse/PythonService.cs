@@ -237,6 +237,22 @@ public class PythonService
         return ExecutePythonScript(command);
     }
 
+
+
+    public string SendSqlExportAllDataToPython(string server, string database, string password, string UserId, string projectName, string savePythonScriptPath)
+    {
+        if (!File.Exists(savePythonScriptPath))
+        {
+            return "Error: Python script file not found.";
+        }
+
+        // Ensure a space between UserId and projectName
+        var command = $"\"{savePythonScriptPath}\" \"{server}\" \"{database}\" \"{password}\" \"{UserId}\" \"{projectName}\"";
+        return ExecutePythonScript(command);
+    }
+
+
+
     private string ExecutePythonScript(string command)
     {
         using (Process process = new Process())

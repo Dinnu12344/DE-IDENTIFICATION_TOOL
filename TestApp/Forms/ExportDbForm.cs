@@ -18,6 +18,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private PythonService pythonService;
         private Dictionary<string, string> tableSchemas = new Dictionary<string, string>();
         private Dictionary<string, List<string>> tableColumns = new Dictionary<string, List<string>>();
+        //private bool _check;
 
         public ExportDbForm(string projectName, string tableName)
         {
@@ -25,6 +26,36 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             _properties = new DbtableFormModel();
             _projectName = projectName;
             _tableName = tableName;
+            pythonService = new PythonService();
+
+            lblForServer.Visible = false;
+            txtForServer.Visible = false;
+            lblForUserName.Visible = false;
+            txtForUsername.Visible = false;
+            lblForPassword.Visible = false;
+            txtForPassword.Visible = false;
+
+            btnForNext.Enabled = false;
+
+            labelForDatabase.Visible = false;
+            cmbDatabases.Visible = false;
+            labelForDatabaseTbl.Visible = false;
+            cmbTables.Visible = false;
+
+            btnForFinish.Enabled = false;
+
+            // Attach event handlers to text changed events
+            txtForServer.TextChanged += new EventHandler(ValidateInputFields);
+            txtForUsername.TextChanged += new EventHandler(ValidateInputFields);
+            txtForPassword.TextChanged += new EventHandler(ValidateInputFields);
+        }
+
+        public ExportDbForm(string projectName, bool check)
+        {
+            InitializeComponent();
+            _properties = new DbtableFormModel();
+            _projectName = projectName;
+            _properties.check = check;
             pythonService = new PythonService();
 
             lblForServer.Visible = false;
@@ -116,11 +147,28 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         }
 
         private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
+        
+        
+        
+        
         {
             _properties.dbName = cmbDatabases.SelectedItem.ToString();
-            UpdateFinishButtonVisibility();
-            string selectedDatabase = cmbDatabases.SelectedItem.ToString();
-            LoadTables(selectedDatabase);
+
+            if (_properties.check != true)
+            {
+                UpdateFinishButtonVisibility();
+                string selectedDatabase = cmbDatabases.SelectedItem.ToString();
+                LoadTables(selectedDatabase);
+
+
+
+            }
+            else
+            {
+                btnForFinish.Enabled = !string.IsNullOrEmpty(_properties.dbName);
+
+            }
+
         }
 
         private void cmbTables_SelectedIndexChanged(object sender, EventArgs e)
@@ -130,9 +178,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         }
 
         private void UpdateFinishButtonVisibility()
+        
+        
+        
         {
-            btnForFinish.Enabled = !string.IsNullOrEmpty(_properties.dbName) &&
-                                   !string.IsNullOrEmpty(_properties.tableName);
+            if (_properties.check != true)
+            {
+                btnForFinish.Enabled = !string.IsNullOrEmpty(_properties.dbName) &&
+                                       !string.IsNullOrEmpty(_properties.tableName);
+            }
+                                   
         }
 
         private void LoadTables(string database)
@@ -201,36 +256,70 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void btnForFinish_Click(object sender, EventArgs e)
         {
+
+            if (_properties.check == true)
+            {
+                string projectName = _projectName;
+
+                string server = txtForServer.Text;
+                string UserId = txtForUsername.Text;
+                string password = txtForPassword.Text;
+                string database = cmbDatabases.Text;
+
+                string savePythonScriptName = "EportAllConnection.py";
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
+
+                // Send data to Python script and capture the response
+                string savePythonResponse = pythonService.SendSqlExportAllDataToPython(server, database, password, UserId, projectName, savePythonScriptPath);
+
+                // Handle the response from the Python script
+                if (savePythonResponse.ToLower().Contains("success"))
+                {
+                    MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Failed to save data\n " + savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return; // Exit the method if it fails to save data
+                }
+
+
+
+            }
+            else {
+                string projectName = _projectName;
+                string mainTableName = _tableName;
+                
+                string server = txtForServer.Text;
+                string UserId = txtForUsername.Text;
+                string password = txtForPassword.Text;
+                string database = cmbDatabases.Text;
+                string selectedtable = cmbTables.Text;
+                string tableName = selectedtable.Split('.')[1]; // Extract the table name
+                string schemaName = tableSchemas[tableName];
+
+                // Define the Python script path for the checkbox-checked scenario
+                string savePythonScriptName = "ExportSqlConnection.py";
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
+
+                // Send data to Python script and capture the response
+                string savePythonResponse = pythonService.SendSqlExportDataToPython(server, database, password, UserId, schemaName, projectName, mainTableName, tableName, savePythonScriptPath);
+
+                // Handle the response from the Python script
+                if (savePythonResponse.ToLower().Contains("success"))
+                {
+                    MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Failed to save data\n " + savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return; // Exit the method if it fails to save data
+                }
+
+            }
             // Finish button logic
-            string projectName = _projectName;
-            string mainTableName = _tableName;
-
-            string server = txtForServer.Text;
-            string UserId = txtForUsername.Text;
-            string password = txtForPassword.Text;
-            string database = cmbDatabases.Text;
-            string selectedtable = cmbTables.Text;
-            string tableName = selectedtable.Split('.')[1]; // Extract the table name
-            string schemaName = tableSchemas[tableName];
-
-            // Define the Python script path for the checkbox-checked scenario
-            string savePythonScriptName = "ExportSqlConnection.py";
-            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-            string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
-
-            // Send data to Python script and capture the response
-            string savePythonResponse = pythonService.SendSqlExportDataToPython(server, database, password, UserId, schemaName, projectName, mainTableName, tableName, savePythonScriptPath);
-
-            // Handle the response from the Python script
-            if (savePythonResponse.ToLower().Contains("success"))
-            {
-                MessageBox.Show("Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Failed to save data\n "+savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return; // Exit the method if it fails to save data
-            }
         }
     }
 }
