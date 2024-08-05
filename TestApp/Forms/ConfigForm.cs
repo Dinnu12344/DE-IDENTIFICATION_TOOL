@@ -52,6 +52,13 @@ namespace DE_IDENTIFICATION_TOOL
             buttonPanel.Height = 50;
             this.Controls.Add(buttonPanel);
 
+            Button clearButton = new Button();
+            clearButton.Text = "Clear All";
+            clearButton.Anchor = AnchorStyles.Bottom| AnchorStyles.Right;
+            clearButton.Click += new EventHandler(ClearBtn_Click);
+            clearButton.Location = new Point(500, 10);
+            buttonPanel.Controls.Add(clearButton);
+
             Button saveButton = new Button();
             saveButton.Text = "Save";
             saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -204,46 +211,71 @@ namespace DE_IDENTIFICATION_TOOL
         private void TechniqueComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
-            if (comboBox != null)
+            if (comboBox == null) return; 
+
+            string selectedValue = comboBox.SelectedItem?.ToString();
+            if (selectedValue == null) return; 
+
+            Technique selectedTechnique;
+            if (!Enum.TryParse(selectedValue, out selectedTechnique))
             {
-                string selectedValue = comboBox.SelectedItem.ToString();
-                Technique selectedTechnique = (Technique)Enum.Parse(typeof(Technique), selectedValue);
+                return;
+            }
 
-                TableLayoutPanel tableLayoutPanel = comboBox.Parent as TableLayoutPanel;
-                if (tableLayoutPanel != null)
+            TableLayoutPanel tableLayoutPanel = comboBox.Parent as TableLayoutPanel;
+            if (tableLayoutPanel == null) return; 
+
+            int row = tableLayoutPanel.GetRow(comboBox);
+
+            ComboBox techniqueComboBoxForData = tableLayoutPanel.GetControlFromPosition(4, row) as ComboBox;
+            DateTimePicker startDatePicker = tableLayoutPanel.GetControlFromPosition(5, row) as DateTimePicker;
+            DateTimePicker endDatePicker = tableLayoutPanel.GetControlFromPosition(6, row) as DateTimePicker;
+
+            if (techniqueComboBoxForData != null)
+            {
+                if (selectedTechnique == Technique.Pseudonymization)
                 {
-                    int row = tableLayoutPanel.GetRow(comboBox);
+                    techniqueComboBoxForData.Enabled = true;
 
-                    ComboBox techniqueComboBoxForData = tableLayoutPanel.GetControlFromPosition(4, row) as ComboBox;
-                    DateTimePicker startDatePicker = tableLayoutPanel.GetControlFromPosition(5, row) as DateTimePicker;
-                    DateTimePicker endDatePicker = tableLayoutPanel.GetControlFromPosition(6, row) as DateTimePicker;
-
-                    if (selectedTechnique == Technique.Pseudonymization)
+                    if (startDatePicker != null)
                     {
-                        techniqueComboBoxForData.Enabled = true;
-
                         startDatePicker.CustomFormat = " ";
                         startDatePicker.Enabled = false;
+                    }
+                    if (endDatePicker != null)
+                    {
                         endDatePicker.CustomFormat = " ";
                         endDatePicker.Enabled = false;
                     }
-                    else if (selectedTechnique == Technique.DateTimeAddRange)
-                    {
-                        techniqueComboBoxForData.Enabled = false;
-                        techniqueComboBoxForData.SelectedIndex = -1;
+                }
+                else if (selectedTechnique == Technique.DateTimeAddRange)
+                {
+                    techniqueComboBoxForData.Enabled = false;
+                    techniqueComboBoxForData.SelectedIndex = -1;
 
+                    if (startDatePicker != null)
+                    {
                         startDatePicker.CustomFormat = "dd/MM/yy";
                         startDatePicker.Enabled = true;
+                    }
+                    if (endDatePicker != null)
+                    {
                         endDatePicker.CustomFormat = "dd/MM/yy";
                         endDatePicker.Enabled = true;
                     }
-                    else
-                    {
-                        techniqueComboBoxForData.Enabled = false;
-                        techniqueComboBoxForData.SelectedIndex = -1;
+                }
+                else
+                {
+                    techniqueComboBoxForData.Enabled = false;
+                    techniqueComboBoxForData.SelectedIndex = -1;
 
+                    if (startDatePicker != null)
+                    {
                         startDatePicker.CustomFormat = " ";
                         startDatePicker.Enabled = false;
+                    }
+                    if (endDatePicker != null)
+                    {
                         endDatePicker.CustomFormat = " ";
                         endDatePicker.Enabled = false;
                     }
@@ -289,6 +321,67 @@ namespace DE_IDENTIFICATION_TOOL
             homeForm.Show();
             this.Hide();
         }
+        private void ClearBtn_Click(object sender, EventArgs e)
+        {
+            foreach (var checkBox in checkBoxes)
+            {
+                if (checkBox == null) continue; // Skip null checkboxes
+
+                // Check if the controlMap contains the checkBox
+                if (!controlMap.TryGetValue(checkBox, out Control[] controls) || controls == null)
+                {
+                    continue; // Skip if controls are null or not found
+                }
+
+                var dataTypeComboBox = controls[1] as ComboBox;
+                var techniqueComboBox = controls[2] as ComboBox;
+                var techniqueComboBoxForData = controls[3] as ComboBox;
+                var startDatePicker = controls[4] as DateTimePicker;
+                var endDatePicker = controls[5] as DateTimePicker;
+                var keysComboBox = controls[6] as ComboBox;
+
+                // Reset combo boxes and disable date pickers and additional combo box
+                if (dataTypeComboBox != null)
+                {
+                    dataTypeComboBox.SelectedIndex = -1;
+                }
+
+                if (techniqueComboBox != null)
+                {
+                    techniqueComboBox.SelectedIndex = -1;
+                }
+
+                if (techniqueComboBoxForData != null)
+                {
+                    techniqueComboBoxForData.SelectedIndex = -1;
+                    techniqueComboBoxForData.Enabled = false;
+                }
+
+                if (startDatePicker != null)
+                {
+                    startDatePicker.Value = DateTime.Now;
+                    startDatePicker.CustomFormat = " ";
+                    startDatePicker.Enabled = false;
+                }
+
+                if (endDatePicker != null)
+                {
+                    endDatePicker.Value = DateTime.Now;
+                    endDatePicker.CustomFormat = " ";
+                    endDatePicker.Enabled = false;
+                }
+
+                if (keysComboBox != null)
+                {
+                    keysComboBox.SelectedIndex = -1;
+                }
+            }
+
+            MessageBox.Show("Combo box data has been cleared.");
+        }
+
+
+
 
         private void SaveBtn_Click(object sender, EventArgs e)
         {
