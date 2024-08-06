@@ -11,6 +11,7 @@ namespace DE_IDENTIFICATION_TOOL
         private string tableName;
         private string projectName;
         private PythonService pythonService;
+        private bool check;
 
         public ExportForm(string tableName, string projectName)
         {
@@ -18,6 +19,15 @@ namespace DE_IDENTIFICATION_TOOL
             pythonService = new PythonService();
             this.tableName = tableName; 
             this.projectName = projectName; 
+        }
+        public ExportForm(string projectName, bool check)
+        {
+            InitializeComponent();
+            pythonService = new PythonService();
+            this.projectName = projectName;
+            this.check = check;
+       
+           
         }
         public string SelectedImportOption { get; set; }
         private void btnForNext_Click(object sender, EventArgs e)
@@ -59,9 +69,14 @@ namespace DE_IDENTIFICATION_TOOL
             else if (radioBtnDatabaseExport.Checked)
             {
                 SelectedImportOption = "Database";
-                if (SelectedImportOption == "Database")
+                if (SelectedImportOption == "Database" && check != true)
                 {
                     ExportDbForm dBLocationForm = new ExportDbForm(projectName, tableName);
+                    dBLocationForm.ShowDialog();
+                }
+                if (SelectedImportOption == "Database" && check==true)
+                {
+                    ExportDbForm dBLocationForm = new ExportDbForm(projectName, check);
                     dBLocationForm.ShowDialog();
                 }
             }

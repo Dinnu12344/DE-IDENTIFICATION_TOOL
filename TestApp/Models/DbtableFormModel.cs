@@ -33,5 +33,7 @@ namespace DE_IDENTIFICATION_TOOL.Models
         public string dbName { get; set; }
         public string tableName { get; set; }
         public string rowCount { get; set; }
+
+        public bool check { get; set; }
     }
 }
