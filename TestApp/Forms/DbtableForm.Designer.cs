@@ -49,47 +49,52 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // cmbDatabases
             // 
             this.cmbDatabases.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDatabases.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbDatabases.FormattingEnabled = true;
             this.cmbDatabases.Location = new System.Drawing.Point(237, 65);
             this.cmbDatabases.Name = "cmbDatabases";
-            this.cmbDatabases.Size = new System.Drawing.Size(475, 24);
+            this.cmbDatabases.Size = new System.Drawing.Size(475, 27);
             this.cmbDatabases.TabIndex = 0;
             this.cmbDatabases.SelectedIndexChanged += new System.EventHandler(this.cmbDatabases_SelectedIndexChanged);
             // 
             // cmbTables
             // 
             this.cmbTables.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTables.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbTables.FormattingEnabled = true;
             this.cmbTables.Location = new System.Drawing.Point(237, 120);
             this.cmbTables.Name = "cmbTables";
-            this.cmbTables.Size = new System.Drawing.Size(475, 24);
+            this.cmbTables.Size = new System.Drawing.Size(475, 27);
             this.cmbTables.TabIndex = 1;
             this.cmbTables.SelectedIndexChanged += new System.EventHandler(this.cmbTables_SelectedIndexChanged);
             // 
             // labelForDatabase
             // 
             this.labelForDatabase.AutoSize = true;
+            this.labelForDatabase.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForDatabase.Location = new System.Drawing.Point(73, 73);
             this.labelForDatabase.Name = "labelForDatabase";
-            this.labelForDatabase.Size = new System.Drawing.Size(74, 16);
+            this.labelForDatabase.Size = new System.Drawing.Size(78, 19);
             this.labelForDatabase.TabIndex = 2;
             this.labelForDatabase.Text = "Databases";
             // 
             // labelForDatabaseTbl
             // 
             this.labelForDatabaseTbl.AutoSize = true;
+            this.labelForDatabaseTbl.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForDatabaseTbl.Location = new System.Drawing.Point(73, 120);
             this.labelForDatabaseTbl.Name = "labelForDatabaseTbl";
-            this.labelForDatabaseTbl.Size = new System.Drawing.Size(50, 16);
+            this.labelForDatabaseTbl.Size = new System.Drawing.Size(51, 19);
             this.labelForDatabaseTbl.TabIndex = 3;
             this.labelForDatabaseTbl.Text = "Tables";
             // 
             // checkBoxforPullreleateddata
             // 
             this.checkBoxforPullreleateddata.AutoSize = true;
+            this.checkBoxforPullreleateddata.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxforPullreleateddata.Location = new System.Drawing.Point(76, 199);
             this.checkBoxforPullreleateddata.Name = "checkBoxforPullreleateddata";
-            this.checkBoxforPullreleateddata.Size = new System.Drawing.Size(134, 20);
+            this.checkBoxforPullreleateddata.Size = new System.Drawing.Size(143, 23);
             this.checkBoxforPullreleateddata.TabIndex = 4;
             this.checkBoxforPullreleateddata.Text = "Pull releated data";
             this.checkBoxforPullreleateddata.UseVisualStyleBackColor = true;
@@ -97,18 +102,20 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // btnForBack
             // 
-            this.btnForBack.Location = new System.Drawing.Point(559, 536);
+            this.btnForBack.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForBack.Location = new System.Drawing.Point(564, 536);
             this.btnForBack.Name = "btnForBack";
-            this.btnForBack.Size = new System.Drawing.Size(75, 23);
+            this.btnForBack.Size = new System.Drawing.Size(70, 30);
             this.btnForBack.TabIndex = 5;
             this.btnForBack.Text = "Back";
             this.btnForBack.UseVisualStyleBackColor = true;
             // 
             // btnForFinish
             // 
-            this.btnForFinish.Location = new System.Drawing.Point(663, 536);
+            this.btnForFinish.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForFinish.Location = new System.Drawing.Point(671, 536);
             this.btnForFinish.Name = "btnForFinish";
-            this.btnForFinish.Size = new System.Drawing.Size(75, 23);
+            this.btnForFinish.Size = new System.Drawing.Size(70, 30);
             this.btnForFinish.TabIndex = 6;
             this.btnForFinish.Text = "Finish";
             this.btnForFinish.UseVisualStyleBackColor = true;
@@ -116,9 +123,10 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // btnForCancel
             // 
+            this.btnForCancel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnForCancel.Location = new System.Drawing.Point(775, 536);
             this.btnForCancel.Name = "btnForCancel";
-            this.btnForCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnForCancel.Size = new System.Drawing.Size(70, 30);
             this.btnForCancel.TabIndex = 7;
             this.btnForCancel.Text = "Cancel";
             this.btnForCancel.UseVisualStyleBackColor = true;
@@ -183,28 +191,28 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.txtboxForTblName.Location = new System.Drawing.Point(0, 0);
             this.txtboxForTblName.Name = "txtboxForTblName";
-            this.txtboxForTblName.Size = new System.Drawing.Size(100, 22);
+            this.txtboxForTblName.Size = new System.Drawing.Size(100, 23);
             this.txtboxForTblName.TabIndex = 6;
             // 
             // txtBoxFoeExistingTblKey
             // 
             this.txtBoxFoeExistingTblKey.Location = new System.Drawing.Point(0, 0);
             this.txtBoxFoeExistingTblKey.Name = "txtBoxFoeExistingTblKey";
-            this.txtBoxFoeExistingTblKey.Size = new System.Drawing.Size(100, 22);
+            this.txtBoxFoeExistingTblKey.Size = new System.Drawing.Size(100, 23);
             this.txtBoxFoeExistingTblKey.TabIndex = 5;
             // 
             // textBoxForSourceTbl
             // 
             this.textBoxForSourceTbl.Location = new System.Drawing.Point(0, 0);
             this.textBoxForSourceTbl.Name = "textBoxForSourceTbl";
-            this.textBoxForSourceTbl.Size = new System.Drawing.Size(100, 22);
+            this.textBoxForSourceTbl.Size = new System.Drawing.Size(100, 23);
             this.textBoxForSourceTbl.TabIndex = 4;
             // 
             // textBoxForSourceTblKey
             // 
             this.textBoxForSourceTblKey.Location = new System.Drawing.Point(0, 0);
             this.textBoxForSourceTblKey.Name = "textBoxForSourceTblKey";
-            this.textBoxForSourceTblKey.Size = new System.Drawing.Size(100, 22);
+            this.textBoxForSourceTblKey.Size = new System.Drawing.Size(100, 23);
             this.textBoxForSourceTblKey.TabIndex = 3;
             // 
             // panelForPullreleatedData
@@ -239,30 +247,32 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // txtForNoofColumns
             // 
+            this.txtForNoofColumns.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtForNoofColumns.Location = new System.Drawing.Point(237, 165);
             this.txtForNoofColumns.Name = "txtForNoofColumns";
-            this.txtForNoofColumns.Size = new System.Drawing.Size(100, 22);
+            this.txtForNoofColumns.Size = new System.Drawing.Size(100, 27);
             this.txtForNoofColumns.TabIndex = 0;
             this.txtForNoofColumns.TextChanged += new System.EventHandler(this.txtForNoofColumns_TextChanged);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(76, 165);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(71, 16);
+            this.label7.Size = new System.Drawing.Size(79, 19);
             this.label7.TabIndex = 15;
             this.label7.Text = "Row Count";
             // 
             // btnForSavePullreleatedData
             // 
-            this.btnForSavePullreleatedData.Location = new System.Drawing.Point(451, 536);
+            this.btnForSavePullreleatedData.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForSavePullreleatedData.Location = new System.Drawing.Point(456, 536);
             this.btnForSavePullreleatedData.Name = "btnForSavePullreleatedData";
-            this.btnForSavePullreleatedData.Size = new System.Drawing.Size(75, 23);
+            this.btnForSavePullreleatedData.Size = new System.Drawing.Size(70, 30);
             this.btnForSavePullreleatedData.TabIndex = 17;
             this.btnForSavePullreleatedData.Text = "Save";
             this.btnForSavePullreleatedData.UseVisualStyleBackColor = true;
-           // this.btnForSavePullreleatedData.Click += new System.EventHandler(this.btnForSavePullreleatedData_Click);
             // 
             // DbtableForm
             // 
@@ -292,6 +302,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.Controls.Add(this.labelForDatabase);
             this.Controls.Add(this.cmbTables);
             this.Controls.Add(this.cmbDatabases);
+            this.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DbtableForm";
             this.Text = "Database and Tables";

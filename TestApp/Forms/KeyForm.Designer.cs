@@ -31,27 +31,28 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // labelForKey
             // 
             this.labelForKey.AutoSize = true;
-            this.labelForKey.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelForKey.Location = new System.Drawing.Point(81, 110);
+            this.labelForKey.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelForKey.Location = new System.Drawing.Point(115, 117);
             this.labelForKey.Name = "labelForKey";
-            this.labelForKey.Size = new System.Drawing.Size(199, 24);
+            this.labelForKey.Size = new System.Drawing.Size(136, 23);
             this.labelForKey.TabIndex = 0;
-            this.labelForKey.Text = "Please Enter Your Key";
+            this.labelForKey.Text = "Please Enter Key";
             // 
             // textBoxForKey
             // 
+            this.textBoxForKey.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxForKey.Location = new System.Drawing.Point(334, 114);
             this.textBoxForKey.Name = "textBoxForKey";
-            this.textBoxForKey.Size = new System.Drawing.Size(238, 20);
+            this.textBoxForKey.Size = new System.Drawing.Size(238, 31);
             this.textBoxForKey.TabIndex = 1;
             // 
             // btnCancel
             // 
-            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(381, 230);
+            this.btnCancel.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Location = new System.Drawing.Point(402, 230);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(81, 30);
+            this.btnCancel.Size = new System.Drawing.Size(70, 30);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -60,10 +61,10 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // btnForSave
             // 
             this.btnForSave.Enabled = false;
-            this.btnForSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForSave.Location = new System.Drawing.Point(497, 230);
+            this.btnForSave.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForSave.Location = new System.Drawing.Point(502, 230);
             this.btnForSave.Name = "btnForSave";
-            this.btnForSave.Size = new System.Drawing.Size(75, 30);
+            this.btnForSave.Size = new System.Drawing.Size(70, 30);
             this.btnForSave.TabIndex = 2;
             this.btnForSave.Text = "Save";
             this.btnForSave.UseVisualStyleBackColor = true;

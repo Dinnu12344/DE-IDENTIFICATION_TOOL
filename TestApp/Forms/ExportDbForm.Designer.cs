@@ -57,28 +57,30 @@
             this.panelInDBLocationForm.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.panelInDBLocationForm.Controls.Add(this.lblForJdbcSubPara);
             this.panelInDBLocationForm.Controls.Add(this.lblForJdbc);
+            this.panelInDBLocationForm.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelInDBLocationForm.Location = new System.Drawing.Point(1, 1);
+            this.panelInDBLocationForm.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelInDBLocationForm.Name = "panelInDBLocationForm";
-            this.panelInDBLocationForm.Size = new System.Drawing.Size(800, 123);
+            this.panelInDBLocationForm.Size = new System.Drawing.Size(800, 138);
             this.panelInDBLocationForm.TabIndex = 0;
             // 
             // lblForJdbcSubPara
             // 
             this.lblForJdbcSubPara.AutoSize = true;
-            this.lblForJdbcSubPara.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForJdbcSubPara.Location = new System.Drawing.Point(36, 80);
+            this.lblForJdbcSubPara.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblForJdbcSubPara.Location = new System.Drawing.Point(37, 90);
             this.lblForJdbcSubPara.Name = "lblForJdbcSubPara";
-            this.lblForJdbcSubPara.Size = new System.Drawing.Size(367, 20);
+            this.lblForJdbcSubPara.Size = new System.Drawing.Size(324, 19);
             this.lblForJdbcSubPara.TabIndex = 1;
             this.lblForJdbcSubPara.Text = "Please provide the requested imformation below";
             // 
             // lblForJdbc
             // 
             this.lblForJdbc.AutoSize = true;
-            this.lblForJdbc.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForJdbc.Location = new System.Drawing.Point(33, 35);
+            this.lblForJdbc.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblForJdbc.Location = new System.Drawing.Point(33, 38);
             this.lblForJdbc.Name = "lblForJdbc";
-            this.lblForJdbc.Size = new System.Drawing.Size(75, 29);
+            this.lblForJdbc.Size = new System.Drawing.Size(55, 26);
             this.lblForJdbc.TabIndex = 0;
             this.lblForJdbc.Text = "JDBC";
             // 
@@ -86,9 +88,9 @@
             // 
             this.lblForTypeInJdbcFrm.AutoSize = true;
             this.lblForTypeInJdbcFrm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForTypeInJdbcFrm.Location = new System.Drawing.Point(38, 158);
+            this.lblForTypeInJdbcFrm.Location = new System.Drawing.Point(37, 178);
             this.lblForTypeInJdbcFrm.Name = "lblForTypeInJdbcFrm";
-            this.lblForTypeInJdbcFrm.Size = new System.Drawing.Size(45, 20);
+            this.lblForTypeInJdbcFrm.Size = new System.Drawing.Size(40, 17);
             this.lblForTypeInJdbcFrm.TabIndex = 1;
             this.lblForTypeInJdbcFrm.Text = "Type";
             // 
@@ -98,9 +100,10 @@
             this.dbTyped.Items.AddRange(new object[] {
             "SQL",
             "Oracel"});
-            this.dbTyped.Location = new System.Drawing.Point(185, 154);
+            this.dbTyped.Location = new System.Drawing.Point(185, 173);
+            this.dbTyped.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dbTyped.Name = "dbTyped";
-            this.dbTyped.Size = new System.Drawing.Size(508, 24);
+            this.dbTyped.Size = new System.Drawing.Size(508, 26);
             this.dbTyped.TabIndex = 2;
             this.dbTyped.SelectedIndexChanged += new System.EventHandler(this.dbTyped_SelectedIndexChanged);
             // 
@@ -110,16 +113,18 @@
             this.panelHoldingButtonsInJdbcWindow.Controls.Add(this.btnForFinish);
             this.panelHoldingButtonsInJdbcWindow.Controls.Add(this.btnForCancelInJdbcFrm);
             this.panelHoldingButtonsInJdbcWindow.Controls.Add(this.btnForBackInJdbcFrm);
-            this.panelHoldingButtonsInJdbcWindow.Location = new System.Drawing.Point(1, 469);
+            this.panelHoldingButtonsInJdbcWindow.Location = new System.Drawing.Point(1, 528);
+            this.panelHoldingButtonsInJdbcWindow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelHoldingButtonsInJdbcWindow.Name = "panelHoldingButtonsInJdbcWindow";
-            this.panelHoldingButtonsInJdbcWindow.Size = new System.Drawing.Size(800, 73);
+            this.panelHoldingButtonsInJdbcWindow.Size = new System.Drawing.Size(800, 82);
             this.panelHoldingButtonsInJdbcWindow.TabIndex = 3;
             // 
             // btnForNext
             // 
-            this.btnForNext.Location = new System.Drawing.Point(422, 26);
+            this.btnForNext.Location = new System.Drawing.Point(433, 25);
+            this.btnForNext.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnForNext.Name = "btnForNext";
-            this.btnForNext.Size = new System.Drawing.Size(75, 23);
+            this.btnForNext.Size = new System.Drawing.Size(70, 30);
             this.btnForNext.TabIndex = 4;
             this.btnForNext.Text = "Next";
             this.btnForNext.UseVisualStyleBackColor = true;
@@ -127,9 +132,10 @@
             // 
             // btnForFinish
             // 
-            this.btnForFinish.Location = new System.Drawing.Point(515, 26);
+            this.btnForFinish.Location = new System.Drawing.Point(528, 25);
+            this.btnForFinish.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnForFinish.Name = "btnForFinish";
-            this.btnForFinish.Size = new System.Drawing.Size(75, 23);
+            this.btnForFinish.Size = new System.Drawing.Size(70, 30);
             this.btnForFinish.TabIndex = 3;
             this.btnForFinish.Text = "Finish";
             this.btnForFinish.UseVisualStyleBackColor = true;
@@ -137,18 +143,20 @@
             // 
             // btnForCancelInJdbcFrm
             // 
-            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(608, 26);
+            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(622, 25);
+            this.btnForCancelInJdbcFrm.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnForCancelInJdbcFrm.Name = "btnForCancelInJdbcFrm";
-            this.btnForCancelInJdbcFrm.Size = new System.Drawing.Size(75, 23);
+            this.btnForCancelInJdbcFrm.Size = new System.Drawing.Size(70, 30);
             this.btnForCancelInJdbcFrm.TabIndex = 2;
             this.btnForCancelInJdbcFrm.Text = "Cancel";
             this.btnForCancelInJdbcFrm.UseVisualStyleBackColor = true;
             // 
             // btnForBackInJdbcFrm
             // 
-            this.btnForBackInJdbcFrm.Location = new System.Drawing.Point(328, 26);
+            this.btnForBackInJdbcFrm.Location = new System.Drawing.Point(336, 25);
+            this.btnForBackInJdbcFrm.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnForBackInJdbcFrm.Name = "btnForBackInJdbcFrm";
-            this.btnForBackInJdbcFrm.Size = new System.Drawing.Size(75, 23);
+            this.btnForBackInJdbcFrm.Size = new System.Drawing.Size(70, 30);
             this.btnForBackInJdbcFrm.TabIndex = 0;
             this.btnForBackInJdbcFrm.Text = "Back";
             this.btnForBackInJdbcFrm.UseVisualStyleBackColor = true;
@@ -156,66 +164,69 @@
             // lblForServer
             // 
             this.lblForServer.AutoSize = true;
-            this.lblForServer.Location = new System.Drawing.Point(36, 208);
+            this.lblForServer.Location = new System.Drawing.Point(37, 234);
             this.lblForServer.Name = "lblForServer";
-            this.lblForServer.Size = new System.Drawing.Size(47, 16);
+            this.lblForServer.Size = new System.Drawing.Size(48, 18);
             this.lblForServer.TabIndex = 4;
             this.lblForServer.Text = "Server";
             // 
             // lblForUserName
             // 
             this.lblForUserName.AutoSize = true;
-            this.lblForUserName.Location = new System.Drawing.Point(38, 252);
+            this.lblForUserName.Location = new System.Drawing.Point(37, 284);
             this.lblForUserName.Name = "lblForUserName";
-            this.lblForUserName.Size = new System.Drawing.Size(73, 16);
+            this.lblForUserName.Size = new System.Drawing.Size(73, 18);
             this.lblForUserName.TabIndex = 6;
             this.lblForUserName.Text = "UserName";
             // 
             // lblForPassword
             // 
             this.lblForPassword.AutoSize = true;
-            this.lblForPassword.Location = new System.Drawing.Point(36, 303);
+            this.lblForPassword.Location = new System.Drawing.Point(37, 341);
             this.lblForPassword.Name = "lblForPassword";
-            this.lblForPassword.Size = new System.Drawing.Size(67, 16);
+            this.lblForPassword.Size = new System.Drawing.Size(67, 18);
             this.lblForPassword.TabIndex = 7;
             this.lblForPassword.Text = "Password";
             // 
             // txtForServer
             // 
-            this.txtForServer.Location = new System.Drawing.Point(185, 208);
+            this.txtForServer.Location = new System.Drawing.Point(185, 234);
+            this.txtForServer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtForServer.Name = "txtForServer";
-            this.txtForServer.Size = new System.Drawing.Size(508, 22);
+            this.txtForServer.Size = new System.Drawing.Size(508, 26);
             this.txtForServer.TabIndex = 9;
             // 
             // txtForUsername
             // 
-            this.txtForUsername.Location = new System.Drawing.Point(185, 252);
+            this.txtForUsername.Location = new System.Drawing.Point(185, 284);
+            this.txtForUsername.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtForUsername.Name = "txtForUsername";
-            this.txtForUsername.Size = new System.Drawing.Size(508, 22);
+            this.txtForUsername.Size = new System.Drawing.Size(508, 26);
             this.txtForUsername.TabIndex = 11;
             // 
             // txtForPassword
             // 
-            this.txtForPassword.Location = new System.Drawing.Point(185, 297);
+            this.txtForPassword.Location = new System.Drawing.Point(185, 334);
+            this.txtForPassword.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtForPassword.Name = "txtForPassword";
-            this.txtForPassword.Size = new System.Drawing.Size(508, 22);
+            this.txtForPassword.Size = new System.Drawing.Size(508, 26);
             this.txtForPassword.TabIndex = 12;
             // 
             // labelForDatabaseTbl
             // 
             this.labelForDatabaseTbl.AutoSize = true;
-            this.labelForDatabaseTbl.Location = new System.Drawing.Point(39, 401);
+            this.labelForDatabaseTbl.Location = new System.Drawing.Point(39, 451);
             this.labelForDatabaseTbl.Name = "labelForDatabaseTbl";
-            this.labelForDatabaseTbl.Size = new System.Drawing.Size(50, 16);
+            this.labelForDatabaseTbl.Size = new System.Drawing.Size(47, 18);
             this.labelForDatabaseTbl.TabIndex = 16;
             this.labelForDatabaseTbl.Text = "Tables";
             // 
             // labelForDatabase
             // 
             this.labelForDatabase.AutoSize = true;
-            this.labelForDatabase.Location = new System.Drawing.Point(39, 353);
+            this.labelForDatabase.Location = new System.Drawing.Point(39, 397);
             this.labelForDatabase.Name = "labelForDatabase";
-            this.labelForDatabase.Size = new System.Drawing.Size(74, 16);
+            this.labelForDatabase.Size = new System.Drawing.Size(71, 18);
             this.labelForDatabase.TabIndex = 15;
             this.labelForDatabase.Text = "Databases";
             // 
@@ -223,9 +234,10 @@
             // 
             this.cmbTables.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTables.FormattingEnabled = true;
-            this.cmbTables.Location = new System.Drawing.Point(185, 401);
+            this.cmbTables.Location = new System.Drawing.Point(185, 451);
+            this.cmbTables.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbTables.Name = "cmbTables";
-            this.cmbTables.Size = new System.Drawing.Size(508, 24);
+            this.cmbTables.Size = new System.Drawing.Size(508, 26);
             this.cmbTables.TabIndex = 14;
             this.cmbTables.SelectedIndexChanged += new System.EventHandler(this.cmbTables_SelectedIndexChanged);
             // 
@@ -233,17 +245,18 @@
             // 
             this.cmbDatabases.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDatabases.FormattingEnabled = true;
-            this.cmbDatabases.Location = new System.Drawing.Point(185, 345);
+            this.cmbDatabases.Location = new System.Drawing.Point(185, 386);
+            this.cmbDatabases.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbDatabases.Name = "cmbDatabases";
-            this.cmbDatabases.Size = new System.Drawing.Size(508, 24);
+            this.cmbDatabases.Size = new System.Drawing.Size(508, 26);
             this.cmbDatabases.TabIndex = 13;
             this.cmbDatabases.SelectedIndexChanged += new System.EventHandler(this.cmbDatabases_SelectedIndexChanged);
             // 
             // ExportDbForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 543);
+            this.ClientSize = new System.Drawing.Size(803, 611);
             this.Controls.Add(this.labelForDatabaseTbl);
             this.Controls.Add(this.labelForDatabase);
             this.Controls.Add(this.cmbTables);
@@ -258,6 +271,8 @@
             this.Controls.Add(this.dbTyped);
             this.Controls.Add(this.lblForTypeInJdbcFrm);
             this.Controls.Add(this.panelInDBLocationForm);
+            this.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "ExportDbForm";
             this.Text = "DBLocationForm";
             this.panelInDBLocationForm.ResumeLayout(false);

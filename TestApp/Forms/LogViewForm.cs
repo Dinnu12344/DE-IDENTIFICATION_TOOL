@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
@@ -97,14 +98,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     if (logs.ContainsKey(selectedDate))
                     {
-                        logTextBox.Items.Clear(); // Clear previous log entries
-                        string[] logLines = logs[selectedDate].Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                        logTextBox.Items.AddRange(logLines);
+                        logRichTextBox.Clear(); // Clear previous log entries
+                        logRichTextBox.Text = WrapText(logs[selectedDate], 100); // Adjust maxLineLength as needed
                     }
                     else
                     {
-                        logTextBox.Items.Clear();
-                        logTextBox.Items.Add("No logs available for selected date.");
+                        logRichTextBox.Clear();
+                        logRichTextBox.Text = "No logs available for selected date.";
                     }
                 }
                 catch (Exception ex)
@@ -116,7 +116,29 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void LogViewForm_Resize(object sender, EventArgs e)
         {
-            // Custom resizing logic if needed
+            logRichTextBox.Width = this.ClientSize.Width - dateListBox.Width;
+            logRichTextBox.Height = this.ClientSize.Height;
+        }
+
+        private string WrapText(string text, int maxLineLength)
+        {
+            var wrappedText = new StringBuilder();
+            var words = text.Split(' ');
+            var lineLength = 0;
+
+            foreach (var word in words)
+            {
+                if (lineLength + word.Length > maxLineLength)
+                {
+                    wrappedText.AppendLine();
+                    lineLength = 0;
+                }
+
+                wrappedText.Append(word + " ");
+                lineLength += word.Length + 1;
+            }
+
+            return wrappedText.ToString();
         }
 
         protected override void OnShown(EventArgs e)
