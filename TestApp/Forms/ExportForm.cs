@@ -34,35 +34,68 @@ namespace DE_IDENTIFICATION_TOOL
         {
             if (radioBtnForCsvExport.Checked)
             {
-                SelectedImportOption = "CSV";
-
-                using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+                if (SelectedImportOption == "CSV" && check != true)
                 {
-                    folderBrowserDialog.Description = "Select the folder to save CSV file";
-                    folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
-                    folderBrowserDialog.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-                    if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
                     {
-                        // Save the selected folder path for further use
-                        string selectedFolderPath = folderBrowserDialog.SelectedPath;
+                        folderBrowserDialog.Description = "Select the folder to save CSV file";
+                        folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
+                        folderBrowserDialog.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-                        string pythonScriptName = "ExportCsvConnection.py";
-                        string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                        string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
-
-                        string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
-
-                        if (pythonResponse.ToLower().Contains("success"))
+                        if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                         {
-                            MessageBox.Show("The exporte is success and the export path is : " + pythonResponse);
-                            this.Close();
+                            // Save the selected folder path for further use
+                            string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                            string pythonScriptName = "ExportCsvConnection.py";
+                            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                            string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+
+                            string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
+
+                            if (pythonResponse.ToLower().Contains("success"))
+                            {
+                                MessageBox.Show("The exporte is success and the export path is : " + pythonResponse);
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("the Export is not done");
+                            }
+
                         }
-                        else
+                    }
+                }
+                else
+                {
+                    using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+                    {
+                        folderBrowserDialog.Description = "Select the folder to save CSV file";
+                        folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
+                        folderBrowserDialog.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                        if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                         {
-                            MessageBox.Show("the Export is not done");
+                            // Save the selected folder path for further use
+                            string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                            string pythonScriptName = "ExportAllCsv.py";
+                            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                            string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+
+                            string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, pythonScriptPath);
+
+                            if (pythonResponse.ToLower().Contains("success"))
+                            {
+                                MessageBox.Show("The export is success and the export path is : " + pythonResponse);
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("the Export is not done");
+                            }
+
                         }
-                        
                     }
                 }
             }
@@ -74,7 +107,7 @@ namespace DE_IDENTIFICATION_TOOL
                     ExportDbForm dBLocationForm = new ExportDbForm(projectName, tableName);
                     dBLocationForm.ShowDialog();
                 }
-                if (SelectedImportOption == "Database" && check==true)
+                if (SelectedImportOption == "Database" && check == true)
                 {
                     ExportDbForm dBLocationForm = new ExportDbForm(projectName, check);
                     dBLocationForm.ShowDialog();

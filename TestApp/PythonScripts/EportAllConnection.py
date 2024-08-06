@@ -16,12 +16,14 @@ def sqlite_to_sqlserver_dtype(sqlite_dtype):
     }
     return dtype_mapping.get(sqlite_dtype.upper(), sqlite_dtype.upper())
 
-def validate_schemas(sqlite_cursor, sql_server_cursor, sqlite_tables, sql_server_tables):
+def validate_schemas(sqlite_cursor, sql_server_cursor, deidentified_tables, sql_server_tables):
     """Validate schemas of all tables in SQLite against SQL Server."""
-    print("validate_schemas")
-    for table in sqlite_tables:
-        if table not in sql_server_tables:
-            raise ValueError(f"Table {table} does not exist in SQL Server")
+    for table in deidentified_tables:
+        # Remove the 'de_identified_' prefix from the SQLite table name
+        original_table_name = table[len("de_identified_"):]
+        
+        if original_table_name not in sql_server_tables:
+            raise ValueError(f"Table {original_table_name} does not exist in SQL Server")
         
         # Fetch SQLite table schema
         sqlite_cursor.execute(f"PRAGMA table_info({table});")
@@ -31,25 +33,24 @@ def validate_schemas(sqlite_cursor, sql_server_cursor, sqlite_tables, sql_server
         sql_server_cursor.execute(f"""
             SELECT COLUMN_NAME, DATA_TYPE
             FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE TABLE_NAME = '{table}';
+            WHERE TABLE_NAME = '{original_table_name}';
         """)
         sql_server_schema = sql_server_cursor.fetchall()
         
         # Check if schemas match
         if len(sqlite_schema) != len(sql_server_schema):
-            raise ValueError(f"Schema mismatch for table {table}: column count mismatch")
+            raise ValueError(f"Schema mismatch for table {original_table_name}: column count mismatch")
         
         for sqlite_col, sql_server_col in zip(sqlite_schema, sql_server_schema):
             sqlite_col_name, sqlite_col_type = sqlite_col[1], sqlite_col[2]
             sql_server_col_name, sql_server_col_type = sql_server_col[0], sql_server_col[1]
             
             if sqlite_col_name != sql_server_col_name or sqlite_to_sqlserver_dtype(sqlite_col_type) != sql_server_col_type.upper():
-                raise ValueError(f"Schema mismatch for column '{sqlite_col_name}' in table '{table}': "
+                raise ValueError(f"Schema mismatch for column '{sqlite_col_name}' in table '{original_table_name}': "
                                  f"SQLite({sqlite_col_name}, {sqlite_col_type}) != SQL Server({sql_server_col_name}, {sql_server_col_type})")
 
 def migrate_sqlite_to_sqlserver(sqlite_db_path, sql_server_conn_str):
     try:
-        print("migrate_sqlite_to_sqlserver function")
         # Connect to SQLite database
         sqlite_conn = sqlite3.connect(sqlite_db_path)
         sqlite_cursor = sqlite_conn.cursor()
@@ -62,15 +63,27 @@ def migrate_sqlite_to_sqlserver(sqlite_db_path, sql_server_conn_str):
         sqlite_cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
         sqlite_tables = [row[0] for row in sqlite_cursor.fetchall()]
         
+        # Separate table names into two lists
+        non_deidentified_tables = [table for table in sqlite_tables if not table.startswith("de_identified_")]
+        deidentified_tables = [table for table in sqlite_tables if table.startswith("de_identified_")]
+
+        # Check if all non-deidentified table names are present in the deidentified tables list
+        for table in non_deidentified_tables:
+            if f"de_identified_{table}" not in deidentified_tables:
+                raise ValueError(f"De-identified version of table {table} is missing")
+        
         # Fetch all table names from SQL Server
         sql_server_cursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';")
         sql_server_tables = [row[0] for row in sql_server_cursor.fetchall()]
         
         # Validate schemas
-        validate_schemas(sqlite_cursor, sql_server_cursor, sqlite_tables, sql_server_tables)
+        validate_schemas(sqlite_cursor, sql_server_cursor, deidentified_tables, sql_server_tables)
         
         # Insert data if all schemas match
-        for table in sqlite_tables:
+        for table in deidentified_tables:
+            # Remove the 'de_identified_' prefix from the SQLite table name
+            original_table_name = table[len("de_identified_"):]
+            
             # Fetch all data from SQLite table
             sqlite_cursor.execute(f"SELECT * FROM {table}")
             rows = sqlite_cursor.fetchall()
@@ -80,13 +93,13 @@ def migrate_sqlite_to_sqlserver(sqlite_db_path, sql_server_conn_str):
             for row in rows:
                 placeholders = ', '.join(['?'] * len(row))
                 sql_server_cursor.execute(
-                    f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})",
+                    f"INSERT INTO {original_table_name} ({', '.join(columns)}) VALUES ({placeholders})",
                     row
                 )
         
         # Commit the transaction
         sql_server_conn.commit()
-        print("Data migration completed success")
+        print("Data migration completed successfully.")
     
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -97,16 +110,9 @@ def migrate_sqlite_to_sqlserver(sqlite_db_path, sql_server_conn_str):
         sql_server_conn.close()
 
 # Example usage
-
-
-
-
-
-
-
 if __name__ == "__main__":
 
-        # Extract arguments passed from command line
+    # Extract arguments passed from command line
     if len(sys.argv) < 6:
         print("Error: Not enough arguments provided.")
         print("Usage: script.py <server_name> <database_name> <sql_server_password> <sql_server_username> <project_name>")
@@ -119,8 +125,6 @@ if __name__ == "__main__":
     sql_server_username = sys.argv[4]
     project_name = sys.argv[5]
 
-       
-
     username = getpass.getuser()
     tool_path = f'C:\\Users\\{username}\\AppData\\Roaming\\DeidentificationTool'
     mf.create_path(tool_path)
@@ -129,16 +133,6 @@ if __name__ == "__main__":
     tables_data_path = os.path.join(tool_path, project_name, 'TablesData')
     mf.create_path(tables_data_path)
     db_file_path = os.path.join(tables_data_path, 'Data.db')
-        
 
-    print("Before migrate_sqlite_to_sqlserver function")
-
-    #sqlite_db_path = r'C:\Users\Jayanth C\NewExportAll.db'
     sql_server_conn_str = f'DRIVER={{SQL Server}};SERVER={server_name};DATABASE={database_name};UID={sql_server_username};PWD={sql_server_password}'
     migrate_sqlite_to_sqlserver(db_file_path, sql_server_conn_str)
-
-
-
-
-
-

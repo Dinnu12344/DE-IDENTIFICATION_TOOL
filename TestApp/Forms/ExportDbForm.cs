@@ -147,9 +147,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         }
 
         private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
-        
-        
-        
+
         
         {
             _properties.dbName = cmbDatabases.SelectedItem.ToString();

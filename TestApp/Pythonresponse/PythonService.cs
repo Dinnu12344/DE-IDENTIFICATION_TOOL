@@ -18,6 +18,7 @@ public class PythonService
         }
     }
 
+
     //private string getpythonexepath()
     //{
     //    string pythonexename = "python.exe";
@@ -48,6 +49,7 @@ public class PythonService
     //        throw new Exception("python executable not found at " + pythonexepath);
     //    }
     //}
+
     public string GetPythonExePath()
     {
         // Search in PATH environment variable

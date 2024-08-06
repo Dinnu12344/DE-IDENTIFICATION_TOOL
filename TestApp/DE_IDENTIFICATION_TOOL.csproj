@@ -425,6 +425,9 @@
     <Content Include="PythonScripts\EportAllConnection.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="PythonScripts\ExportAllCsv.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="PythonScripts\GetSourceTableNames.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
