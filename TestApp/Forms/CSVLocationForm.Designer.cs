@@ -63,7 +63,7 @@ namespace DE_IDENTIFICATION_TOOL
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(700, 93);
+            this.panel1.Size = new System.Drawing.Size(800, 93);
             this.panel1.TabIndex = 0;
             // 
             // label2
@@ -125,16 +125,16 @@ namespace DE_IDENTIFICATION_TOOL
             this.panel2.Location = new System.Drawing.Point(0, 349);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(700, 73);
+            this.panel2.Size = new System.Drawing.Size(800, 73);
             this.panel2.TabIndex = 4;
             // 
             // CanclebtnforClear
             // 
             this.CanclebtnforClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CanclebtnforClear.Location = new System.Drawing.Point(606, 28);
+            this.CanclebtnforClear.Location = new System.Drawing.Point(706, 28);
             this.CanclebtnforClear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CanclebtnforClear.Name = "CanclebtnforClear";
-            this.CanclebtnforClear.Size = new System.Drawing.Size(66, 22);
+            this.CanclebtnforClear.Size = new System.Drawing.Size(70, 30);
             this.CanclebtnforClear.TabIndex = 3;
             this.CanclebtnforClear.Text = "Cancel";
             this.CanclebtnforClear.UseVisualStyleBackColor = true;
@@ -144,10 +144,10 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             this.finishButtonInCsvlocationWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.finishButtonInCsvlocationWindow.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.finishButtonInCsvlocationWindow.Location = new System.Drawing.Point(419, 28);
+            this.finishButtonInCsvlocationWindow.Location = new System.Drawing.Point(519, 28);
             this.finishButtonInCsvlocationWindow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.finishButtonInCsvlocationWindow.Name = "finishButtonInCsvlocationWindow";
-            this.finishButtonInCsvlocationWindow.Size = new System.Drawing.Size(66, 22);
+            this.finishButtonInCsvlocationWindow.Size = new System.Drawing.Size(70, 30);
             this.finishButtonInCsvlocationWindow.TabIndex = 2;
             this.finishButtonInCsvlocationWindow.Text = "Finish";
             this.finishButtonInCsvlocationWindow.UseVisualStyleBackColor = true;
@@ -156,10 +156,10 @@ namespace DE_IDENTIFICATION_TOOL
             // btnForBack
             // 
             this.btnForBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnForBack.Location = new System.Drawing.Point(514, 28);
+            this.btnForBack.Location = new System.Drawing.Point(614, 28);
             this.btnForBack.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnForBack.Name = "btnForBack";
-            this.btnForBack.Size = new System.Drawing.Size(66, 22);
+            this.btnForBack.Size = new System.Drawing.Size(70, 30);
             this.btnForBack.TabIndex = 0;
             this.btnForBack.Text = "Back";
             this.btnForBack.UseVisualStyleBackColor = true;
@@ -182,7 +182,7 @@ namespace DE_IDENTIFICATION_TOOL
             ",",
             ";",
             "|",
-            "\t"});
+            "\\t"});
             this.DelimeterComboBox.Location = new System.Drawing.Point(158, 178);
             this.DelimeterComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DelimeterComboBox.Name = "DelimeterComboBox";

@@ -4,6 +4,7 @@ using DE_IDENTIFICATION_TOOL.Pythonresponse;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -144,17 +145,54 @@ namespace DE_IDENTIFICATION_TOOL
             if (!string.IsNullOrEmpty(csvLocationFormModel.SelectedCsvFilePath))
             {
                 string username = Environment.UserName;
-                string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{csvLocationFormModel.TableName}\LogFile";
+                string projectDirectory = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}";
+                string directoryPath = Path.Combine(projectDirectory, csvLocationFormModel.TableName, "LogFile");
+
+                // File to store the list of table names for the specific project
+                string tableNamesFile = Path.Combine(projectDirectory, "TableNames.txt");
+
+                // Ensure the table name is trimmed of leading/trailing whitespace
+                string enteredTableName = csvLocationFormModel.TableName.Trim();
+
+                // Check if the table name already exists in the current project (case-insensitive comparison)
+                if (File.Exists(tableNamesFile))
+                {
+                    var existingTableNames = File.ReadAllLines(tableNamesFile)
+                                                 .Select(name => name.Trim())
+                                                 .ToList();
+
+                    if (existingTableNames.Any(name => string.Equals(name, enteredTableName, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        MessageBox.Show($"Table name '{enteredTableName}' already exists in project '{projectName}'. Please try another name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return; // Prevent the form from closing
+                    }
+                }
+
+                // Create directory if it doesn't exist
                 if (!Directory.Exists(directoryPath))
                 {
                     Directory.CreateDirectory(directoryPath);
                 }
 
+                // Save the new table name to the project's TableNames.txt
+                File.AppendAllLines(tableNamesFile, new[] { enteredTableName });
+
+                // Path to the Python script
                 string pythonScriptName = "ImportCsvConnection.py";
                 string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                 string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
-                string pythonResponse = pythonService.SendDataToPython(csvLocationFormModel.SelectedCsvFilePath, projectName, csvLocationFormModel.TableName,csvLocationFormModel.SelectedDelimiter, csvLocationFormModel.SelectedQuote, csvLocationFormModel.EnteredText, pythonScriptPath);
-                
+
+                // Call Python service
+                string pythonResponse = pythonService.SendDataToPython(
+                    csvLocationFormModel.SelectedCsvFilePath,
+                    projectName,
+                    enteredTableName,
+                    csvLocationFormModel.SelectedDelimiter,
+                    csvLocationFormModel.SelectedQuote,
+                    csvLocationFormModel.EnteredText,
+                    pythonScriptPath
+                );
+
                 if (pythonResponse.ToLower().Contains("success"))
                 {
                     this.DialogResult = DialogResult.OK;
@@ -162,10 +200,13 @@ namespace DE_IDENTIFICATION_TOOL
                 }
                 else
                 {
-                    MessageBox.Show("The python response is failed. Error: " + pythonResponse, "Error");
+                    MessageBox.Show("The Python response failed. Error: " + pythonResponse, "Error");
                 }
             }
         }
+
+
+
         private void CancelButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;

@@ -33,7 +33,6 @@ namespace DE_IDENTIFICATION_TOOL
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -70,7 +69,6 @@ namespace DE_IDENTIFICATION_TOOL
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newProjectToolStripMenuItem,
             this.openProjectToolStripMenuItem,
-            this.exportDataToolStripMenuItem,
             this.reToolStripMenuItem});
             this.fileToolStripMenuItem.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -80,27 +78,20 @@ namespace DE_IDENTIFICATION_TOOL
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newProjectToolStripMenuItem.Text = "New Project";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project";
-            // 
-            // exportDataToolStripMenuItem
-            // 
-            this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
-            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-            this.exportDataToolStripMenuItem.Text = "Export Data";
-            this.exportDataToolStripMenuItem.Click += new System.EventHandler(this.exportDataToolStripMenuItem_Click);
             // 
             // reToolStripMenuItem
             // 
             this.reToolStripMenuItem.Name = "reToolStripMenuItem";
-            this.reToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.reToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reToolStripMenuItem.Text = "Exit";
             // 
             // helpToolStripMenuItem
@@ -149,7 +140,6 @@ namespace DE_IDENTIFICATION_TOOL
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem newProjectToolStripMenuItem;
         private ToolStripMenuItem openProjectToolStripMenuItem;
-        private ToolStripMenuItem exportDataToolStripMenuItem;
         private ToolStripMenuItem reToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
