@@ -22,12 +22,25 @@ namespace DE_IDENTIFICATION_TOOL
             ProjectName = txtProjectName.Text;
             string username = Environment.UserName;
             string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{ProjectName}";
-            if (!Directory.Exists(directoryPath))
+
+            if (Directory.Exists(directoryPath))
             {
-                Directory.CreateDirectory(directoryPath);
+                // Show an error message if the directory already exists
+                MessageBox.Show("A project with this name already exists. Please choose a different name.",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+
+                // Clear the text box
+                txtProjectName.Clear();
             }
-            DialogResult = DialogResult.OK;
-            Close();
+            else
+            {
+                // Create the directory if it does not exist
+                Directory.CreateDirectory(directoryPath);
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
     }
 }

@@ -43,20 +43,20 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             this.radioCheckCSV.AutoSize = true;
             this.radioCheckCSV.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioCheckCSV.Location = new System.Drawing.Point(58, 35);
+            this.radioCheckCSV.Location = new System.Drawing.Point(58, 42);
             this.radioCheckCSV.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.radioCheckCSV.Name = "radioCheckCSV";
             this.radioCheckCSV.Size = new System.Drawing.Size(52, 23);
             this.radioCheckCSV.TabIndex = 0;
             this.radioCheckCSV.TabStop = true;
             this.radioCheckCSV.Text = "CSV";
-            this.radioCheckCSV.UseVisualStyleBackColor = true;
+            this.radioCheckCSV.UseVisualStyleBackColor = false;
             // 
             // radioCheckDatabase
             // 
             this.radioCheckDatabase.AutoSize = true;
             this.radioCheckDatabase.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioCheckDatabase.Location = new System.Drawing.Point(58, 61);
+            this.radioCheckDatabase.Location = new System.Drawing.Point(58, 116);
             this.radioCheckDatabase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.radioCheckDatabase.Name = "radioCheckDatabase";
             this.radioCheckDatabase.Size = new System.Drawing.Size(90, 23);
@@ -69,7 +69,7 @@ namespace DE_IDENTIFICATION_TOOL
             // buttonNext
             // 
             this.buttonNext.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonNext.Location = new System.Drawing.Point(58, 127);
+            this.buttonNext.Location = new System.Drawing.Point(58, 255);
             this.buttonNext.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(70, 30);
@@ -81,7 +81,7 @@ namespace DE_IDENTIFICATION_TOOL
             // buttonCancel
             // 
             this.buttonCancel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCancel.Location = new System.Drawing.Point(155, 127);
+            this.buttonCancel.Location = new System.Drawing.Point(152, 255);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(70, 30);
@@ -94,7 +94,7 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             this.radioCheckJson.AutoSize = true;
             this.radioCheckJson.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioCheckJson.Location = new System.Drawing.Point(58, 88);
+            this.radioCheckJson.Location = new System.Drawing.Point(58, 188);
             this.radioCheckJson.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.radioCheckJson.Name = "radioCheckJson";
             this.radioCheckJson.Size = new System.Drawing.Size(56, 23);
@@ -108,7 +108,7 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(331, 186);
+            this.ClientSize = new System.Drawing.Size(600, 400);
             this.Controls.Add(this.radioCheckJson);
             this.Controls.Add(this.radioCheckCSV);
             this.Controls.Add(this.radioCheckDatabase);
@@ -117,6 +117,7 @@ namespace DE_IDENTIFICATION_TOOL
             this.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.MaximizeBox = false;
             this.Name = "ImportForm";
             this.Text = "ImportForm";
             this.ResumeLayout(false);
