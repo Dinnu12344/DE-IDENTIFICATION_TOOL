@@ -19,10 +19,11 @@ if __name__ == "__main__":
     
 
     db_file_path=mf.tool_path+"\\"+project_name+"\\TablesData\\Data.db"
-    if(mf.check_table_existence(table_name,db_file_path)==True):
+    if(mf.check_table_existence(table_name,db_file_path)=="True"):
+            print("True")
             d.delete_folders(mf.tool_path+"\\"+project_name+"\\"+table_name)
             d.delete_tables(db_file_path,table_name)
             print("success")
     else:
-        d.delete_tables(db_file_path,table_name)
-        print("success")
+        #d.delete_tables(db_file_path,table_name)
+        print("Table is not present")

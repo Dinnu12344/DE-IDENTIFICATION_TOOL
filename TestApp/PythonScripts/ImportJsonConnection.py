@@ -1,108 +1,127 @@
 ﻿import json
 import pandas as pd
-import sqlite3
-from typing import Any, Dict, List, Union
-import random
-import sys
 import os
-import Miscellaneous_Functions as mf
+import sqlite3
+import sys
 import getpass
+import Miscellaneous_Functions as mf  # Assuming Miscellaneous_Functions is imported as `mf`
 
-def load_json(file_path: str) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
-    with open(file_path, 'r') as f:
-        return json.load(f)
-
-def normalize_nested_json(data: Any, parent_key: str = '', sep: str = '_') -> Dict[str, Any]:
+def flatten_dict(d, parent_key='', sep='_'):
+    """
+    Recursively flattens a nested dictionary.
+    """
     items = []
-    if isinstance(data, dict):
-        for k, v in data.items():
-            new_key = f"{parent_key}{sep}{k}" if parent_key else k
-            if isinstance(v, dict):
-                items.extend(normalize_nested_json(v, new_key, sep=sep).items())
-            elif isinstance(v, list):
-                for i, item in enumerate(v):
-                    items.extend(normalize_nested_json(item, f"{new_key}{sep}{i}", sep=sep).items())
-            else:
-                items.append((new_key, v))
-    elif isinstance(data, list):
-        for i, item in enumerate(data):
-            items.extend(normalize_nested_json(item, f"{parent_key}{sep}{i}", sep=sep).items())
-    else:
-        items.append((parent_key, data))
+    for k, v in d.items():
+        new_key = f"{parent_key}{sep}{k}" if parent_key else k
+        if isinstance(v, dict):
+            items.extend(flatten_dict(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
     return dict(items)
 
-def process_single_table(json_data: Union[Dict[str, Any], List[Dict[str, Any]]], table_name: str) -> Dict[str, pd.DataFrame]:
-    if isinstance(json_data, dict):
-        data = json_data[table_name]
+def process_json(data, parent_key='', parent_id=None, sep='_', id_tracker={}):
+    if isinstance(data, list):
+        df = pd.DataFrame()
+        for item in data:
+            item_df = process_json(item, parent_key, parent_id, sep, id_tracker)
+            df = pd.concat([df, item_df], ignore_index=True)
+        return df
+    elif isinstance(data, dict):
+        rows = []
+        nested_data = {}
+        current_id = id_tracker.get(parent_key, 0) + 1
+        id_tracker[parent_key] = current_id
+
+        for key, value in data.items():
+            if isinstance(value, dict):
+                flat_dict = flatten_dict(value, f"{parent_key}{sep}{key}".lstrip(sep), sep)
+                rows.extend(flat_dict.items())
+            elif isinstance(value, list):
+                nested_data[key] = value  # Store the nested array for further processing
+            else:
+                rows.append((f"{parent_key}{sep}{key}".lstrip(sep), value))
+
+        main_df = pd.DataFrame([dict(rows)])
+        main_df[f"{parent_key}id"] = current_id
+        if parent_id is not None:
+            main_df[f"{parent_key}parent_id"] = parent_id
+
+        for key, value in nested_data.items():
+            nested_df = process_json(value, f"{parent_key}{sep}{key}".lstrip(sep), current_id, sep, id_tracker)
+            nested_table_name = f"{parent_key}{sep}{key}".lstrip(sep)
+            if nested_table_name not in nested_tables:
+                nested_tables[nested_table_name] = nested_df
+            else:
+                nested_tables[nested_table_name] = pd.concat([nested_tables[nested_table_name], nested_df], ignore_index=True)
+                
+        return main_df
     else:
-        data = json_data
-    return {table_name: pd.json_normalize(data)}
+        return pd.DataFrame([{parent_key: data}])
 
-def process_multiple_tables(json_data: Dict[str, Any], parent_key: str = '') -> Dict[str, pd.DataFrame]:
-    data_frames = {}
-    for table_name, data in json_data.items():
-        if isinstance(data, list):
-            df = pd.json_normalize(data, sep='_')
-            for col in df.columns:
-                if isinstance(df[col].dropna().iloc[0], (dict, list)):
-                    nested_df = pd.json_normalize(df[col].dropna().apply(lambda x: normalize_nested_json(x)), sep='_')
-                    nested_table_name = f"{table_name}_{col}"
-                    data_frames[nested_table_name] = nested_df
-                    df.drop(columns=[col], inplace=True)
-            data_frames[table_name] = df
-        elif isinstance(data, dict):
-            nested_frames = process_multiple_tables(data, parent_key=table_name)
-            for nested_table_name, nested_df in nested_frames.items():
-                full_table_name = f"{table_name}_{nested_table_name}" if parent_key else nested_table_name
-                data_frames[full_table_name] = nested_df
-    return data_frames
+def check_table_exists(conn, table_name):
+    query = f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}';"
+    result = conn.execute(query).fetchone()
+    return result is not None
 
-def save_to_sqlite(data_frames: Dict[str, pd.DataFrame], db_name: str, n: int) -> List[str]:
-    new_tables = []
-    with sqlite3.connect(db_name) as conn:
-        for table_name, df in data_frames.items():
-            if n > 0 and len(df) > n:
-                df = df.sample(n=n).reset_index(drop=True)
-            df.to_sql(table_name, conn, if_exists='replace', index=False)
-            new_tables.append(table_name)
-    return new_tables
+def get_new_table_name(conn, base_name):
+    counter = 1
+    new_table_name = base_name
+    while conn and check_table_exists(conn, new_table_name):
+        new_table_name = f"{base_name}{counter}"
+        counter += 1
+    return new_table_name
 
-def generate_unique_table_name(existing_tables: List[str], base_name: str = 'table') -> str:
-    index = 1
-    while f"{base_name}{index}" in existing_tables:
-        index += 1
-    return f"{base_name}{index}"
+def save_to_sqlite(db_name, n):
+    conn = sqlite3.connect(db_name)
+    created_tables = []  # List to track all newly created tables
+    
+    try:
+        for table_name, df in nested_tables.items():
+            for column in df.columns:
+                if df[column].apply(lambda x: isinstance(x, dict)).any():
+                    df = pd.concat([df.drop([column], axis=1), df[column].apply(pd.Series).add_prefix(f'{column}_')], axis=1)
 
-def main(file_path: str, db_name: str, n: int):
-    json_data = load_json(file_path)
-    existing_tables = get_all_tables(db_name)
-    new_tables = []
+            new_table_name = get_new_table_name(conn, table_name if table_name.strip() else "table1")
+            df.head(n).to_sql(new_table_name, conn, if_exists='replace', index=False)
+            created_tables.append(new_table_name)
+    finally:
+        conn.close()
+    
+    return created_tables
 
-    if isinstance(json_data, dict):
-        data_frames = process_multiple_tables(json_data)
-        saved_tables = save_to_sqlite(data_frames, db_name, n)
-        new_tables.extend(saved_tables)
-    elif isinstance(json_data, list):
-        new_table_name = generate_unique_table_name(existing_tables + new_tables)
-        data_frames = process_single_table(json_data, new_table_name)
-        saved_tables = save_to_sqlite(data_frames, db_name, n)
-        new_tables.extend(saved_tables)
+def process_json_file(file_path, db_name, n):
+    with open(file_path, 'r') as file:
+        json_data = json.load(file)
+
+    global nested_tables
+    nested_tables = {}
+
+    if isinstance(json_data, list):
+        nested_tables[get_new_table_name(None, "table1")] = process_json(json_data)
+    else:
+        db_key = next((k for k, v in json_data.items() if isinstance(v, dict)), None)
+        if db_key:
+            for key, value in json_data[db_key].items():
+                if isinstance(value, list) and value:
+                    table_name = key.strip() or get_new_table_name(None, "table1")
+                    nested_tables[table_name] = process_json(value, table_name)
+                elif isinstance(value, dict) or isinstance(value, list):
+                    nested_tables[key] = process_json(value, key)
+        else:
+            nested_tables[get_new_table_name(None, "table1")] = process_json(json_data)
+
+    created_tables = save_to_sqlite(db_name, n)
     print("success")
-    print(new_tables)
+    print(created_tables)
 
-def get_all_tables(database_path: str) -> List[str]:
-    with sqlite3.connect(database_path) as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-        tables = cursor.fetchall()
-    return [table[0] for table in tables]
+def main(file_path, db_name, n):
+    process_json_file(file_path, db_name, n)
 
 if __name__ == '__main__':
     file_path = sys.argv[1]
     project_name = sys.argv[2]
-    n = sys.argv[3]
+    n = int(sys.argv[3])
 
-    n = int(n)
     username = getpass.getuser()
     tool_path = f'C:\\Users\\{username}\\AppData\\Roaming\\DeidentificationTool'
     mf.create_path(tool_path)
