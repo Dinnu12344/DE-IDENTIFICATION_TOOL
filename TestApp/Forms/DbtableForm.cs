@@ -14,16 +14,19 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 {
     public partial class DbtableForm : Form
     {
+        private DBLocationForm _previousForm;
         private readonly DbtableFormModel _properties;
         private PythonService pythonService;
         private Button btnNew;
         private Button btnDelete;
-        public DbtableForm(DbtableFormModel properties)
+        public DbtableForm(DbtableFormModel properties, DBLocationForm previousForm)
         {
             InitializeComponent();
             btnForSavePullreleatedData.Enabled = false;
             pythonService = new PythonService();
             _properties = properties;
+            _previousForm = previousForm;
+
 
             LoadDatabases();
 
@@ -40,6 +43,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             Controls.Add(btnDelete);
 
             btnForFinish.Enabled = true;
+            _previousForm = previousForm;
         }
 
         private void LoadDatabases()
@@ -862,6 +866,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             }
 
+        }
+        private void btnForCancel_Click(object sender, EventArgs e)
+        {
+            _previousForm.Show();
+            this.Close();
         }
     }
 }

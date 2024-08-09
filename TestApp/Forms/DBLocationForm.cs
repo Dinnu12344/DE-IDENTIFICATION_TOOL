@@ -56,6 +56,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             txtForServer.Text = string.Empty;
             txtForUsername.Text = string.Empty;
             txtForPassword.Text = string.Empty;
+            this.Close();
         }
 
         private void dbTyped_SelectedIndexChanged(object sender, EventArgs e)
@@ -119,7 +120,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         ProjectName = projectName
                     };
 
-                    DbtableForm dbTableForm = new DbtableForm(model);
+                    DbtableForm dbTableForm = new DbtableForm(model, this);
                     dbTableForm.ShowDialog();
                 }
                 catch (Exception ex)

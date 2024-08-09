@@ -81,7 +81,6 @@ namespace DE_IDENTIFICATION_TOOL
             ToolStripMenuItem refreshProjectItem = new ToolStripMenuItem("Refresh");
             ToolStripMenuItem deleteProjectItem = new ToolStripMenuItem("Delete");
             ToolStripMenuItem exportAllProjectItem = new ToolStripMenuItem("ExportAll");
-            createdProjectsContextMenu.Items.Add(exportAllProjectItem); 
             editProjectItem.Click += ImportProjectItem_Click;
             deleteProjectItem.Click += DeleteProjectItem_Click;
             keyProjectItem.Click += KeyProjectItem_Click;
@@ -92,6 +91,7 @@ namespace DE_IDENTIFICATION_TOOL
             createdProjectsContextMenu.Items.Add(deleteProjectItem);
             createdProjectsContextMenu.Items.Add(renameProjectItem);
             createdProjectsContextMenu.Items.Add(refreshProjectItem);
+            createdProjectsContextMenu.Items.Add(exportAllProjectItem);
 
             tableContextMenu = new ContextMenuStrip();
             ToolStripMenuItem configMenuItem = new ToolStripMenuItem("Config");
