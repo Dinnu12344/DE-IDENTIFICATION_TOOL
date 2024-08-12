@@ -38,6 +38,18 @@ def check_all_tables_deidentified(sqlite_cursor):
 
     return True
 
+def generate_unique_export_folder(export_folder_base):
+    """Generate a unique export folder name by incrementing the number if the folder already exists."""
+    if not os.path.exists(export_folder_base):
+        return export_folder_base
+
+    counter = 1
+    while True:
+        new_folder = f"{export_folder_base}{counter}"
+        if not os.path.exists(new_folder):
+            return new_folder
+        counter += 1
+
 def export_sqlite_tables_to_csv(sqlite_db_path, export_folder_path):
     """Export all tables from SQLite database to CSV files, if all tables are de-identified."""
     try:
@@ -56,15 +68,17 @@ def export_sqlite_tables_to_csv(sqlite_db_path, export_folder_path):
         # Filter to get only de-identified tables
         deidentified_tables = [table for table in sqlite_tables if table.startswith("de_identified_")]
         
-        # Create export folder if it does not exist
-        if not os.path.exists(export_folder_path):
-            os.makedirs(export_folder_path)
+        # Generate unique export folder name
+        export_folder_path = generate_unique_export_folder(export_folder_path)
+        
+        # Create export folder
+        os.makedirs(export_folder_path)
         
         # Export each de-identified table to CSV
         for table in deidentified_tables:
             export_table_to_csv(sqlite_cursor, table, export_folder_path)
         
-        print("De-identified tables exported successfully.")
+        print(f"De-identified tables exported successfully to {export_folder_path}.")
     
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -92,6 +106,8 @@ if __name__ == "__main__":
     mf.create_path(tables_data_path)
     db_file_path = os.path.join(tables_data_path, 'Data.db')
 
+    # Set the base export folder name
+    export_folder_base = os.path.join(export_folder_path, f"{project_name}_CSVExports")
+    
     # Export SQLite tables to CSV files
-    export_folder_path = os.path.join(export_folder_path, 'CSVExports')
-    export_sqlite_tables_to_csv(db_file_path, export_folder_path)
+    export_sqlite_tables_to_csv(db_file_path, export_folder_base)
