@@ -106,7 +106,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.btnForFinish.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnForFinish.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForFinish.Location = new System.Drawing.Point(614, 575);
+            this.btnForFinish.Location = new System.Drawing.Point(627, 558);
             this.btnForFinish.Name = "btnForFinish";
             this.btnForFinish.Size = new System.Drawing.Size(70, 30);
             this.btnForFinish.TabIndex = 6;
@@ -118,7 +118,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.btnForCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnForCancel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForCancel.Location = new System.Drawing.Point(718, 575);
+            this.btnForCancel.Location = new System.Drawing.Point(729, 558);
             this.btnForCancel.Name = "btnForCancel";
             this.btnForCancel.Size = new System.Drawing.Size(70, 30);
             this.btnForCancel.TabIndex = 7;
@@ -217,7 +217,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.panelForPullreleatedData.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelForPullreleatedData.Location = new System.Drawing.Point(30, 271);
             this.panelForPullreleatedData.Name = "panelForPullreleatedData";
-            this.panelForPullreleatedData.Size = new System.Drawing.Size(758, 282);
+            this.panelForPullreleatedData.Size = new System.Drawing.Size(769, 274);
             this.panelForPullreleatedData.TabIndex = 16;
             // 
             // label6
@@ -264,7 +264,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.btnForSavePullreleatedData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnForSavePullreleatedData.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForSavePullreleatedData.Location = new System.Drawing.Point(509, 575);
+            this.btnForSavePullreleatedData.Location = new System.Drawing.Point(529, 558);
             this.btnForSavePullreleatedData.Name = "btnForSavePullreleatedData";
             this.btnForSavePullreleatedData.Size = new System.Drawing.Size(70, 30);
             this.btnForSavePullreleatedData.TabIndex = 17;
@@ -278,7 +278,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 82);
+            this.panel1.Size = new System.Drawing.Size(953, 82);
             this.panel1.TabIndex = 18;
             // 
             // label8
@@ -293,7 +293,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             // DbtableForm
             // 
-            this.ClientSize = new System.Drawing.Size(800, 617);
+            this.ClientSize = new System.Drawing.Size(953, 600);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnForSavePullreleatedData);
             this.Controls.Add(this.label7);

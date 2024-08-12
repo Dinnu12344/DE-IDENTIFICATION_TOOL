@@ -18,7 +18,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private readonly DbtableFormModel _properties;
         private PythonService pythonService;
         private Button btnNew;
-        private Button btnDelete;
+        //private Button btnDelete;
         public DbtableForm(DbtableFormModel properties, DBLocationForm previousForm)
         {
             InitializeComponent();
@@ -36,11 +36,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             Controls.Add(btnNew);
 
-            btnDelete = new Button { Text = "Delete", Visible = false };
+            //btnDelete = new Button { Text = "Delete", Visible = false };
 
-            btnDelete.Click += BtnDelete_Click;
+            //btnDelete.Click += BtnDelete_Click;
 
-            Controls.Add(btnDelete);
+            //Controls.Add(btnDelete);
 
             btnForFinish.Enabled = true;
             _previousForm = previousForm;
@@ -367,7 +367,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         {
             btnNew.Visible = false;
-            btnDelete.Visible = false;
+            //btnDelete.Visible = false;
         }
 
         private void ShowNewAndDeleteButtons()
@@ -379,11 +379,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             panelForPullreleatedData.Controls.Add(btnNew);
 
-            btnDelete.Location = new Point(154, 14);
+            //btnDelete.Location = new Point(154, 14);
 
-            btnDelete.Visible = true;
+            //btnDelete.Visible = true;
 
-            panelForPullreleatedData.Controls.Add(btnDelete);
+            //panelForPullreleatedData.Controls.Add(btnDelete);
         }
 
         private void ShowHeadersAndDropDowns(/*string response*/)
