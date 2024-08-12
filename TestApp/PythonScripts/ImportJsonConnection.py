@@ -81,9 +81,10 @@ def save_to_sqlite(db_name, n):
                 if df[column].apply(lambda x: isinstance(x, dict)).any():
                     df = pd.concat([df.drop([column], axis=1), df[column].apply(pd.Series).add_prefix(f'{column}_')], axis=1)
 
-            new_table_name = get_new_table_name(conn, table_name if table_name.strip() else "table1")
-            df.head(n).to_sql(new_table_name, conn, if_exists='replace', index=False)
-            created_tables.append(new_table_name)
+            new_table_name = get_new_table_name(conn, table_name if table_name.strip() else "SpreedSheet")
+            if table_name.strip() or (len(df.columns) > 1 or (len(df.columns) == 1 and df.columns[0] != 'id')):
+                df.head(n).to_sql(new_table_name, conn, if_exists='replace', index=False)
+                created_tables.append(new_table_name)
     finally:
         conn.close()
     
@@ -97,18 +98,26 @@ def process_json_file(file_path, db_name, n):
     nested_tables = {}
 
     if isinstance(json_data, list):
-        nested_tables[get_new_table_name(None, "table1")] = process_json(json_data)
+        processed_df = process_json(json_data)
+        if not processed_df.empty and len(processed_df.columns) > 1:
+            nested_tables[get_new_table_name(None, "SpreedSheet")] = processed_df
     else:
         db_key = next((k for k, v in json_data.items() if isinstance(v, dict)), None)
         if db_key:
             for key, value in json_data[db_key].items():
                 if isinstance(value, list) and value:
-                    table_name = key.strip() or get_new_table_name(None, "table1")
-                    nested_tables[table_name] = process_json(value, table_name)
+                    table_name = key.strip() or get_new_table_name(None, "SpreedSheet")
+                    processed_df = process_json(value, table_name)
+                    if not processed_df.empty and len(processed_df.columns) > 1:
+                        nested_tables[table_name] = processed_df
                 elif isinstance(value, dict) or isinstance(value, list):
-                    nested_tables[key] = process_json(value, key)
+                    processed_df = process_json(value, key)
+                    if not processed_df.empty and len(processed_df.columns) > 1:
+                        nested_tables[key] = processed_df
         else:
-            nested_tables[get_new_table_name(None, "table1")] = process_json(json_data)
+            processed_df = process_json(json_data)
+            if not processed_df.empty and len(processed_df.columns) > 1:
+                nested_tables[get_new_table_name(None, "SpreedSheet")] = processed_df
 
     created_tables = save_to_sqlite(db_name, n)
     print("success")
