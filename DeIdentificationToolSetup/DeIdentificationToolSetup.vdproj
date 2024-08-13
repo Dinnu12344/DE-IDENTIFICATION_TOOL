@@ -34,7 +34,7 @@
         "Entry"
         {
         "MsmKey" = "8:_005909A8E2D1E22ADF25579A70467547"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -51,19 +51,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_11F7C75574A143FC95399E31F6F004C8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_15EFB68A89C64E87A4AE26D9FA8323E7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1D48F87F47C24F42AEA5A90A971BCDCB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -106,7 +100,7 @@
         "Entry"
         {
         "MsmKey" = "8:_4634777F012E9BD1222CF5578FB5C893"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -118,7 +112,7 @@
         "Entry"
         {
         "MsmKey" = "8:_483BA80FFB4AC2F87837223E6BC4DF93"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -130,7 +124,7 @@
         "Entry"
         {
         "MsmKey" = "8:_4C6E31FCC383F3F5DAB668DD25F13462"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -147,19 +141,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6FF004C989CC46F1999FAE3F6DD896CD"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_736AAED11F904884BF351FF9A78E5AA3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_76EDE913C446436F9CC011741D881BE9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -184,7 +166,7 @@
         "Entry"
         {
         "MsmKey" = "8:_89173E4A300CFE1CA986CA95A877B0B1"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -196,7 +178,7 @@
         "Entry"
         {
         "MsmKey" = "8:_903B02E998774CCFC5B5DD0AE75E95BB"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -220,7 +202,7 @@
         "Entry"
         {
         "MsmKey" = "8:_94C6049AC0F67CC85A3AA95F487E8422"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -250,7 +232,7 @@
         "Entry"
         {
         "MsmKey" = "8:_AD6A3FA8160624710B8AEE9DFD875C10"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -279,6 +261,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_BABF8DEFA2ED48B4A72BDFFED6690CF9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -286,13 +274,13 @@
         "Entry"
         {
         "MsmKey" = "8:_C62AE33ED20D7AC7641A810C1BC53723"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D168148D2FD86E1117AD785EC39B46BB"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -304,7 +292,7 @@
         "Entry"
         {
         "MsmKey" = "8:_D325CA36AC8EC1F150FFA6C8104C73DC"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -345,12 +333,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F55EE807D9194D42B7E1A0771014192E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_FA31855B2F394757B4672A4B0874A687"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -358,7 +340,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+        "OwnerKey" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -499,20 +481,6 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_EFDB6796125F4A28A5B91BE7870281ED"
-            {
-            "Name" = "8:Primary output from BatchScriptRunner (Active)"
-            "Condition" = "8:"
-            "Object" = "8:"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_A8959C3F_32AC_4719_9575_D342E2C6F373"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
         }
         "DefaultFeature"
         {
@@ -587,10 +555,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_11F7C75574A143FC95399E31F6F004C8"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_15EFB68A89C64E87A4AE26D9FA8323E7"
             {
-            "SourcePath" = "8:..\\TestApp\\PythonScripts\\Test.py"
-            "TargetName" = "8:Test.py"
+            "SourcePath" = "8:..\\TestApp\\PythonScripts\\DeleteProjectConnection.py"
+            "TargetName" = "8:DeleteProjectConnection.py"
             "Tag" = "8:"
             "Folder" = "8:_2CF8889B91934AAFB8CD2498CF20790D"
             "Condition" = "8:"
@@ -607,12 +575,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_15EFB68A89C64E87A4AE26D9FA8323E7"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1D48F87F47C24F42AEA5A90A971BCDCB"
             {
-            "SourcePath" = "8:..\\TestApp\\PythonScripts\\DeleteProjectConnection.py"
-            "TargetName" = "8:DeleteProjectConnection.py"
+            "SourcePath" = "8:..\\TestApp\\bin\\Debug\\Documentation\\UserManual.docx"
+            "TargetName" = "8:UserManual.docx"
             "Tag" = "8:"
-            "Folder" = "8:_2CF8889B91934AAFB8CD2498CF20790D"
+            "Folder" = "8:_65CDC12632E44159B267BE937AF7012C"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -880,50 +848,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6FF004C989CC46F1999FAE3F6DD896CD"
-            {
-            "SourcePath" = "8:..\\TestApp\\PythonScripts\\Test2.py"
-            "TargetName" = "8:Test2.py"
-            "Tag" = "8:"
-            "Folder" = "8:_2CF8889B91934AAFB8CD2498CF20790D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_736AAED11F904884BF351FF9A78E5AA3"
             {
             "SourcePath" = "8:..\\TestApp\\PythonScripts\\ImportCsvConnection.py"
             "TargetName" = "8:ImportCsvConnection.py"
-            "Tag" = "8:"
-            "Folder" = "8:_2CF8889B91934AAFB8CD2498CF20790D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76EDE913C446436F9CC011741D881BE9"
-            {
-            "SourcePath" = "8:..\\TestApp\\PythonScripts\\Test1.py"
-            "TargetName" = "8:Test1.py"
             "Tag" = "8:"
             "Folder" = "8:_2CF8889B91934AAFB8CD2498CF20790D"
             "Condition" = "8:"
@@ -1417,26 +1345,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F55EE807D9194D42B7E1A0771014192E"
-            {
-            "SourcePath" = "8:..\\TestApp\\PythonScripts\\Test3.py"
-            "TargetName" = "8:Test3.py"
-            "Tag" = "8:"
-            "Folder" = "8:_2CF8889B91934AAFB8CD2498CF20790D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FA31855B2F394757B4672A4B0874A687"
             {
             "SourcePath" = "8:..\\TestApp\\PythonScripts\\DynamicPaths.py"
@@ -1506,6 +1414,17 @@
                         {
                         }
                     }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_65CDC12632E44159B267BE937AF7012C"
+                    {
+                    "Name" = "8:Documentation"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_56516FCE4B374A16BFF8083B800A3041"
+                        "Folders"
+                        {
+                        }
+                    }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_F601014795864101AC5BE7B51BA1BFAC"
                     {
                     "Name" = "8:Scripts"
@@ -1536,7 +1455,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:DeIdentificationToolSetup"
         "ProductCode" = "8:{2A2E7297-046D-4A85-B7D2-1C5F2955B9CD}"
-        "PackageCode" = "8:{258514C2-883D-4FDB-9FF2-135E8294B224}"
+        "PackageCode" = "8:{3D5ECF61-F8BE-4088-979B-E3738F0D0F4C}"
         "UpgradeCode" = "8:{2E31340C-B27D-4CEA-B42E-8790F09179B4}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -1656,29 +1575,29 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2EAE234FF0EA498FA551BCE6086695EF"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_270843D1EA344ECF82CD3BFD8B9B88E3"
             {
-            "Name" = "8:DeIdentificationTool"
+            "Name" = "8:De-Identification Tool"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+            "Target" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
             "Folder" = "8:_17EB465D25624136BCCE6618FF42186C"
             "WorkingFolder" = "8:_D33F4729AAE5484DB2B8E78B6BA89B68"
             "Icon" = "8:_8D77B46F82A04DB3B956C73CC631BC8D"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_5306C5BD4BC145428A688A4B2EE40460"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_5930EE935A124D839821B14594FE14FD"
             {
-            "Name" = "8:DeIdentificationTool"
+            "Name" = "8:De-Identification Tool"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+            "Target" = "8:_B4BF55B658DC48CABEBF7D465584E20F"
             "Folder" = "8:_60F7B2AE7B1941909A2ECFE9602EA61B"
             "WorkingFolder" = "8:_D33F4729AAE5484DB2B8E78B6BA89B68"
             "Icon" = "8:_8D77B46F82A04DB3B956C73CC631BC8D"
@@ -2083,7 +2002,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_0FEF13E4678B4B9C8C4687A8AFF127C0"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B4BF55B658DC48CABEBF7D465584E20F"
             {
             "SourcePath" = "8:..\\TestApp\\obj\\Debug\\DE_IDENTIFICATION_TOOL.exe"
             "TargetName" = "8:"

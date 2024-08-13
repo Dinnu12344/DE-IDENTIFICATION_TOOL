@@ -56,21 +56,21 @@ namespace DE_IDENTIFICATION_TOOL
             clearButton.Text = "Clear All";
             clearButton.Anchor = AnchorStyles.Bottom| AnchorStyles.Right;
             clearButton.Click += new EventHandler(ClearBtn_Click);
-            clearButton.Location = new Point(500, 10);
+            clearButton.Location = new Point(650, 10);
             buttonPanel.Controls.Add(clearButton);
 
             Button saveButton = new Button();
             saveButton.Text = "Save";
             saveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             saveButton.Click += new EventHandler(SaveBtn_Click);
-            saveButton.Location = new Point(600, 10);
+            saveButton.Location = new Point(740, 10);
             buttonPanel.Controls.Add(saveButton);
 
             Button cancelButton = new Button();
             cancelButton.Text = "Cancel";
             cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             cancelButton.Click += new EventHandler(CancelButton_Click);
-            cancelButton.Location = new Point(700, 10);
+            cancelButton.Location = new Point(840, 10);
             buttonPanel.Controls.Add(cancelButton);
 
             InitializeHeaderPanel(headerPanel);
@@ -113,32 +113,29 @@ namespace DE_IDENTIFICATION_TOOL
                 TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
                 tableLayoutPanel.Dock = DockStyle.Top;
                 tableLayoutPanel.AutoSize = true;
-                tableLayoutPanel.ColumnCount = 8;
-                tableLayoutPanel.RowCount = columns.Count + 1;
+                tableLayoutPanel.ColumnCount = 8; // Number of columns in the layout
+                tableLayoutPanel.RowCount = columns.Count; // One row per column
                 tableLayoutPanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
                 tableLayoutPanel.AutoScroll = false;
 
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-                tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
+                // Set the column styles for equal distribution
+                for (int i = 0; i < 8; i++)
+                {
+                    tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5f));
+                }
 
-                int row = 1;
+                int row = 0;
 
                 List<ColumnConfig> existingConfig = LoadExistingConfig();
 
                 foreach (string column in columns)
                 {
+                    // Create controls for each row
                     CheckBox checkBox = new CheckBox();
                     checkBox.AutoSize = true;
                     checkBox.Checked = true;
                     checkBox.Anchor = AnchorStyles.Left;
-                    checkBox.Margin = new Padding(3, 3, 3, 3);
+                    checkBox.Margin = new Padding(3);
                     tableLayoutPanel.Controls.Add(checkBox, 0, row);
                     checkBoxes.Add(checkBox);
 
@@ -179,6 +176,7 @@ namespace DE_IDENTIFICATION_TOOL
                     keysComboBox.Dock = DockStyle.Fill;
                     tableLayoutPanel.Controls.Add(keysComboBox, 7, row);
 
+                    // Load existing configuration if available
                     ColumnConfig config = existingConfig?.Find(c => c.Column == column);
                     if (config != null)
                     {
@@ -198,16 +196,20 @@ namespace DE_IDENTIFICATION_TOOL
                         }
                         keysComboBox.SelectedItem = config.Keys;
                     }
+
                     controlMap[checkBox] = new Control[]
                     {
-                        columnLabel, dataTypeComboBox, techniqueComboBox, techniqueComboBoxForData,
-                        startDatePicker, endDatePicker, keysComboBox
+                columnLabel, dataTypeComboBox, techniqueComboBox, techniqueComboBoxForData,
+                startDatePicker, endDatePicker, keysComboBox
                     };
-                    row++;
+
+                    row++; // Increment the row for the next set of controls
                 }
+
                 scrollablePanel.Controls.Add(tableLayoutPanel);
             }
         }
+
         private void TechniqueComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
