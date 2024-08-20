@@ -56,7 +56,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.panelInDBLocationForm.Location = new System.Drawing.Point(0, 0);
             this.panelInDBLocationForm.Margin = new System.Windows.Forms.Padding(2);
             this.panelInDBLocationForm.Name = "panelInDBLocationForm";
-            this.panelInDBLocationForm.Size = new System.Drawing.Size(700, 100);
+            this.panelInDBLocationForm.Size = new System.Drawing.Size(953, 100);
             this.panelInDBLocationForm.TabIndex = 0;
             // 
             // lblForJdbcSubPara
@@ -85,7 +85,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.lblForTypeInJdbcFrm.AutoSize = true;
             this.lblForTypeInJdbcFrm.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForTypeInJdbcFrm.Location = new System.Drawing.Point(28, 128);
+            this.lblForTypeInJdbcFrm.Location = new System.Drawing.Point(49, 128);
             this.lblForTypeInJdbcFrm.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblForTypeInJdbcFrm.Name = "lblForTypeInJdbcFrm";
             this.lblForTypeInJdbcFrm.Size = new System.Drawing.Size(39, 19);
@@ -99,7 +99,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.dbTyped.Items.AddRange(new object[] {
             "SQL",
             "Oracle"});
-            this.dbTyped.Location = new System.Drawing.Point(139, 125);
+            this.dbTyped.Location = new System.Drawing.Point(212, 124);
             this.dbTyped.Margin = new System.Windows.Forms.Padding(2);
             this.dbTyped.Name = "dbTyped";
             this.dbTyped.Size = new System.Drawing.Size(382, 23);
@@ -110,7 +110,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.lblForServer.AutoSize = true;
             this.lblForServer.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForServer.Location = new System.Drawing.Point(28, 175);
+            this.lblForServer.Location = new System.Drawing.Point(49, 175);
             this.lblForServer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblForServer.Name = "lblForServer";
             this.lblForServer.Size = new System.Drawing.Size(49, 19);
@@ -121,7 +121,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.lblForUserName.AutoSize = true;
             this.lblForUserName.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForUserName.Location = new System.Drawing.Point(27, 227);
+            this.lblForUserName.Location = new System.Drawing.Point(49, 227);
             this.lblForUserName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblForUserName.Name = "lblForUserName";
             this.lblForUserName.Size = new System.Drawing.Size(77, 19);
@@ -132,7 +132,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.lblForPassword.AutoSize = true;
             this.lblForPassword.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForPassword.Location = new System.Drawing.Point(27, 274);
+            this.lblForPassword.Location = new System.Drawing.Point(49, 274);
             this.lblForPassword.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblForPassword.Name = "lblForPassword";
             this.lblForPassword.Size = new System.Drawing.Size(71, 19);
@@ -142,7 +142,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // txtForServer
             // 
             this.txtForServer.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtForServer.Location = new System.Drawing.Point(139, 170);
+            this.txtForServer.Location = new System.Drawing.Point(212, 171);
             this.txtForServer.Margin = new System.Windows.Forms.Padding(2);
             this.txtForServer.Name = "txtForServer";
             this.txtForServer.Size = new System.Drawing.Size(382, 23);
@@ -152,7 +152,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // txtForUsername
             // 
             this.txtForUsername.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtForUsername.Location = new System.Drawing.Point(139, 222);
+            this.txtForUsername.Location = new System.Drawing.Point(212, 223);
             this.txtForUsername.Margin = new System.Windows.Forms.Padding(2);
             this.txtForUsername.Name = "txtForUsername";
             this.txtForUsername.Size = new System.Drawing.Size(382, 23);
@@ -162,7 +162,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // txtForPassword
             // 
             this.txtForPassword.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtForPassword.Location = new System.Drawing.Point(139, 271);
+            this.txtForPassword.Location = new System.Drawing.Point(212, 274);
             this.txtForPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtForPassword.Name = "txtForPassword";
             this.txtForPassword.Size = new System.Drawing.Size(382, 23);
@@ -173,7 +173,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.btnForCancelInJdbcFrm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnForCancelInJdbcFrm.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(607, 372);
+            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(524, 360);
             this.btnForCancelInJdbcFrm.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnForCancelInJdbcFrm.Name = "btnForCancelInJdbcFrm";
             this.btnForCancelInJdbcFrm.Size = new System.Drawing.Size(70, 30);
@@ -186,12 +186,12 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.btnForFinish.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnForFinish.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForFinish.Location = new System.Drawing.Point(501, 372);
+            this.btnForFinish.Location = new System.Drawing.Point(396, 360);
             this.btnForFinish.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnForFinish.Name = "btnForFinish";
             this.btnForFinish.Size = new System.Drawing.Size(70, 30);
             this.btnForFinish.TabIndex = 2;
-            this.btnForFinish.Text = "Finish";
+            this.btnForFinish.Text = "Next";
             this.btnForFinish.UseVisualStyleBackColor = true;
             this.btnForFinish.Click += new System.EventHandler(this.btnForFinish_Click);
             // 

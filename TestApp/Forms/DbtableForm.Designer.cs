@@ -42,9 +42,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.lblForNoofColumns = new System.Windows.Forms.Label();
             this.txtForNoofColumns = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.btnForSavePullreleatedData = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +55,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.cmbDatabases.FormattingEnabled = true;
             this.cmbDatabases.Location = new System.Drawing.Point(219, 100);
             this.cmbDatabases.Name = "cmbDatabases";
-            this.cmbDatabases.Size = new System.Drawing.Size(569, 27);
+            this.cmbDatabases.Size = new System.Drawing.Size(580, 27);
             this.cmbDatabases.TabIndex = 0;
             this.cmbDatabases.SelectedIndexChanged += new System.EventHandler(this.cmbDatabases_SelectedIndexChanged);
             // 
@@ -66,7 +66,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.cmbTables.FormattingEnabled = true;
             this.cmbTables.Location = new System.Drawing.Point(219, 143);
             this.cmbTables.Name = "cmbTables";
-            this.cmbTables.Size = new System.Drawing.Size(569, 27);
+            this.cmbTables.Size = new System.Drawing.Size(580, 27);
             this.cmbTables.TabIndex = 1;
             this.cmbTables.SelectedIndexChanged += new System.EventHandler(this.cmbTables_SelectedIndexChanged);
             // 
@@ -260,17 +260,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.label7.TabIndex = 15;
             this.label7.Text = "Row Count";
             // 
-            // btnForSavePullreleatedData
-            // 
-            this.btnForSavePullreleatedData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnForSavePullreleatedData.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForSavePullreleatedData.Location = new System.Drawing.Point(529, 558);
-            this.btnForSavePullreleatedData.Name = "btnForSavePullreleatedData";
-            this.btnForSavePullreleatedData.Size = new System.Drawing.Size(70, 30);
-            this.btnForSavePullreleatedData.TabIndex = 17;
-            this.btnForSavePullreleatedData.Text = "Save";
-            this.btnForSavePullreleatedData.UseVisualStyleBackColor = true;
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.MenuHighlight;
@@ -291,11 +280,23 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.label8.TabIndex = 0;
             this.label8.Text = "Import Sql Tables";
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(519, 558);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(70, 30);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "Back";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.back_Button);
+            // 
             // DbtableForm
             // 
             this.ClientSize = new System.Drawing.Size(953, 600);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.btnForSavePullreleatedData);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtForNoofColumns);
             this.Controls.Add(this.lblForNoofColumns);
@@ -355,8 +356,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private Label lblForNoofColumns;
         private TextBox txtForNoofColumns;
         private Label label7;
-        private Button btnForSavePullreleatedData;
         private Panel panel1;
         private Label label8;
+        private Button button1;
     }
 }

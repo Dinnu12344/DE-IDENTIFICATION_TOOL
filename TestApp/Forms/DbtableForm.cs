@@ -22,7 +22,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         public DbtableForm(DbtableFormModel properties, DBLocationForm previousForm)
         {
             InitializeComponent();
-            btnForSavePullreleatedData.Enabled = false;
             pythonService = new PythonService();
             _properties = properties;
             _previousForm = previousForm;
@@ -42,7 +41,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             //Controls.Add(btnDelete);
 
-            btnForFinish.Enabled = true;
+            btnForFinish.Enabled = false;
             _previousForm = previousForm;
         }
 
@@ -870,6 +869,15 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private void btnForCancel_Click(object sender, EventArgs e)
         {
             _previousForm.Show();
+            this.Hide();
+        }
+        private void back_Button(object sender, EventArgs e)
+        {
+            if (_previousForm != null)
+            {
+                _previousForm.Show(); // Show the previous form
+                _previousForm.BringToFront(); // Bring it to the front if needed
+            }
             this.Close();
         }
     }
