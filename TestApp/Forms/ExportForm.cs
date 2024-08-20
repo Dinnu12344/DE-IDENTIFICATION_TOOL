@@ -54,12 +54,15 @@ namespace DE_IDENTIFICATION_TOOL
 
                             if (pythonResponse.ToLower().Contains("success"))
                             {
-                                MessageBox.Show("The exporte is success and the export path is : " + pythonResponse);
+                                MessageBox.Show("Successfully exported " + pythonResponse);
                                 this.Close();
                             }
                             else
                             {
+
                                 MessageBox.Show("the Export is not done" + pythonResponse);
+
+
                             }
 
                         }
@@ -86,18 +89,19 @@ namespace DE_IDENTIFICATION_TOOL
 
                             if (pythonResponse.ToLower().Contains("success"))
                             {
-                                MessageBox.Show("The export is success and the export path is : " + pythonResponse);
+                                MessageBox.Show("Successfully Exported  : " + pythonResponse);
                                 this.Close();
                             }
                             else
-                            {
+
                                 MessageBox.Show("the Export is not done" + pythonResponse);
+
                             }
 
                         }
                     }
                 }
-            }
+            
             else if (radioBtnDatabaseExport.Checked)
             {
                 SelectedImportOption = "Database";
@@ -115,6 +119,104 @@ namespace DE_IDENTIFICATION_TOOL
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
+        //private void btnForNext_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (radioBtnForCsvExport.Checked)
+        //        {
+        //            string pythonScriptName;
+        //            if (SelectedImportOption == "CSV" && check != true)
+        //            {
+        //                pythonScriptName = "ExportCsvConnection.py";
+        //            }
+        //            else
+        //            {
+        //                pythonScriptName = "ExportAllCsv.py";
+        //            }
+
+        //            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+        //            {
+        //                folderBrowserDialog.Description = "Select the folder to save CSV file";
+        //                folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
+        //                folderBrowserDialog.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        //                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+        //                {
+        //                    string selectedFolderPath = folderBrowserDialog.SelectedPath;
+        //                    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory();
+        //                    string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+
+        //                    string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
+
+        //                    if (pythonResponse.ToLower().Contains("success"))
+        //                    {
+        //                        MessageBox.Show("Successfully exported: " + pythonResponse);
+        //                    }
+        //                    else
+        //                    {
+        //                        ShowErrorMessage("Export failed. Please check your Python script and folder permissions.");
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else if (radioBtnDatabaseExport.Checked)
+        //        {
+        //            SelectedImportOption = "Database";
+        //            ExportDbForm dBLocationForm;
+        //            if (check != true)
+        //            {
+        //                dBLocationForm = new ExportDbForm(projectName, tableName);
+        //            }
+        //            else
+        //            {
+        //                dBLocationForm = new ExportDbForm(projectName, check);
+        //            }
+        //            dBLocationForm.ShowDialog();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ShowErrorMessage($"An error occurred: {ex.Message}");
+        //    }
+        //    finally
+        //    {
+        //        this.DialogResult = DialogResult.OK;
+        //        this.Close();
+        //    }
+        //}
+
+        //private void ShowErrorMessage(string message)
+        //{
+        //    // Custom error message box with more options or context
+        //    using (Form errorForm = new Form())
+        //    {
+        //        errorForm.Text = "Error";
+        //        Label errorLabel = new Label
+        //        {
+        //            Text = message,
+        //            AutoSize = true,
+        //            Padding = new Padding(10)
+        //        };
+        //        Button okButton = new Button
+        //        {
+        //            Text = "OK",
+        //            DialogResult = DialogResult.OK,
+        //            Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+        //        };
+        //        okButton.Click += (sender, e) => { errorForm.Close(); };
+
+        //        errorForm.Controls.Add(errorLabel);
+        //        errorForm.Controls.Add(okButton);
+        //        errorForm.AcceptButton = okButton;
+        //        errorForm.StartPosition = FormStartPosition.CenterParent;
+        //        errorForm.AutoSize = true;
+        //        errorForm.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+        //        errorForm.ShowDialog(this);
+        //    }
+        //}
 
         private void btnForCancel_Click(object sender, EventArgs e)
         {
