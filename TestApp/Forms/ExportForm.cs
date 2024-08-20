@@ -26,7 +26,6 @@ namespace DE_IDENTIFICATION_TOOL
             pythonService = new PythonService();
             this.projectName = projectName;
             this.check = check;
-       
            
         }
         public string SelectedImportOption { get; set; }
@@ -34,7 +33,7 @@ namespace DE_IDENTIFICATION_TOOL
         {
             if (radioBtnForCsvExport.Checked)
             {
-                if (SelectedImportOption == "CSV" && check != true)
+                if (check != true)
                 {
                     using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
                     {
@@ -60,7 +59,7 @@ namespace DE_IDENTIFICATION_TOOL
                             }
                             else
                             {
-                                MessageBox.Show("the Export is not done");
+                                MessageBox.Show("the Export is not done" + pythonResponse);
                             }
 
                         }
@@ -92,7 +91,7 @@ namespace DE_IDENTIFICATION_TOOL
                             }
                             else
                             {
-                                MessageBox.Show("the Export is not done");
+                                MessageBox.Show("the Export is not done" + pythonResponse);
                             }
 
                         }
