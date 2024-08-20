@@ -82,7 +82,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void ValidateInputFields(object sender, EventArgs e)
         {
-            // Enable the "Next" button only if all required fields are filled
             btnForNext.Enabled = !string.IsNullOrEmpty(txtForServer.Text) &&
                                  !string.IsNullOrEmpty(txtForUsername.Text) &&
                                  !string.IsNullOrEmpty(txtForPassword.Text);

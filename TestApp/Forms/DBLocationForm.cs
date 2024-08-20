@@ -42,7 +42,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void btnForBackInJdbcFrm_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
+            //homeForm.Show();
         }
 
         private void btnForNextinJdbcFrm_Click(object sender, EventArgs e)
@@ -128,7 +129,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     MessageBox.Show($"Connection failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            this.Hide();
+            //this.Hide();
         }        
 
         private void UpdateFinishButtonVisibility()
