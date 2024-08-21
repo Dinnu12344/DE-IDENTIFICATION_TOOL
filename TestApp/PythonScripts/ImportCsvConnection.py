@@ -7,10 +7,16 @@ import pandas as pd
 import Import as i
 import sys
 
-def generate_name(filePath, projectName, logFile):
-    # Combine the parameters to generate a name
-    name = f"Name generated from parameters: {filePath}, {projectName}, {logFile}"
-    return name
+def validate_csv(file_path, delimiter):
+    try:
+        # Try to read the CSV with the provided delimiter
+        df = pd.read_csv(file_path, delimiter=delimiter)
+        # Check if the DataFrame is not empty and has columns
+        if df.empty or df.columns.size == 1:
+            return False, "CSV file is empty or delimiter is incorrect."
+        return True, df
+    except Exception as e:
+        return False, str(e)
 
 def main():
     try:
@@ -21,6 +27,14 @@ def main():
         table_name = sys.argv[4]
         delimiter = sys.argv[5]
         quotechar = sys.argv[6]
+
+        # Validate the CSV file with the given delimiter
+        is_valid, result = validate_csv(csvfilePath, delimiter)
+        if not is_valid:
+            print(f"Validation failed: {result}")
+            return
+
+        df = result
 
         username = getpass.getuser()
         tool_path = f'C:\\Users\\{username}\\AppData\\Roaming\\DeidentificationTool'
@@ -45,7 +59,7 @@ def main():
         log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
         filename = os.path.join(log_files_path_table, log_filename)
 
-        if not mf.check_table_existence(table_name, db_file_path):    
+        if not mf.check_table_existence(table_name, db_file_path):
             Status, Comment = i.Import_CSV_Data_To_SqLite(db_file_path, csvfilePath, n, table_name, table_name_folder_path, delimiter, quotechar, project_name)
             run_end = datetime.datetime.now()
             run_time = run_end - run_start
@@ -56,14 +70,11 @@ def main():
         else:
             Status, Comment = i.Import_CSV_Data_To_SqLite(db_file_path, csvfilePath, n, table_name, table_name_folder_path, delimiter, quotechar, project_name)
 
-
             run_end = datetime.datetime.now()
             run_time = run_end - run_start
     
             mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_start, run_end=run_end, status=Status, duration=run_time, comment=Comment)
 
-            # Generate name based on parameters
-            # name = generate_name(filePath, project_name, logFile)
             print(Comment)  # Output the status
 
     except Exception as e:
@@ -72,8 +83,7 @@ def main():
 
         error_message = f"Error: {str(e)}"
         mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_start, run_end=run_end, status="Failure", duration=run_time, comment=error_message)
-        
-        # print("Failure")
+
         print(error_message)
 
 if __name__ == "__main__":

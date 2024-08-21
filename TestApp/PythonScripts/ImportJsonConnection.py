@@ -21,12 +21,16 @@ def flatten_dict(d, parent_key='', sep='_'):
 
 def process_json(data, parent_key='', parent_id=None, sep='_', id_tracker={}):
     if isinstance(data, list):
+        if not data:  # Skip empty lists
+            return pd.DataFrame()
         df = pd.DataFrame()
         for item in data:
             item_df = process_json(item, parent_key, parent_id, sep, id_tracker)
             df = pd.concat([df, item_df], ignore_index=True)
         return df
     elif isinstance(data, dict):
+        if not data:  # Skip empty dicts
+            return pd.DataFrame()
         rows = []
         nested_data = {}
         current_id = id_tracker.get(parent_key, 0) + 1
@@ -49,10 +53,11 @@ def process_json(data, parent_key='', parent_id=None, sep='_', id_tracker={}):
         for key, value in nested_data.items():
             nested_df = process_json(value, f"{parent_key}{sep}{key}".lstrip(sep), current_id, sep, id_tracker)
             nested_table_name = f"{parent_key}{sep}{key}".lstrip(sep)
-            if nested_table_name not in nested_tables:
-                nested_tables[nested_table_name] = nested_df
-            else:
-                nested_tables[nested_table_name] = pd.concat([nested_tables[nested_table_name], nested_df], ignore_index=True)
+            if not nested_df.empty:
+                if nested_table_name not in nested_tables:
+                    nested_tables[nested_table_name] = nested_df
+                else:
+                    nested_tables[nested_table_name] = pd.concat([nested_tables[nested_table_name], nested_df], ignore_index=True)
                 
         return main_df
     else:
@@ -82,7 +87,7 @@ def save_to_sqlite(db_name, n):
                     df = pd.concat([df.drop([column], axis=1), df[column].apply(pd.Series).add_prefix(f'{column}_')], axis=1)
 
             new_table_name = get_new_table_name(conn, table_name if table_name.strip() else "SpreedSheet")
-            if table_name.strip() or (len(df.columns) > 1 or (len(df.columns) == 1 and df.columns[0] != 'id')):
+            if not df.empty and (table_name.strip() or (len(df.columns) > 1 or (len(df.columns) == 1 and df.columns[0] != 'id'))):
                 df.head(n).to_sql(new_table_name, conn, if_exists='replace', index=False)
                 created_tables.append(new_table_name)
     finally:
@@ -91,8 +96,17 @@ def save_to_sqlite(db_name, n):
     return created_tables
 
 def process_json_file(file_path, db_name, n):
-    with open(file_path, 'r') as file:
-        json_data = json.load(file)
+    try:
+        with open(file_path, 'r') as file:
+            json_data = json.load(file)
+        
+        if not json_data:  # Check if the JSON file is empty
+            print("The JSON file is empty. No tables will be created.")
+            return
+
+    except json.JSONDecodeError:
+        print("Invalid JSON format. Please provide a valid JSON file.")
+        return
 
     global nested_tables
     nested_tables = {}

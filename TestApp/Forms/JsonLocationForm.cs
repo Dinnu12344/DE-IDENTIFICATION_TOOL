@@ -93,12 +93,20 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                             Directory.CreateDirectory(directoryPath);
                         }
                         string filePath = Path.Combine(directoryPath, $"{currentDate}.log");
-                        string logContent = $@"Job Name: Import
-                        Run start: {startTime.ToString("yyyy-MM-dd HH:mm:ss.ffffff")}
-                        Run End: {endTime.ToString("yyyy-MM-dd HH:mm:ss.ffffff")}
-                        Status: success
-                        Duration: {duration.TotalSeconds}
-                        Comment: Successfully imported file : {jsonLocationFormModel.SelectedCsvFilePath} as a table : {table} inside the project : {jsonLocationFormModel.selectedNode.Text}";
+                        string logContent = string.Format(
+                            "Job Name:    {0}\n" +
+                            "Run start:   {1}\n" +
+                            "Run End:     {2}\n" +
+                            "Status:      {3}\n" +
+                            "Duration:    {4}\n" +
+                            "Comment:     {5}\n",
+                            "Import",
+                            startTime.ToString("yyyy-MM-dd HH:mm:ss.ffffff"),
+                            endTime.ToString("yyyy-MM-dd HH:mm:ss.ffffff"),
+                            "success",
+                            duration.TotalSeconds,
+                            $"Successfully imported file : {jsonLocationFormModel.SelectedCsvFilePath} as a table : {table} inside the project : {jsonLocationFormModel.selectedNode.Text}\n"
+                        );
 
                         File.WriteAllText(filePath, logContent);
                     }
@@ -126,6 +134,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
             }
         }
+
+
         private void LocationBrowsebtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
