@@ -123,10 +123,9 @@ namespace DE_IDENTIFICATION_TOOL
         private void ExportAllProjectItem_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = treeViewPanel.SelectedNode;
-            //throw new NotImplementedException();
             DbtableFormModel dbtableFormModel = new DbtableFormModel();
             //dbtableFormModel.exportAll = true;
-            ExportForm exportForm = new ExportForm(selectedNode.Text,true);
+            ExportForm exportForm = new ExportForm(selectedNode.Text,selectedNode.Text,true);
             exportForm.Show();
 
         }
@@ -522,7 +521,7 @@ namespace DE_IDENTIFICATION_TOOL
             {
 
 
-                ExportForm deIdentifyForm = new ExportForm(tablename, projectName);
+                ExportForm deIdentifyForm = new ExportForm(tablename, projectName,false);
                 deIdentifyForm.ShowDialog();
             }
             else
@@ -545,10 +544,8 @@ namespace DE_IDENTIFICATION_TOOL
 
         private void exportDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Define the path for the exported data
             string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projectData.json");
 
-            // Example usage of FolderBrowserDialog to select export location
             using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
             {
                 folderBrowserDialog.Description = "Select the folder to save exported data";
@@ -557,27 +554,18 @@ namespace DE_IDENTIFICATION_TOOL
 
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
-                    // Get the selected folder path
                     string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
-                    // Construct the full path for the JSON export
                     string exportFilePath = Path.Combine(selectedFolderPath, "projectData.json");
 
                     try
                     {
-                        // Assuming ExportService is a class that handles data export
-                        // You need to implement this according to your specific requirements
-                        //ExportAllData exportService = new ExportAllData();
-
-                        // Call the method to export all data to the specified path
                         ExportAllData(exportFilePath);
 
-                        // Notify the user of success
                         MessageBox.Show($"All tables data has been successfully exported to {exportFilePath}");
                     }
                     catch (Exception ex)
                     {
-                        // Handle any errors that occurred during the export process
                         MessageBox.Show($"An error occurred while exporting data: {ex.Message}");
                     }
                 }
@@ -585,15 +573,6 @@ namespace DE_IDENTIFICATION_TOOL
         }
         public void ExportAllData(string exportFilePath)
         {
-            // Implement logic to export all tables' data
-            // For example, write to a JSON file, CSV files, etc.
-
-            // Example:
-            // - Retrieve all tables from your data source.
-            // - Serialize each table's data.
-            // - Write the data to the specified exportFilePath.
-
-            // This is a placeholder for actual export logic
             File.WriteAllText(exportFilePath, "All data exported.");
         }
         private void userManualToolStripMenuItem_Click(object sender, EventArgs e)
