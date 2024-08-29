@@ -211,7 +211,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // If table name exists, prompt and return
             if (tableNameExists)
             {
-                MessageBox.Show($"Table name '{enteredTableName}' already exists in project '{projectName}'. Please try another name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Table name '{enteredTableName}' already exists in project '{projectName}'. Please try with another name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return; // Prevent the form from closing
             }
 
@@ -301,7 +301,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         {
                             MessageBox.Show("Failed to delete table directory. Error: " + ex.Message, "Error");
                         }
-                        MessageBox.Show("Related Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Failed to import related", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -366,7 +366,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         {
                             MessageBox.Show("Failed to delete table directory. Error: " + ex.Message, "Error");
                         }
-                        MessageBox.Show("Table import Failed. Error: " + importPythonResponse, "Error");
+                        MessageBox.Show(importPythonResponse, "Error");
                     }
 
                 }

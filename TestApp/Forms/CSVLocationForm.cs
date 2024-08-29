@@ -226,7 +226,7 @@ namespace DE_IDENTIFICATION_TOOL
                         MessageBox.Show("Failed to delete table directory. Error: " + ex.Message, "Error");
                     }
 
-                    MessageBox.Show("The Python response failed. Error: " + pythonResponse, "Error");
+                    MessageBox.Show(pythonResponse);
                 }
             }
         }
