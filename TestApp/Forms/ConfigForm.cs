@@ -149,12 +149,14 @@ namespace DE_IDENTIFICATION_TOOL
                     dataTypeComboBox.Items.AddRange(Enum.GetNames(typeof(DataType)));
                     dataTypeComboBox.Dock = DockStyle.Fill;
                     tableLayoutPanel.Controls.Add(dataTypeComboBox, 2, row);
+                    ComboBoxHelper.PreventScroll(dataTypeComboBox);
 
                     ComboBox techniqueComboBox = new ComboBox();
                     techniqueComboBox.Items.AddRange(Enum.GetNames(typeof(Technique)));
                     techniqueComboBox.Dock = DockStyle.Fill;
                     techniqueComboBox.SelectedIndexChanged += TechniqueComboBox_SelectedIndexChanged;
                     tableLayoutPanel.Controls.Add(techniqueComboBox, 3, row);
+                    ComboBoxHelper.PreventScroll(techniqueComboBox);
 
                     ComboBox techniqueComboBoxForData = new ComboBox();
                     techniqueComboBoxForData.Items.AddRange(Enum.GetNames(typeof(AdditionalTechnique)));
@@ -162,10 +164,12 @@ namespace DE_IDENTIFICATION_TOOL
                     techniqueComboBoxForData.MaxDropDownItems = 5;
                     techniqueComboBoxForData.Enabled = false;
                     tableLayoutPanel.Controls.Add(techniqueComboBoxForData, 4, row);
+                    ComboBoxHelper.PreventScroll(techniqueComboBoxForData);
 
                     CustomDatePicker startDatePicker = new CustomDatePicker();
                     startDatePicker.Enabled = false;
                     tableLayoutPanel.Controls.Add(startDatePicker, 5, row);
+
 
                     CustomDatePicker endDatePicker = new CustomDatePicker();
                     endDatePicker.Enabled = false;
@@ -175,6 +179,8 @@ namespace DE_IDENTIFICATION_TOOL
                     keysComboBox.Items.AddRange(Enum.GetNames(typeof(KeysOption)));
                     keysComboBox.Dock = DockStyle.Fill;
                     tableLayoutPanel.Controls.Add(keysComboBox, 7, row);
+                    ComboBoxHelper.PreventScroll(keysComboBox);
+
 
                     // Load existing configuration if available
                     ColumnConfig config = existingConfig?.Find(c => c.Column == column);
@@ -381,10 +387,6 @@ namespace DE_IDENTIFICATION_TOOL
 
             MessageBox.Show("Combo box data has been cleared.");
         }
-
-
-
-
         private void SaveBtn_Click(object sender, EventArgs e)
         {
             string table = tabelName.Text;

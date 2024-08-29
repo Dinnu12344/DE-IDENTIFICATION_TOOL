@@ -19,6 +19,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DBLocationForm));
             this.panelInDBLocationForm = new System.Windows.Forms.Panel();
             this.lblForJdbcSubPara = new System.Windows.Forms.Label();
             this.lblForJdbc = new System.Windows.Forms.Label();
@@ -83,6 +84,8 @@
             // 
             // dbTyped
             // 
+            this.dbTyped.Cursor = System.Windows.Forms.Cursors.Default;
+            this.dbTyped.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dbTyped.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dbTyped.FormattingEnabled = true;
             this.dbTyped.Items.AddRange(new object[] {
@@ -195,6 +198,7 @@
             this.Controls.Add(this.dbTyped);
             this.Controls.Add(this.lblForTypeInJdbcFrm);
             this.Controls.Add(this.panelInDBLocationForm);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DBLocationForm";
             this.Text = "DBLocationForm";
             this.panelInDBLocationForm.ResumeLayout(false);
