@@ -2,13 +2,8 @@
 using DE_IDENTIFICATION_TOOL.Pythonresponse;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
@@ -18,42 +13,62 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         public readonly JsonLocationFormModel jsonLocationFormModel;
         private readonly string labelName;
         private PythonService pythonService;
+
         public JsonLocationForm(string labelName, TreeNode selectedNode, List<ProjectData> projectData, HomeForm homeForm)
         {
             InitializeComponent();
             pythonService = new PythonService();
-            jsonLocationFormModel = new JsonLocationFormModel();
-            jsonLocationFormModel.homeForm = homeForm;
-            jsonLocationFormModel.projectData = projectData;
-            jsonLocationFormModel.selectedNode  = selectedNode;
-            finishButtonInCsvlocationWindow.Visible = false;
+            jsonLocationFormModel = new JsonLocationFormModel
+            {
+                homeForm = homeForm,
+                projectData = projectData,
+                selectedNode = selectedNode
+            };
+            finishButtonInCsvlocationWindow.Enabled = false;
             lblForNoofColumns.Visible = false;
             txtForNoofColumns.Visible = false;
             this.labelName = labelName;
-        }      
+
+            // Hook up the TextChanged event for validation
+            txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
+        }
 
         private void TxtForNoofColumns_TextChanged(object sender, EventArgs e)
         {
+            txtForNoofColumns.TextChanged -= TxtForNoofColumns_TextChanged;
+
+            bool isValid = true;
+            string errorMessage = string.Empty;
+
             if (!int.TryParse(txtForNoofColumns.Text, out int value))
             {
-                MessageBox.Show("Please enter a valid number.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtForNoofColumns.Text = "";
-                return;
+                errorMessage = "Please enter a valid number.";
+                isValid = false;
             }
-
-            if (value < 1 || value > 10000)
+            else if (value < 1 || value > 10000)
             {
-                MessageBox.Show("Please enter a number between 1 and 10000.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtForNoofColumns.Text = ""; 
+                errorMessage = "Please enter a number between 1 and 10000.";
+                isValid = false;
             }
 
-            jsonLocationFormModel.EnteredText = txtForNoofColumns.Text;
-            
-            UpdateFinishButtonVisibility();
+            if (!isValid)
+            {
+                MessageBox.Show(errorMessage, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtForNoofColumns.Text = "";
+            }
+            else
+            {
+                jsonLocationFormModel.EnteredText = txtForNoofColumns.Text;
+                UpdateFinishButtonVisibility();
+            }
+
+            txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
         }
+
         private void UpdateFinishButtonVisibility()
         {
-            finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(jsonLocationFormModel.EnteredText);
+            finishButtonInCsvlocationWindow.Enabled = !string.IsNullOrEmpty(jsonLocationFormModel.EnteredText) &&
+                                                      !string.IsNullOrEmpty(jsonLocationFormModel.SelectedCsvFilePath);
         }
 
         private void FinishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
@@ -107,7 +122,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 DateTime startTime = DateTime.Now;
 
                 string pythonScriptName = "ImportJsonConnection.py";
-                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory();
                 string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
                 string pythonResponse = pythonService.JsonImport(jsonLocationFormModel.SelectedCsvFilePath, projectName, jsonLocationFormModel.EnteredText, pythonScriptPath);
 
@@ -116,7 +131,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 if (pythonResponse.ToLower().Contains("success"))
                 {
-                    string tableNamesPart = pythonResponse.Split('\n')[1]; // Get the part after the newline
+                    string tableNamesPart = pythonResponse.Split('\n')[1];
                     tableNamesPart = tableNamesPart.Replace("[", "").Replace("]", "").Replace("'", "").Trim();
                     string[] tableNames = tableNamesPart.Split(',')
                                                          .Select(name => name.Trim())
@@ -189,22 +204,44 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
         }
 
-
         private void LocationBrowsebtn_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
-
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*",
+                FilterIndex = 1,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                // Clear previous selections and inputs
+                ClearFormFields();
+
                 jsonLocationFormModel.SelectedCsvFilePath = openFileDialog.FileName;
                 textBoxForHoldingFilePath.Text = jsonLocationFormModel.SelectedCsvFilePath;
                 lblForNoofColumns.Visible = true;
                 txtForNoofColumns.Visible = true;
+                UpdateFinishButtonVisibility();
             }
+        }
+
+        private void ClearFormFields()
+        {
+            // Temporarily unsubscribe from the TextChanged event for row count to prevent validation
+            txtForNoofColumns.TextChanged -= TxtForNoofColumns_TextChanged;
+            txtForNoofColumns.Clear();
+            txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
+
+            jsonLocationFormModel.EnteredText = null;
+            jsonLocationFormModel.SelectedCsvFilePath = null;
+
+            finishButtonInCsvlocationWindow.Enabled = false;
+        }
+
+        private void CanclebtnforClear_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

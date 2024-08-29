@@ -64,7 +64,7 @@ namespace DE_IDENTIFICATION_TOOL
             this.radioCheckDatabase.TabStop = true;
             this.radioCheckDatabase.Text = "Database";
             this.radioCheckDatabase.UseVisualStyleBackColor = true;
-            this.radioCheckDatabase.CheckedChanged += new System.EventHandler(this.radioCheckDatabase_CheckedChanged);
+            //this.radioCheckDatabase.CheckedChanged += new System.EventHandler(this.radioCheckDatabase_CheckedChanged);
             // 
             // buttonNext
             // 
@@ -102,7 +102,7 @@ namespace DE_IDENTIFICATION_TOOL
             this.radioCheckJson.TabStop = true;
             this.radioCheckJson.Text = "Json";
             this.radioCheckJson.UseVisualStyleBackColor = true;
-            this.radioCheckJson.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            //this.radioCheckJson.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // ImportForm
             // 
@@ -127,5 +127,9 @@ namespace DE_IDENTIFICATION_TOOL
         #endregion
 
         private RadioButton radioCheckJson;
+        private RadioButton radioCheckCSV;
+        private RadioButton radioCheckDatabase;
+        private Button buttonNext;
+        private Button buttonCancel;
     }
 }

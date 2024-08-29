@@ -1,15 +1,11 @@
-﻿using DE_IDENTIFICATION_TOOL.Models;
+﻿using DE_IDENTIFICATION_TOOL.CustomAction;
+using DE_IDENTIFICATION_TOOL.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
+using System.Diagnostics;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
 {
@@ -20,6 +16,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private HomeForm homeForm;
         private List<ProjectData> projectData;
         public DbtableFormModel _dbtableFormModel;
+
         public DBLocationForm(string labelName, TreeNode selectedNode, List<ProjectData> projectData, HomeForm homeForm)
         {
             InitializeComponent();
@@ -28,16 +25,28 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.homeForm = homeForm;
             this.projectData = projectData;
             _dbtableFormModel = new DbtableFormModel();
+
+            // Initialize controls
             lblForServer.Visible = false;
-            txtForServer.Visible = false;            
+            txtForServer.Visible = false;
 
             lblForUserName.Visible = false;
             txtForUsername.Visible = false;
 
             lblForPassword.Visible = false;
-            txtForPassword.Visible = false;           
+            txtForPassword.Visible = false;
+
+            picEye.Visible = false; // Hide the eye icon initially
 
             btnForFinish.Enabled = false;
+            ComboBoxHelper.PreventScroll(this.dbTyped);
+
+            // Add event handlers for eye icon
+            picEye.MouseHover += PicEye_MouseHover;
+            picEye.MouseLeave += PicEye_MouseLeave;
+
+            // Add event handler for ComboBox
+            dbTyped.SelectedIndexChanged += dbTyped_SelectedIndexChanged;
         }
 
         private void btnForBackInJdbcFrm_Click(object sender, EventArgs e)
@@ -64,6 +73,10 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         {
             string selectedItem = dbTyped.SelectedItem.ToString();
 
+            // Debugging: Output selected item
+            Debug.WriteLine($"Selected item: {selectedItem}");
+
+            // Show or hide controls based on selected database type
             if (selectedItem == "SQL")
             {
                 lblForServer.Visible = true;
@@ -74,12 +87,21 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 lblForPassword.Visible = true;
                 txtForPassword.Visible = true;
-            }
-            else if (selectedItem == "Oracle")
-            {
+
+                picEye.Visible = true; // Show the eye icon
             }
             else
             {
+                lblForServer.Visible = false;
+                txtForServer.Visible = false;
+
+                lblForUserName.Visible = false;
+                txtForUsername.Visible = false;
+
+                lblForPassword.Visible = false;
+                txtForPassword.Visible = false;
+
+                picEye.Visible = false; // Hide the eye icon
             }
         }
 
@@ -89,7 +111,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string connectionString = $"server={this.txtForServer.Text};" +
                                       $"user id={this.txtForUsername.Text};" +
                                       $"password={this.txtForPassword.Text};" +
-                                      $"connection timeout=30"; 
+                                      $"connection timeout=30";
 
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
@@ -130,7 +152,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
             }
             //this.Hide();
-        }        
+        }
 
         private void UpdateFinishButtonVisibility()
         {
@@ -155,6 +177,18 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         {
             _dbtableFormModel.password = txtForPassword.Text;
             UpdateFinishButtonVisibility();
+        }
+
+        private void PicEye_MouseHover(object sender, EventArgs e)
+        {
+            // Show the password when mouse hovers over the eye icon
+            txtForPassword.UseSystemPasswordChar = false;
+        }
+
+        private void PicEye_MouseLeave(object sender, EventArgs e)
+        {
+            // Hide the password when mouse leaves the eye icon
+            txtForPassword.UseSystemPasswordChar = true;
         }
     }
 }

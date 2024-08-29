@@ -36,7 +36,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.CanclebtnforClear = new System.Windows.Forms.Button();
             this.finishButtonInCsvlocationWindow = new System.Windows.Forms.Button();
-            this.btnForBack = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblForNoofColumns
@@ -70,6 +69,8 @@
             // 
             // textBoxForHoldingFilePath
             // 
+            this.textBoxForHoldingFilePath.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.textBoxForHoldingFilePath.Cursor = System.Windows.Forms.Cursors.No;
             this.textBoxForHoldingFilePath.Location = new System.Drawing.Point(180, 134);
             this.textBoxForHoldingFilePath.Name = "textBoxForHoldingFilePath";
             this.textBoxForHoldingFilePath.Size = new System.Drawing.Size(448, 27);
@@ -93,25 +94,17 @@
             this.CanclebtnforClear.TabIndex = 26;
             this.CanclebtnforClear.Text = "Cancel";
             this.CanclebtnforClear.UseVisualStyleBackColor = true;
+            this.CanclebtnforClear.Click += new System.EventHandler(this.CanclebtnforClear_Click);
             // 
             // finishButtonInCsvlocationWindow
             // 
-            this.finishButtonInCsvlocationWindow.Location = new System.Drawing.Point(451, 463);
+            this.finishButtonInCsvlocationWindow.Location = new System.Drawing.Point(545, 463);
             this.finishButtonInCsvlocationWindow.Name = "finishButtonInCsvlocationWindow";
             this.finishButtonInCsvlocationWindow.Size = new System.Drawing.Size(70, 30);
             this.finishButtonInCsvlocationWindow.TabIndex = 25;
             this.finishButtonInCsvlocationWindow.Text = "Finish";
             this.finishButtonInCsvlocationWindow.UseVisualStyleBackColor = true;
             this.finishButtonInCsvlocationWindow.Click += new System.EventHandler(this.FinishButtonInCsvlocationWindow_Click);
-            // 
-            // btnForBack
-            // 
-            this.btnForBack.Location = new System.Drawing.Point(557, 463);
-            this.btnForBack.Name = "btnForBack";
-            this.btnForBack.Size = new System.Drawing.Size(70, 30);
-            this.btnForBack.TabIndex = 24;
-            this.btnForBack.Text = "Back";
-            this.btnForBack.UseVisualStyleBackColor = true;
             // 
             // JsonLocationForm
             // 
@@ -120,7 +113,6 @@
             this.ClientSize = new System.Drawing.Size(800, 535);
             this.Controls.Add(this.CanclebtnforClear);
             this.Controls.Add(this.finishButtonInCsvlocationWindow);
-            this.Controls.Add(this.btnForBack);
             this.Controls.Add(this.lblForNoofColumns);
             this.Controls.Add(this.txtForNoofColumns);
             this.Controls.Add(this.LocationBrowseButton);
@@ -143,6 +135,5 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button CanclebtnforClear;
         private System.Windows.Forms.Button finishButtonInCsvlocationWindow;
-        private System.Windows.Forms.Button btnForBack;
     }
 }

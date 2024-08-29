@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomAction\ComboBoxHelper.cs" />
     <Compile Include="CustomAction\CustomDatePicker.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -478,6 +479,7 @@
     <None Include="Resources\MicrosoftTeams-image %284%29.ico" />
     <None Include="Resources\image11.jpg" />
     <None Include="Resources\download.jpg" />
+    <None Include="Resources\visible.png" />
     <Content Include="Scripts\python-3.12.4-amd64.exe" />
   </ItemGroup>
   <ItemGroup>

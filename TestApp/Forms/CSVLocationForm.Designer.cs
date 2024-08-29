@@ -41,7 +41,6 @@ namespace DE_IDENTIFICATION_TOOL
             this.panel2 = new System.Windows.Forms.Panel();
             this.CanclebtnforClear = new System.Windows.Forms.Button();
             this.finishButtonInCsvlocationWindow = new System.Windows.Forms.Button();
-            this.btnForBack = new System.Windows.Forms.Button();
             this.delimiterLabel = new System.Windows.Forms.Label();
             this.DelimeterComboBox = new System.Windows.Forms.ComboBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -98,6 +97,9 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             // textBoxForHoldingFilePath
             // 
+            this.textBoxForHoldingFilePath.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.textBoxForHoldingFilePath.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.textBoxForHoldingFilePath.Cursor = System.Windows.Forms.Cursors.No;
             this.textBoxForHoldingFilePath.Location = new System.Drawing.Point(158, 126);
             this.textBoxForHoldingFilePath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxForHoldingFilePath.Name = "textBoxForHoldingFilePath";
@@ -120,7 +122,6 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             this.panel2.Controls.Add(this.CanclebtnforClear);
             this.panel2.Controls.Add(this.finishButtonInCsvlocationWindow);
-            this.panel2.Controls.Add(this.btnForBack);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 349);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -144,7 +145,7 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             this.finishButtonInCsvlocationWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.finishButtonInCsvlocationWindow.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.finishButtonInCsvlocationWindow.Location = new System.Drawing.Point(519, 28);
+            this.finishButtonInCsvlocationWindow.Location = new System.Drawing.Point(602, 28);
             this.finishButtonInCsvlocationWindow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.finishButtonInCsvlocationWindow.Name = "finishButtonInCsvlocationWindow";
             this.finishButtonInCsvlocationWindow.Size = new System.Drawing.Size(70, 30);
@@ -152,18 +153,6 @@ namespace DE_IDENTIFICATION_TOOL
             this.finishButtonInCsvlocationWindow.Text = "Finish";
             this.finishButtonInCsvlocationWindow.UseVisualStyleBackColor = true;
             this.finishButtonInCsvlocationWindow.Click += new System.EventHandler(this.FinishButtonInCsvlocationWindow_Click);
-            // 
-            // btnForBack
-            // 
-            this.btnForBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnForBack.Location = new System.Drawing.Point(614, 28);
-            this.btnForBack.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnForBack.Name = "btnForBack";
-            this.btnForBack.Size = new System.Drawing.Size(70, 30);
-            this.btnForBack.TabIndex = 0;
-            this.btnForBack.Text = "Back";
-            this.btnForBack.UseVisualStyleBackColor = true;
-            this.btnForBack.Click += new System.EventHandler(this.BtnForBack_Click);
             // 
             // delimiterLabel
             // 
@@ -177,6 +166,7 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             // DelimeterComboBox
             // 
+            this.DelimeterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DelimeterComboBox.FormattingEnabled = true;
             this.DelimeterComboBox.Items.AddRange(new object[] {
             ",",
@@ -202,6 +192,7 @@ namespace DE_IDENTIFICATION_TOOL
             // 
             // QuoteComboBox
             // 
+            this.QuoteComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.QuoteComboBox.FormattingEnabled = true;
             this.QuoteComboBox.Items.AddRange(new object[] {
             "\"",
@@ -296,7 +287,6 @@ namespace DE_IDENTIFICATION_TOOL
         private Panel panel2;
         private Button CanclebtnforClear;
         private Button finishButtonInCsvlocationWindow;
-        private Button btnForBack;
         private Label delimiterLabel;
         private ComboBox DelimeterComboBox;
         private ColorDialog colorDialog1;

@@ -345,53 +345,59 @@ namespace DE_IDENTIFICATION_TOOL
 
             if (selectedNode != null)
             {
-                ImportForm importForm = new ImportForm(selectedNode.Text);
-                if (importForm.ShowDialog() == DialogResult.OK)
+                using (var importForm = new ImportForm())
                 {
-                    string selectedOption = importForm.SelectedImportOption;
-                    if (selectedOption == "CSV")
+                    if (importForm.ShowDialog() == DialogResult.OK)
                     {
-                        CSVLocationForm csvLocationForm = new CSVLocationForm(selectedNode.Text);
-                        if (csvLocationForm.ShowDialog() == DialogResult.OK)
-                        {
-                            string tableName = csvLocationForm.csvLocationFormModel.TableName;
-                            TreeNode tableNode = new TreeNode(tableName);
-                            selectedNode.Nodes.Add(tableNode);
-                            selectedNode.Expand();
+                        string selectedOption = importForm.SelectedImportOption;
 
-                            var project = projectData.Find(p => p.Name == selectedNode.Text);
-                            if (project != null)
+                        if (selectedOption == "CSV")
+                        {
+                            using (var csvLocationForm = new CSVLocationForm(selectedNode.Text, importForm))
                             {
-                                project.Tables.Add(tableName);
-                                SaveProjectData();
+                                if (csvLocationForm.ShowDialog() == DialogResult.OK)
+                                {
+                                    string tableName = csvLocationForm.csvLocationFormModel.TableName;
+                                    TreeNode tableNode = new TreeNode(tableName);
+                                    selectedNode.Nodes.Add(tableNode);
+                                    selectedNode.Expand();
+
+                                    var project = projectData.Find(p => p.Name == selectedNode.Text);
+                                    if (project != null)
+                                    {
+                                        project.Tables.Add(tableName);
+                                        SaveProjectData();
+                                    }
+                                }
                             }
                         }
-                    }
-                    else if (selectedOption == "Database")
-                    {
-                        DBLocationForm dbLocationForm = new DBLocationForm(selectedNode.Text, selectedNode, projectData, this);
-                        dbLocationForm.ShowDialog();
-                        dbLocationForm.Hide();
-                    }
-                    else if (selectedOption == "Json")
-                    {
-                        JsonLocationForm jsonLocationForm = new JsonLocationForm(selectedNode.Text, selectedNode, projectData, this);
-
-                        if (jsonLocationForm.ShowDialog() == DialogResult.OK)
+                        else if (selectedOption == "Database")
                         {
-                            selectedNode.Expand();
-
-                            var project = projectData.Find(p => p.Name == selectedNode.Text);
-                            if (project != null)
+                            using (var dbLocationForm = new DBLocationForm(selectedNode.Text, selectedNode, projectData, this))
                             {
-                                SaveProjectData();
+                                if (dbLocationForm.ShowDialog() == DialogResult.OK)
+                                {
+                                    // Handle DB import completion here
+                                }
                             }
                         }
-
+                        else if (selectedOption == "Json")
+                        {
+                            using (var jsonLocationForm = new JsonLocationForm(selectedNode.Text, selectedNode, projectData, this))
+                            {
+                                if (jsonLocationForm.ShowDialog() == DialogResult.OK)
+                                {
+                                    selectedNode.Expand();
+                                    SaveProjectData();
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+
+
         public void SaveProjectData()
         {
             try

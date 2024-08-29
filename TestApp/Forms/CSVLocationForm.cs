@@ -1,4 +1,5 @@
-﻿using DE_IDENTIFICATION_TOOL.Forms;
+﻿using DE_IDENTIFICATION_TOOL.CustomAction;
+using DE_IDENTIFICATION_TOOL.Forms;
 using DE_IDENTIFICATION_TOOL.Models;
 using DE_IDENTIFICATION_TOOL.Pythonresponse;
 using System;
@@ -16,20 +17,19 @@ namespace DE_IDENTIFICATION_TOOL
         private readonly string labelName;
         private PythonService pythonService;
         public readonly CSVLocationFormModel csvLocationFormModel;
-        
+
         private readonly string pythonScriptsDirectory;
 
-        public CSVLocationForm(string labelName)
+        public CSVLocationForm(string labelName, ImportForm importForm)
         {
             InitializeComponent();
             pythonService = new PythonService();
-            //pythonService = new PythonService();
             csvLocationFormModel = new CSVLocationFormModel();
             delimiterLabel.Visible = false;
             DelimeterComboBox.Visible = false;
             QuoteLabel.Visible = false;
             QuoteComboBox.Visible = false;
-            finishButtonInCsvlocationWindow.Visible = false;
+            finishButtonInCsvlocationWindow.Enabled = false; // Start with the button disabled
             lblForNoofColumns.Visible = false;
             txtForNoofColumns.Visible = false;
             lblForTblName.Visible = false;
@@ -38,11 +38,14 @@ namespace DE_IDENTIFICATION_TOOL
             this.labelName = labelName;
             pythonScriptsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PythonScripts");
             this.Resize += new EventHandler(CSVLocationForm_Resize);
+            ComboBoxHelper.PreventScroll(this.DelimeterComboBox, this.QuoteComboBox);
         }
+
         private void CSVLocationForm_Resize(object sender, EventArgs e)
         {
             AdjustTextBoxWidth();
         }
+
         private void AdjustTextBoxWidth()
         {
             // Adjust the width of textBoxForHoldingFilePath
@@ -59,15 +62,21 @@ namespace DE_IDENTIFICATION_TOOL
             // Optionally, you can adjust the position of the Browse button if necessary
             LocationBrowseButton.Left = textBoxForHoldingFilePath.Right + 10; // Add padding between the textbox and button
         }
+
         private void LocationBrowsebtn_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                FilterIndex = 1,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                // Clear previous selections and inputs
+                ClearFormFields();
+
                 // Update the model with the selected file path
                 csvLocationFormModel.SelectedCsvFilePath = openFileDialog.FileName;
                 textBoxForHoldingFilePath.Text = csvLocationFormModel.SelectedCsvFilePath;
@@ -83,16 +92,43 @@ namespace DE_IDENTIFICATION_TOOL
                 txtForTblName.Visible = true;
             }
         }
+
+        private void ClearFormFields()
+        {
+            // Clear the ComboBoxes
+            DelimeterComboBox.SelectedIndex = -1;
+            QuoteComboBox.SelectedIndex = -1;
+
+            // Temporarily unsubscribe from the TextChanged event for row count to prevent validation
+            txtForNoofColumns.TextChanged -= TxtForNoofColumns_TextChanged;
+            txtForNoofColumns.Clear();
+            txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
+
+            // Clear the TextBox for table name
+            txtForTblName.Clear();
+
+            // Clear the model properties
+            csvLocationFormModel.SelectedDelimiter = null;
+            csvLocationFormModel.SelectedQuote = null;
+            csvLocationFormModel.EnteredText = null;
+            csvLocationFormModel.TableName = null;
+
+            // Disable the finish button until all fields are filled again
+            finishButtonInCsvlocationWindow.Enabled = false;
+        }
+
         private void DelimeterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             csvLocationFormModel.SelectedDelimiter = DelimeterComboBox.SelectedItem?.ToString();
-            UpdateFinishButtonVisibility();
+            UpdateFinishButtonState();
         }
+
         private void QuoteComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             csvLocationFormModel.SelectedQuote = QuoteComboBox.SelectedItem?.ToString();
-            UpdateFinishButtonVisibility();
+            UpdateFinishButtonState();
         }
+
         private void TxtForNoofColumns_TextChanged(object sender, EventArgs e)
         {
             txtForNoofColumns.TextChanged -= TxtForNoofColumns_TextChanged;
@@ -114,25 +150,26 @@ namespace DE_IDENTIFICATION_TOOL
             if (!isValid)
             {
                 MessageBox.Show(errorMessage, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtForNoofColumns.Text = ""; 
+                txtForNoofColumns.Text = "";
             }
             else
             {
                 csvLocationFormModel.EnteredText = txtForNoofColumns.Text;
-                UpdateFinishButtonVisibility();
             }
 
             txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
+            UpdateFinishButtonState();
         }
 
         private void TxtForTblName_TextChanged(object sender, EventArgs e)
         {
             csvLocationFormModel.TableName = txtForTblName.Text;
-            UpdateFinishButtonVisibility();
+            UpdateFinishButtonState();
         }
-        private void UpdateFinishButtonVisibility()
+
+        private void UpdateFinishButtonState()
         {
-            finishButtonInCsvlocationWindow.Visible = !string.IsNullOrEmpty(csvLocationFormModel.SelectedDelimiter) &&
+            finishButtonInCsvlocationWindow.Enabled = !string.IsNullOrEmpty(csvLocationFormModel.SelectedDelimiter) &&
                                                       !string.IsNullOrEmpty(csvLocationFormModel.SelectedQuote) &&
                                                       !string.IsNullOrEmpty(csvLocationFormModel.EnteredText) &&
                                                       !string.IsNullOrEmpty(csvLocationFormModel.TableName);
@@ -237,10 +274,6 @@ namespace DE_IDENTIFICATION_TOOL
         private void CancelButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
-        private void BtnForBack_Click(object sender, EventArgs e)
-        {
             this.Close();
         }
 

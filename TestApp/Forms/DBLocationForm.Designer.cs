@@ -1,35 +1,25 @@
-﻿using System.Windows.Forms;
-namespace DE_IDENTIFICATION_TOOL.Forms
+﻿namespace DE_IDENTIFICATION_TOOL.Forms
 {
     partial class DBLocationForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.Panel panelInDBLocationForm;
+        private System.Windows.Forms.Label lblForJdbcSubPara;
+        private System.Windows.Forms.Label lblForJdbc;
+        private System.Windows.Forms.Label lblForTypeInJdbcFrm;
+        private System.Windows.Forms.ComboBox dbTyped;
+        private System.Windows.Forms.Label lblForServer;
+        private System.Windows.Forms.Label lblForUserName;
+        private System.Windows.Forms.Label lblForPassword;
+        private System.Windows.Forms.TextBox txtForServer;
+        private System.Windows.Forms.TextBox txtForUsername;
+        private System.Windows.Forms.TextBox txtForPassword;
+        private System.Windows.Forms.Button btnForCancelInJdbcFrm;
+        private System.Windows.Forms.Button btnForFinish;
+        private System.Windows.Forms.PictureBox picEye; // Added PictureBox for eye icon
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DBLocationForm));
             this.panelInDBLocationForm = new System.Windows.Forms.Panel();
             this.lblForJdbcSubPara = new System.Windows.Forms.Label();
             this.lblForJdbc = new System.Windows.Forms.Label();
@@ -43,7 +33,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.txtForPassword = new System.Windows.Forms.TextBox();
             this.btnForCancelInJdbcFrm = new System.Windows.Forms.Button();
             this.btnForFinish = new System.Windows.Forms.Button();
+            this.picEye = new System.Windows.Forms.PictureBox();
             this.panelInDBLocationForm.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEye)).BeginInit();
             this.SuspendLayout();
             // 
             // panelInDBLocationForm
@@ -104,7 +96,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.dbTyped.Name = "dbTyped";
             this.dbTyped.Size = new System.Drawing.Size(382, 23);
             this.dbTyped.TabIndex = 2;
-            this.dbTyped.SelectedIndexChanged += new System.EventHandler(this.dbTyped_SelectedIndexChanged);
             // 
             // lblForServer
             // 
@@ -147,7 +138,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.txtForServer.Name = "txtForServer";
             this.txtForServer.Size = new System.Drawing.Size(382, 23);
             this.txtForServer.TabIndex = 9;
-            this.txtForServer.TextChanged += new System.EventHandler(this.txtForServer_TextChanged);
             // 
             // txtForUsername
             // 
@@ -157,51 +147,61 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.txtForUsername.Name = "txtForUsername";
             this.txtForUsername.Size = new System.Drawing.Size(382, 23);
             this.txtForUsername.TabIndex = 11;
-            this.txtForUsername.TextChanged += new System.EventHandler(this.txtForUsername_TextChanged);
             // 
             // txtForPassword
             // 
             this.txtForPassword.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtForPassword.Location = new System.Drawing.Point(212, 274);
+            this.txtForPassword.Location = new System.Drawing.Point(212, 270);
             this.txtForPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtForPassword.Name = "txtForPassword";
             this.txtForPassword.Size = new System.Drawing.Size(382, 23);
             this.txtForPassword.TabIndex = 12;
-            this.txtForPassword.TextChanged += new System.EventHandler(this.txtForPassword_TextChanged);
+            this.txtForPassword.UseSystemPasswordChar = true;
             // 
             // btnForCancelInJdbcFrm
             // 
-            this.btnForCancelInJdbcFrm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnForCancelInJdbcFrm.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(524, 360);
-            this.btnForCancelInJdbcFrm.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnForCancelInJdbcFrm.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(533, 317);
+            this.btnForCancelInJdbcFrm.Margin = new System.Windows.Forms.Padding(2);
             this.btnForCancelInJdbcFrm.Name = "btnForCancelInJdbcFrm";
-            this.btnForCancelInJdbcFrm.Size = new System.Drawing.Size(70, 30);
-            this.btnForCancelInJdbcFrm.TabIndex = 3;
+            this.btnForCancelInJdbcFrm.Size = new System.Drawing.Size(79, 30);
+            this.btnForCancelInJdbcFrm.TabIndex = 13;
             this.btnForCancelInJdbcFrm.Text = "Cancel";
             this.btnForCancelInJdbcFrm.UseVisualStyleBackColor = true;
             this.btnForCancelInJdbcFrm.Click += new System.EventHandler(this.btnForCancelInJdbcFrm_Click);
             // 
             // btnForFinish
             // 
-            this.btnForFinish.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnForFinish.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForFinish.Location = new System.Drawing.Point(396, 360);
-            this.btnForFinish.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnForFinish.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForFinish.Location = new System.Drawing.Point(628, 317);
+            this.btnForFinish.Margin = new System.Windows.Forms.Padding(2);
             this.btnForFinish.Name = "btnForFinish";
-            this.btnForFinish.Size = new System.Drawing.Size(70, 30);
-            this.btnForFinish.TabIndex = 2;
-            this.btnForFinish.Text = "Next";
+            this.btnForFinish.Size = new System.Drawing.Size(79, 30);
+            this.btnForFinish.TabIndex = 14;
+            this.btnForFinish.Text = "Finish";
             this.btnForFinish.UseVisualStyleBackColor = true;
             this.btnForFinish.Click += new System.EventHandler(this.btnForFinish_Click);
             // 
+            // picEye
+            // 
+            this.picEye.BackColor = System.Drawing.SystemColors.Window;
+            this.picEye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.picEye.Image = global::DE_IDENTIFICATION_TOOL.Properties.Resources.visible;
+            this.picEye.Location = new System.Drawing.Point(599, 270);
+            this.picEye.Name = "picEye";
+            this.picEye.Size = new System.Drawing.Size(25, 23);
+            this.picEye.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picEye.TabIndex = 15;
+            this.picEye.TabStop = false;
+            // 
             // DBLocationForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(953, 564);
-            this.Controls.Add(this.btnForCancelInJdbcFrm);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(953, 368);
             this.Controls.Add(this.btnForFinish);
+            this.Controls.Add(this.btnForCancelInJdbcFrm);
+            this.Controls.Add(this.picEye);
             this.Controls.Add(this.txtForPassword);
             this.Controls.Add(this.txtForUsername);
             this.Controls.Add(this.txtForServer);
@@ -211,32 +211,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.Controls.Add(this.dbTyped);
             this.Controls.Add(this.lblForTypeInJdbcFrm);
             this.Controls.Add(this.panelInDBLocationForm);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "DBLocationForm";
             this.Text = "DBLocationForm";
             this.panelInDBLocationForm.ResumeLayout(false);
             this.panelInDBLocationForm.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEye)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
-
-        #endregion
-
-        private System.Windows.Forms.Panel panelInDBLocationForm;
-        private System.Windows.Forms.Label lblForJdbcSubPara;
-        private System.Windows.Forms.Label lblForJdbc;
-        private System.Windows.Forms.Label lblForTypeInJdbcFrm;
-        private System.Windows.Forms.ComboBox dbTyped;
-        private System.Windows.Forms.Label lblForServer;
-        private System.Windows.Forms.Label lblForUserName;
-        private System.Windows.Forms.Label lblForPassword;
-        private System.Windows.Forms.TextBox txtForServer;
-        private System.Windows.Forms.TextBox txtForUsername;
-        private System.Windows.Forms.TextBox txtForPassword;
-        private Button btnForCancelInJdbcFrm;
-        private Button btnForFinish;
+        // Dispose method and other event handlers
     }
 }
