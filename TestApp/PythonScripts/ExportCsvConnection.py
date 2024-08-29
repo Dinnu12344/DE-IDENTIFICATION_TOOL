@@ -9,47 +9,70 @@ import pandas as pd
 import Import as i
 import sys
 
-
 if __name__ == "__main__":
-    # Extract arguments passed from command line
+
+    # Ensure the script has enough arguments
+    if len(sys.argv) < 4:
+        print("Error: Not enough arguments provided.")
+        sys.exit(1)
+
+    # Extract arguments
+    saveFilePath = sys.argv[1]  # Capture the saveFilePath
+    project_name = sys.argv[2]  # Capture the project_name
+    table_name = sys.argv[3]    # Capture the table_name
+
     run_start = datetime.datetime.now()
 
-    saveFilePath=sys.argv[1]
-    project_name = sys.argv[2]
-    table_name=sys.argv[3]
-    # print(saveFilePath)
-    # print(project_name)
-    # print(table_name)
-
-    # print(f"ExportCsv Connection {saveFilePath} {project_name} {table_name} ")
-    db_file_path=mf.tool_path+'\\'+project_name+'\\TablesData'+'\\Data.db'
-    # print(f"db_file_path is : {db_file_path}")
+    # Construct the database file path
+    db_file_path = os.path.join(mf.tool_path, project_name, 'TablesData', 'Data.db')
     
-
-    log_files_path=mf.tool_path+'\\'+project_name
-    
+    # Define log files path
+    log_files_path = os.path.join(mf.tool_path, project_name)
     log_files_path_table = os.path.join(log_files_path, table_name, "LogFile")
     mf.create_path(log_files_path_table)
     
+    # Generate log filename
     log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
     filename = os.path.join(log_files_path_table, log_filename)
     
-    res=mf.check_table_existence("de_identified_"+table_name,db_file_path)
-    if(res=="True"):
+    # Check if the table exists in the SQLite database
+    res = mf.check_table_existence("de_identified_" + table_name, db_file_path)
+    if res == "True":
         print(res)
-        Status,Comment=ex.export_to_csv(table_name,db_file_path,saveFilePath)
+        Status, Comment = ex.export_to_csv(table_name, db_file_path, saveFilePath)
         run_end = datetime.datetime.now()
         run_time = run_end - run_start
-    
-        mf.append_logs_to_file(file_path = filename,job_name="Export", run_start =run_start, run_end = run_end, status = Status, duration  = run_time, comment = Comment)
+        
+        # Check for permission denied status in the comment
+        if "permission denied" in Comment.lower():
+            # Send response to front end or log accordingly
+            print("Permission Denied: Cannot write to the specified directory.")
+            # Here you can include logic to send this error back to the front end if needed.
+        
+        # Log the operation
+        mf.append_logs_to_file(
+            file_path=filename,
+            job_name="Export",
+            run_start=run_start,
+            run_end=run_end,
+            status=Status,
+            duration=run_time,
+            comment=Comment
+        )
     
         print(Status)
     else:
-        
         Status = "Failure"
         Comment = "Export failed with one or more exceptions"
         run_end = datetime.datetime.now()
         run_time = run_end - run_start
-        mf.append_logs_to_file(file_path = filename,job_name="Export", run_start =run_start, run_end = run_end, status = Status, duration  = run_time, comment = Comment)
+        mf.append_logs_to_file(
+            file_path=filename,
+            job_name="Export",
+            run_start=run_start,
+            run_end=run_end,
+            status=Status,
+            duration=run_time,
+            comment=Comment
+        )
         print(res)
-

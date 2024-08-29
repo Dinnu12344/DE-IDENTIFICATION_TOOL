@@ -36,25 +36,36 @@ namespace DE_IDENTIFICATION_TOOL
 
                         if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                         {
+                            // Get the selected folder path from the dialog
                             string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
+                            // Replace single backslashes with double backslashes
+                            string modifiedFolderPath = selectedFolderPath.Replace(@"\", @"\\");
+
+                            // Use the modified folder path where needed
                             string pythonScriptName = "ExportCsvConnection.py";
                             string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                             string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
-                            string pythonResponse = pythonService.SendDataToPython(selectedFolderPath, projectName, tableName, pythonScriptPath);
+                            // Pass the modified folder path to the Python script
+                            string pythonResponse = pythonService.SendDataToPython(modifiedFolderPath, projectName, tableName, pythonScriptPath);
 
                             if (pythonResponse.ToLower().Contains("success"))
                             {
                                 MessageBox.Show("De-Identified table exported successfully");
                                 this.Close();
                             }
+                            else if(pythonResponse.ToLower().Contains("permission denied"))
+                            {
+                                MessageBox.Show("Permission denied for path "+ modifiedFolderPath);
+                            }
                             else
                             {
                                 MessageBox.Show("Export is failed");
-                            }
 
+                            }
                         }
+
                     }
                 }
                 else
@@ -82,7 +93,7 @@ namespace DE_IDENTIFICATION_TOOL
                                 MessageBox.Show(pythonResponse);
                             }
 
-                        }
+                         }
                     }
                 }
             

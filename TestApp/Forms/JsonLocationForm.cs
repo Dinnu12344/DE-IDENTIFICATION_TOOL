@@ -59,10 +59,51 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private void FinishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
         {
             string projectName = labelName;
+            string username = Environment.UserName;
+            string projectDirectory = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}";
+
+            // Folder path associated with the table name
+            //string tableDirectoryPath = Path.Combine(projectDirectory, csvLocationFormModel.TableName);
+
+            // Full path including the LogFile subfolder
+            //string logFileDirectoryPath = Path.Combine(tableDirectoryPath, "LogFile");
+
+            // File to store the list of table names for the specific project
+            string tableNamesFile = Path.Combine(projectDirectory, "TableNames.txt");
+
+            //// Ensure the table name is trimmed of leading/trailing whitespace
+            //string enteredTableName = csvLocationFormModel.TableName.Trim();
+
+            // Check if the table name already exists in the current project (case-insensitive comparison)
+            //bool tableNameExists = false;
+            //if (File.Exists(tableNamesFile))
+            //{
+            //    var existingTableNames = File.ReadAllLines(tableNamesFile)
+            //                                 .Select(name => name.Trim())
+            //                                 .ToList();
+
+            //    if (existingTableNames.Any(name => string.Equals(name, enteredTableName, StringComparison.OrdinalIgnoreCase)))
+            //    {
+            //        tableNameExists = true;
+            //    }
+            //}
+
+            // If table name exists, prompt and return
+            //if (tableNameExists)
+            //{
+            //    MessageBox.Show($"Table name '{enteredTableName}' already exists in project '{projectName}'. Please try another name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return; // Prevent the form from closing
+            //}
+
+            //// Create the table directory if it doesn't exist
+            //if (!Directory.Exists(tableDirectoryPath))
+            //{
+            //    Directory.CreateDirectory(logFileDirectoryPath); // This will also create tableDirectoryPath
+            //}
 
             if (!string.IsNullOrEmpty(jsonLocationFormModel.SelectedCsvFilePath))
             {
-                string username = Environment.UserName;
+                //string username = Environment.UserName;
                 DateTime startTime = DateTime.Now;
 
                 string pythonScriptName = "ImportJsonConnection.py";
@@ -81,6 +122,19 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                                                          .Select(name => name.Trim())
                                                          .ToArray();
                     string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+                    try
+                    {
+                        // Append all table names line by line to the TableNames.txt file
+                        File.AppendAllLines(tableNamesFile, tableNames);
+
+                        // Inform user that the table names have been successfully added
+                        MessageBox.Show("Table names have been added to TableNames.txt successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle any errors that occur during file writing
+                        MessageBox.Show($"An error occurred while writing to TableNames.txt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
 
                     foreach (string table in tableNames)
                     {

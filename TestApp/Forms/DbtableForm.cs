@@ -179,6 +179,49 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             string password = Regex.Match(connectionString, passwordPattern, RegexOptions.IgnoreCase).Groups[1].Value;
             string connectionTimeout = Regex.Match(connectionString, timeoutPattern, RegexOptions.IgnoreCase).Groups[1].Value;
 
+            string username = Environment.UserName;
+            string projectDirectory = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}";
+
+            // Folder path associated with the table name
+            string tableDirectoryPath = Path.Combine(projectDirectory, tableName);
+
+            // Full path including the LogFile subfolder
+            string logFileDirectoryPath = Path.Combine(tableDirectoryPath, "LogFile");
+
+            // File to store the list of table names for the specific project
+            string tableNamesFile = Path.Combine(projectDirectory, "TableNames.txt");
+
+            // Ensure the table name is trimmed of leading/trailing whitespace
+            string enteredTableName = tableName.Trim();
+
+            // Check if the table name already exists in the current project (case-insensitive comparison)
+            bool tableNameExists = false;
+            if (File.Exists(tableNamesFile))
+            {
+                var existingTableNames = File.ReadAllLines(tableNamesFile)
+                                             .Select(name => name.Trim())
+                                             .ToList();
+
+                if (existingTableNames.Any(name => string.Equals(name, enteredTableName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    tableNameExists = true;
+                }
+            }
+
+            // If table name exists, prompt and return
+            if (tableNameExists)
+            {
+                MessageBox.Show($"Table name '{enteredTableName}' already exists in project '{projectName}'. Please try another name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Prevent the form from closing
+            }
+
+            // Create the table directory if it doesn't exist
+            if (!Directory.Exists(tableDirectoryPath))
+            {
+                Directory.CreateDirectory(logFileDirectoryPath); // This will also create tableDirectoryPath
+            }
+
+
             try
             {
                 if (checkBoxforPullreleateddata.Checked)
@@ -222,13 +265,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     if (savePythonResponse.ToLower().Contains("success"))
                     {
-                        string username = Environment.UserName;
+                        
                         string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{tableName}\LogFile";
-                        // Ensure the directory exists
-                        if (!Directory.Exists(directoryPath))
-                        {
-                            Directory.CreateDirectory(directoryPath);
-                        }
+                       
+                        File.AppendAllLines(tableNamesFile, new[] { enteredTableName });
+
 
                         MessageBox.Show(" Related Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -249,6 +290,17 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     }
                     else
                     {
+                        try
+                        {
+                            if (Directory.Exists(tableDirectoryPath))
+                            {
+                                Directory.Delete(tableDirectoryPath, true); // The 'true' argument ensures recursive deletion
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Failed to delete table directory. Error: " + ex.Message, "Error");
+                        }
                         MessageBox.Show("Related Failed to save data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
@@ -264,13 +316,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     if (importPythonResponse.ToLower().Contains("success"))
                     {
 
-                        string username = Environment.UserName;
-                        string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{tableName}\LogFile";
-                        if (!Directory.Exists(directoryPath))
-                        {
-                            Directory.CreateDirectory(directoryPath);
-                        }
-
+                        
 
                         if (_properties.SelectedNode == null)
                         {
@@ -289,6 +335,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                             MessageBox.Show("Home form reference is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
+                        File.AppendAllLines(tableNamesFile, new[] { enteredTableName });
+
+                        
 
                         TreeNode tableNode = new TreeNode(tableName);
                         _properties.SelectedNode.Nodes.Add(tableNode);
@@ -306,7 +355,18 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     }
                     else
                     {
-                        MessageBox.Show("The CSV file is not valid. Error: " + importPythonResponse, "Error");
+                        try
+                        {
+                            if (Directory.Exists(tableDirectoryPath))
+                            {
+                                Directory.Delete(tableDirectoryPath, true); // The 'true' argument ensures recursive deletion
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Failed to delete table directory. Error: " + ex.Message, "Error");
+                        }
+                        MessageBox.Show("Table import Failed. Error: " + importPythonResponse, "Error");
                     }
 
                 }

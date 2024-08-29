@@ -464,6 +464,24 @@ namespace DE_IDENTIFICATION_TOOL
             else if (selectedNode.Parent != null && selectedNode.Parent.Parent != null && selectedNode.Parent.Parent.Text == "Projects")
             {
                 // Delete Table
+                string username = Environment.UserName;
+                string projectDirectory = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{selectedNode.Parent.Text}";
+
+                string tableDirectoryPath = Path.Combine(projectDirectory, selectedNode.Text);
+
+                // Full path including the LogFile subfolder
+                //string logFileDirectoryPath = Path.Combine(tableDirectoryPath, "LogFile");
+
+                // File to store the list of table names for the specific project
+                string tableNamesFile = Path.Combine(projectDirectory, "TableNames.txt");
+
+
+                // Ensure the table name is trimmed of leading/trailing whitespace
+                string enteredTableName = selectedNode.Text.Trim();
+
+                // Check if the table name exists in the current project (case-insensitive comparison)
+                
+
                 var project = projectData.Find(p => p.Name == selectedNode.Parent.Text);
 
                 if (project != null)
@@ -481,6 +499,26 @@ namespace DE_IDENTIFICATION_TOOL
                     {
                         MessageBox.Show("table is deleted Successfully : " + pythonResponse);
                         project.Tables.Remove(selectedNode.Text);
+                        if (File.Exists(tableNamesFile))
+                        {
+                            // Read all existing table names from the file
+                            var existingTableNames = File.ReadAllLines(tableNamesFile)
+                                                         .Select(name => name.Trim())
+                                                         .ToList();
+
+                            // Remove the entered table name from the list if it exists
+                            var updatedTableNames = existingTableNames
+                                .Where(name => !string.Equals(name, enteredTableName, StringComparison.OrdinalIgnoreCase))
+                                .ToList();
+
+                            // Write the updated list back to the TableNames.txt file
+                            File.WriteAllLines(tableNamesFile, updatedTableNames);
+                        }
+                        else
+                        {
+                            // If the file doesn't exist, log or handle accordingly
+                            MessageBox.Show("TableNames.txt file does not exist.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                     else
                     {

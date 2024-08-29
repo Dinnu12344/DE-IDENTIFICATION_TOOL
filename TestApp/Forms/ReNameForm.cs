@@ -3,6 +3,9 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using DE_IDENTIFICATION_TOOL.Pythonresponse;
+using DE_IDENTIFICATION_TOOL.Models;
+using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
 {
@@ -37,11 +40,50 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
                 else
                 {
-                    if(RenameTableInProject(oldName, newName, parentNode) == "Success")
+                    if (RenameTableInProject(oldName, newName, parentNode) == "Success")
                     {
                         UpdateJsonFile(oldName, newName, isProject: false);
+                        string username = Environment.UserName;
+                        string projectDirectory = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{selectedNode.Parent.Text}";
+                        string tableNamesFile = Path.Combine(projectDirectory, "TableNames.txt");
+
+                        // Ensure the old and new table names are trimmed of leading/trailing whitespace
+                        string oldTableName = oldName.Trim(); // Correct reference to oldName
+                        string newTableName = newName.Trim();
+
+                        // Check if the table name exists in the current project (case-insensitive comparison)
+                        if (File.Exists(tableNamesFile))
+                        {
+                            // Read all existing table names from the file
+                            var existingTableNames = File.ReadAllLines(tableNamesFile)
+                                                         .Select(name => name.Trim())
+                                                         .ToList();
+
+                            // Check if the old table name exists
+                            bool tableNameExists = existingTableNames.Any(name => string.Equals(name, oldTableName, StringComparison.OrdinalIgnoreCase));
+                            if (tableNameExists)
+                            {
+                                // Create a new list with the old table name replaced by the new table name
+                                var updatedTableNames = existingTableNames
+                                    .Select(name => string.Equals(name, oldTableName, StringComparison.OrdinalIgnoreCase) ? newTableName : name)
+                                    .ToList();
+
+                                // Write the updated list back to the TableNames.txt file
+                                File.WriteAllLines(tableNamesFile, updatedTableNames);
+
+                                MessageBox.Show($"Table name '{oldTableName}' has been replaced with '{newTableName}'.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Table name '{oldTableName}' does not exist in project '{selectedNode.Parent.Text}'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+                        else
+                        {
+                            // If the file doesn't exist, log or handle accordingly
+                            MessageBox.Show("TableNames.txt file does not exist.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
-                   
                 }
 
                 MessageBox.Show("Name updated successfully.");
@@ -52,7 +94,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 MessageBox.Show("New name cannot be empty.");
             }
         }
-
         private void RenameProjectFolder(string oldName, string newName)
         {
             string oldFolderPath = Path.Combine(projectsDirectory, oldName);

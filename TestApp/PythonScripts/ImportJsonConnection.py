@@ -82,14 +82,22 @@ def save_to_sqlite(db_name, n):
     
     try:
         for table_name, df in nested_tables.items():
+            # Check if DataFrame is empty before doing anything
+            if df.empty:
+                continue  # Skip this DataFrame if it has no rows
+
             for column in df.columns:
+                # Flatten nested dictionary columns into separate columns
                 if df[column].apply(lambda x: isinstance(x, dict)).any():
                     df = pd.concat([df.drop([column], axis=1), df[column].apply(pd.Series).add_prefix(f'{column}_')], axis=1)
-
+            
+            # Generate a new table name, check existence, and avoid empty DataFrame
             new_table_name = get_new_table_name(conn, table_name if table_name.strip() else "SpreedSheet")
-            if not df.empty and (table_name.strip() or (len(df.columns) > 1 or (len(df.columns) == 1 and df.columns[0] != 'id'))):
+            
+            # Save to SQLite only if DataFrame has more than 0 rows
+            if len(df) > 0 and (len(df.columns) > 1 or (len(df.columns) == 1 and df.columns[0] != 'id')):
                 df.head(n).to_sql(new_table_name, conn, if_exists='replace', index=False)
-                created_tables.append(new_table_name)
+                created_tables.append(new_table_name)  # Add to list only if successfully saved
     finally:
         conn.close()
     

@@ -146,7 +146,12 @@ namespace DE_IDENTIFICATION_TOOL
             {
                 string username = Environment.UserName;
                 string projectDirectory = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}";
-                string directoryPath = Path.Combine(projectDirectory, csvLocationFormModel.TableName, "LogFile");
+
+                // Folder path associated with the table name
+                string tableDirectoryPath = Path.Combine(projectDirectory, csvLocationFormModel.TableName);
+
+                // Full path including the LogFile subfolder
+                string logFileDirectoryPath = Path.Combine(tableDirectoryPath, "LogFile");
 
                 // File to store the list of table names for the specific project
                 string tableNamesFile = Path.Combine(projectDirectory, "TableNames.txt");
@@ -155,6 +160,7 @@ namespace DE_IDENTIFICATION_TOOL
                 string enteredTableName = csvLocationFormModel.TableName.Trim();
 
                 // Check if the table name already exists in the current project (case-insensitive comparison)
+                bool tableNameExists = false;
                 if (File.Exists(tableNamesFile))
                 {
                     var existingTableNames = File.ReadAllLines(tableNamesFile)
@@ -163,19 +169,22 @@ namespace DE_IDENTIFICATION_TOOL
 
                     if (existingTableNames.Any(name => string.Equals(name, enteredTableName, StringComparison.OrdinalIgnoreCase)))
                     {
-                        MessageBox.Show($"Table name '{enteredTableName}' already exists in project '{projectName}'. Please try another name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return; // Prevent the form from closing
+                        tableNameExists = true;
                     }
-                }
+                } 
 
-                // Create directory if it doesn't exist
-                if (!Directory.Exists(directoryPath))
+                // If table name exists, prompt and return
+                if (tableNameExists)
                 {
-                    Directory.CreateDirectory(directoryPath);
+                    MessageBox.Show($"Table name '{enteredTableName}' already exists in project '{projectName}'. Please try another name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Prevent the form from closing
                 }
 
-                // Save the new table name to the project's TableNames.txt
-                File.AppendAllLines(tableNamesFile, new[] { enteredTableName });
+                // Create the table directory if it doesn't exist
+                if (!Directory.Exists(tableDirectoryPath))
+                {
+                    Directory.CreateDirectory(logFileDirectoryPath); // This will also create tableDirectoryPath
+                }
 
                 // Path to the Python script
                 string pythonScriptName = "ImportCsvConnection.py";
@@ -193,17 +202,35 @@ namespace DE_IDENTIFICATION_TOOL
                     pythonScriptPath
                 );
 
+                // If the response is successful, add the table name to TableNames.txt
                 if (pythonResponse.ToLower().Contains("success"))
                 {
+                    // Save the new table name to the project's TableNames.txt
+                    File.AppendAllLines(tableNamesFile, new[] { enteredTableName });
+
                     this.DialogResult = DialogResult.OK;
                     this.Hide();
                 }
                 else
                 {
+                    // Delete the table name folder if the response is not success
+                    try
+                    {
+                        if (Directory.Exists(tableDirectoryPath))
+                        {
+                            Directory.Delete(tableDirectoryPath, true); // The 'true' argument ensures recursive deletion
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to delete table directory. Error: " + ex.Message, "Error");
+                    }
+
                     MessageBox.Show("The Python response failed. Error: " + pythonResponse, "Error");
                 }
             }
         }
+
 
 
 

@@ -15,42 +15,48 @@ def normalize_path(selected_path):
     else:
         return selected_path
 
-def export_to_csv(Table_name,sqlite_conn,path):
+def export_to_csv(Table_name, sqlite_conn, path):
     try:
         # Create a cursor object
         sqlite_conn = sqlite3.connect(sqlite_conn)
+        
         # Read data from SQLite database
         df = pd.read_sql_query(f"SELECT * FROM de_identified_{Table_name}", sqlite_conn)
-       
 
         if path:
-            path_file = f"{Table_name}_"+ datetime.datetime.now().strftime("%Y%m%d_%H%M") + ".csv"
+            # Check if the directory is writable
+            if not os.access(path, os.W_OK):
+                raise PermissionError(f"Write permission denied for the directory: {path}")
+
+            # Create a file name with the table name and current timestamp
+            path_file = f"{Table_name}_" + datetime.datetime.now().strftime("%Y%m%d_%H%M") + ".csv"
             path = os.path.join(path, path_file)
           
             # Export DataFrame to CSV file
             df.to_csv(path, index=False)
 
-            # print("Export Successful:", f"{Table_name} exported to CSV file at {path}")
-
+            # Set success status and comment
             Status = "Success"
             Comment = f"Export Successful: {Table_name} exported to CSV file at {path}"
-            return Status,Comment
-            # messagebox.showinfo("Export Successful", f"{table_name} exported to CSV file at {file_path}")
-        else:
-            # print("Export Cancelled: No file path entered.")
+            return Status, Comment
 
+        else:
+            # Set failure status if no path is provided
             Status = "Failed"
-            # Comment = "Export Cancelled: No file path entered."
-            return Status
-            
-        # messagebox.showinfo("Export Successful", f"{Table_name} exported to CSV file successfully.")
+            Comment = "Export Cancelled: No file path entered."
+            return Status, Comment
+
+    except PermissionError as pe:
+        print("Export Error:", f"Permission error occurred: {pe}")
+        Status = "Failed"
+        Comment = f"Permission error: {pe}"
+        return Status, Comment
+
     except Exception as e:
         print("Export Error:", f"An error occurred: {e}")
         Status = "Failed"
-        # Comment = f"Failed with one or more exceptions : {e}"
-        return Status
-
-        # messagebox.showerror("Export Error", f"An error occurred: {e}")
+        Comment = f"An error occurred: {e}"
+        return Status, Comment        # messagebox.showerror("Export Error", f"An error occurred: {e}")
 
 
 def table_exists(engine, schema, table_name):
