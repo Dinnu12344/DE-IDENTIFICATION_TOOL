@@ -16,7 +16,6 @@
         private System.Windows.Forms.TextBox txtForPassword;
         private System.Windows.Forms.Button btnForCancelInJdbcFrm;
         private System.Windows.Forms.Button btnForFinish;
-        private System.Windows.Forms.PictureBox picEye; // Added PictureBox for eye icon
 
         private void InitializeComponent()
         {
@@ -33,9 +32,7 @@
             this.txtForPassword = new System.Windows.Forms.TextBox();
             this.btnForCancelInJdbcFrm = new System.Windows.Forms.Button();
             this.btnForFinish = new System.Windows.Forms.Button();
-            this.picEye = new System.Windows.Forms.PictureBox();
             this.panelInDBLocationForm.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picEye)).BeginInit();
             this.SuspendLayout();
             // 
             // panelInDBLocationForm
@@ -161,7 +158,7 @@
             // btnForCancelInJdbcFrm
             // 
             this.btnForCancelInJdbcFrm.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(533, 317);
+            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(422, 328);
             this.btnForCancelInJdbcFrm.Margin = new System.Windows.Forms.Padding(2);
             this.btnForCancelInJdbcFrm.Name = "btnForCancelInJdbcFrm";
             this.btnForCancelInJdbcFrm.Size = new System.Drawing.Size(79, 30);
@@ -173,7 +170,7 @@
             // btnForFinish
             // 
             this.btnForFinish.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForFinish.Location = new System.Drawing.Point(628, 317);
+            this.btnForFinish.Location = new System.Drawing.Point(515, 328);
             this.btnForFinish.Margin = new System.Windows.Forms.Padding(2);
             this.btnForFinish.Name = "btnForFinish";
             this.btnForFinish.Size = new System.Drawing.Size(79, 30);
@@ -182,26 +179,13 @@
             this.btnForFinish.UseVisualStyleBackColor = true;
             this.btnForFinish.Click += new System.EventHandler(this.btnForFinish_Click);
             // 
-            // picEye
-            // 
-            this.picEye.BackColor = System.Drawing.SystemColors.Window;
-            this.picEye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.picEye.Image = global::DE_IDENTIFICATION_TOOL.Properties.Resources.visible;
-            this.picEye.Location = new System.Drawing.Point(599, 270);
-            this.picEye.Name = "picEye";
-            this.picEye.Size = new System.Drawing.Size(25, 23);
-            this.picEye.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picEye.TabIndex = 15;
-            this.picEye.TabStop = false;
-            // 
             // DBLocationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(953, 368);
+            this.ClientSize = new System.Drawing.Size(953, 483);
             this.Controls.Add(this.btnForFinish);
             this.Controls.Add(this.btnForCancelInJdbcFrm);
-            this.Controls.Add(this.picEye);
             this.Controls.Add(this.txtForPassword);
             this.Controls.Add(this.txtForUsername);
             this.Controls.Add(this.txtForServer);
@@ -215,7 +199,6 @@
             this.Text = "DBLocationForm";
             this.panelInDBLocationForm.ResumeLayout(false);
             this.panelInDBLocationForm.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picEye)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
