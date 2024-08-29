@@ -31,7 +31,7 @@ def main():
         # Validate the CSV file with the given delimiter
         is_valid, result = validate_csv(csvfilePath, delimiter)
         if not is_valid:
-            print(f"Validation failed: {result}")
+            print(result)
             return
 
         df = result

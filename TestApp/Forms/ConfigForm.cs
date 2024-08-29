@@ -379,7 +379,7 @@ namespace DE_IDENTIFICATION_TOOL
                 }
             }
 
-            MessageBox.Show("Combo box data has been cleared.");
+            MessageBox.Show("All fields are cleared.");
         }
 
 
@@ -439,7 +439,7 @@ namespace DE_IDENTIFICATION_TOOL
             string filePath = Path.Combine(directoryPath, $"{table}.json");
             Directory.CreateDirectory(directoryPath);
             File.WriteAllText(filePath, json);
-            MessageBox.Show("JSON data has been saved to " + filePath);
+            MessageBox.Show("Config filed has saved successfully");
             this.Close();
         }
     }

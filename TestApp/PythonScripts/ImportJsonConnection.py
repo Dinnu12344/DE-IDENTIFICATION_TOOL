@@ -142,8 +142,12 @@ def process_json_file(file_path, db_name, n):
                 nested_tables[get_new_table_name(None, "SpreedSheet")] = processed_df
 
     created_tables = save_to_sqlite(db_name, n)
-    print("success")
-    print(created_tables)
+    
+    if not created_tables:
+        print("Invalid JSON file: No tables were created.")
+    else:
+        print("success")
+        print(created_tables)
 
 def main(file_path, db_name, n):
     process_json_file(file_path, db_name, n)

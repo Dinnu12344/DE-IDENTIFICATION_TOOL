@@ -48,7 +48,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 string textToSave = textBoxForKey.Text;
                 File.WriteAllText(filePath, textToSave);
 
-                MessageBox.Show("File saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Key saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             catch (Exception ex)

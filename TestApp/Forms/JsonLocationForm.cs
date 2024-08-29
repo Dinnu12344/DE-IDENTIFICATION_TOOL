@@ -137,19 +137,19 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                                                          .Select(name => name.Trim())
                                                          .ToArray();
                     string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-                    try
-                    {
-                        // Append all table names line by line to the TableNames.txt file
-                        File.AppendAllLines(tableNamesFile, tableNames);
+                    //try
+                    //{
+                    //    // Append all table names line by line to the TableNames.txt file
+                    File.AppendAllLines(tableNamesFile, tableNames);
 
                         // Inform user that the table names have been successfully added
-                        MessageBox.Show("Table names have been added to TableNames.txt successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    catch (Exception ex)
-                    {
-                        // Handle any errors that occur during file writing
-                        MessageBox.Show($"An error occurred while writing to TableNames.txt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                        //MessageBox.Show("Table names have been added to TableNames.txt successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    // Handle any errors that occur during file writing
+                    //    MessageBox.Show($"An error occurred while writing to TableNames.txt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //}
 
                     foreach (string table in tableNames)
                     {
@@ -199,7 +199,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
                 else
                 {
-                    MessageBox.Show("The python response is failed. Error: " + pythonResponse, "Error");
+                    MessageBox.Show( pythonResponse, "Error");
                 }
             }
         }

@@ -8,6 +8,27 @@ import Miscellaneous_Functions as mf
 import datetime
 
 
+def get_table_row_count(server_name, database_name, table_name, schema_name, username, password):
+    conn_str = (
+        f"DRIVER={{SQL Server}};"
+        f"SERVER={server_name};"
+        f"DATABASE={database_name};"
+        f"UID={username};"
+        f"PWD={password};"
+    )
+    conn = pyodbc.connect(conn_str)
+    cursor = conn.cursor()
+
+    query = f"SELECT COUNT(*) FROM {schema_name}.{table_name}"
+    cursor.execute(query)
+    row_count = cursor.fetchone()[0]
+
+    cursor.close()
+    conn.close()
+    return row_count
+
+
+
 def convert_to_json_format(input_string):
     # Step 1: Replace the opening and closing square brackets with double quotes
     input_string = input_string.replace('[{', '[{"').replace('}]', '"}]')
@@ -180,6 +201,12 @@ if __name__ == "__main__":
 
     log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
     filename = os.path.join(log_files_path_table, log_filename)
+
+
+    rows_count = get_table_row_count(server_name, database_name, table_name, schema_name, sql_server_username, sql_server_password)
+        if rows_count == 0:
+            raise ValueError(f"The table '{schema_name}.{table_name}' is empty and cannot be imported.")
+
 
     
     Status, Comment = process_batches(server, database, table_name,batch_size, db_file_path, username, password, relationshipsList,rowCount)
