@@ -49,7 +49,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // btnCancel
             // 
             this.btnCancel.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(402, 230);
+            this.btnCancel.Location = new System.Drawing.Point(502, 230);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(70, 30);
@@ -62,7 +62,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             // 
             this.btnForSave.Enabled = false;
             this.btnForSave.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForSave.Location = new System.Drawing.Point(502, 230);
+            this.btnForSave.Location = new System.Drawing.Point(395, 230);
             this.btnForSave.Name = "btnForSave";
             this.btnForSave.Size = new System.Drawing.Size(70, 30);
             this.btnForSave.TabIndex = 2;

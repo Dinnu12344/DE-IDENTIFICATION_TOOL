@@ -35,6 +35,12 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void TxtForNoofColumns_TextChanged(object sender, EventArgs e)
         {
+            // Only perform validation if the text is not empty
+            if (string.IsNullOrEmpty(txtForNoofColumns.Text))
+            {
+                return;
+            }
+
             txtForNoofColumns.TextChanged -= TxtForNoofColumns_TextChanged;
 
             bool isValid = true;
@@ -54,7 +60,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             if (!isValid)
             {
                 MessageBox.Show(errorMessage, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtForNoofColumns.Text = "";
+                txtForNoofColumns.Clear();
             }
             else
             {
@@ -64,6 +70,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
         }
+
 
         private void UpdateFinishButtonVisibility()
         {
@@ -218,26 +225,46 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 // Clear previous selections and inputs
                 ClearFormFields();
 
+                // Set the selected file path
                 jsonLocationFormModel.SelectedCsvFilePath = openFileDialog.FileName;
                 textBoxForHoldingFilePath.Text = jsonLocationFormModel.SelectedCsvFilePath;
+
+                // Show row count fields for new input
                 lblForNoofColumns.Visible = true;
                 txtForNoofColumns.Visible = true;
+
+                // Update the finish button state
                 UpdateFinishButtonVisibility();
             }
         }
 
+
         private void ClearFormFields()
         {
-            // Temporarily unsubscribe from the TextChanged event for row count to prevent validation
+            // Temporarily unsubscribe from the TextChanged event to prevent validation from firing
             txtForNoofColumns.TextChanged -= TxtForNoofColumns_TextChanged;
+
+            // Clear the text box
             txtForNoofColumns.Clear();
-            txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
 
+            // Clear the model's entered text
             jsonLocationFormModel.EnteredText = null;
-            jsonLocationFormModel.SelectedCsvFilePath = null;
 
+            // Hide the columns-related fields until a new file is selected
+            lblForNoofColumns.Visible = false;
+            txtForNoofColumns.Visible = false;
+
+            // Clear the selected file path
+            jsonLocationFormModel.SelectedCsvFilePath = null;
+            textBoxForHoldingFilePath.Clear();
+
+            // Disable the finish button since the form is being cleared
             finishButtonInCsvlocationWindow.Enabled = false;
+
+            // Resubscribe to the TextChanged event
+            txtForNoofColumns.TextChanged += TxtForNoofColumns_TextChanged;
         }
+
 
         private void CanclebtnforClear_Click(object sender, EventArgs e)
         {

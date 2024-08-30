@@ -161,7 +161,7 @@
             // btnForCancelInJdbcFrm
             // 
             this.btnForCancelInJdbcFrm.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(422, 328);
+            this.btnForCancelInJdbcFrm.Location = new System.Drawing.Point(515, 324);
             this.btnForCancelInJdbcFrm.Margin = new System.Windows.Forms.Padding(2);
             this.btnForCancelInJdbcFrm.Name = "btnForCancelInJdbcFrm";
             this.btnForCancelInJdbcFrm.Size = new System.Drawing.Size(79, 30);
@@ -173,7 +173,7 @@
             // btnForFinish
             // 
             this.btnForFinish.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForFinish.Location = new System.Drawing.Point(515, 328);
+            this.btnForFinish.Location = new System.Drawing.Point(423, 324);
             this.btnForFinish.Margin = new System.Windows.Forms.Padding(2);
             this.btnForFinish.Name = "btnForFinish";
             this.btnForFinish.Size = new System.Drawing.Size(79, 30);
