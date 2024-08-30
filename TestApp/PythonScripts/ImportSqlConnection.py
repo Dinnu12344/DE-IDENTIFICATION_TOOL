@@ -46,7 +46,7 @@ def main():
         table_name = sys.argv[7]
         schema_name = sys.argv[8]
 
-        print(schema_name)
+        #print(schema_name)
 
         username = getpass.getuser()
         tool_path = f'C:\\Users\\{username}\\AppData\\Roaming\\DeidentificationTool'
@@ -70,10 +70,12 @@ def main():
         log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
         filename = os.path.join(log_files_path_table, log_filename)
 
+        Comment=""
         # Check if the table has at least one row in SQL Server
         rows_count = get_table_row_count(server_name, database_name, table_name, schema_name, sql_server_username, sql_server_password)
         if rows_count == 0:
-            raise ValueError(f"The table '{schema_name}.{table_name}' is empty and cannot be imported.")
+            print(f"The table '{table_name}' is empty and cannot be imported.")
+            return
 
         # Proceed with import only if the SQL table has rows
         if not mf.check_table_existence(table_name, db_file_path):

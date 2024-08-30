@@ -256,54 +256,68 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     string jsonData = JsonConvert.SerializeObject(selectedData);
                     MessageBox.Show(jsonData);
-
-                    // Define the Python script path for the checkbox-checked scenario
-                    string savePythonScriptName = "ImportRelatedSqlDataConnection.py";
-                    string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
-                    string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
-                    string savePythonResponse = pythonService.SendSqlDataToPython(projectName, server, DatabaseName, userId, password, TableName, jsonData, Enterno, savePythonScriptPath);
-
-                    if (savePythonResponse.ToLower().Contains("success"))
+                    if (jsonData == "[]")
                     {
-                        
-                        string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{tableName}\LogFile";
-                       
-                        File.AppendAllLines(tableNamesFile, new[] { enteredTableName });
-
-
-                        MessageBox.Show(" Related Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        // Add the table to the selected node in the TreeView
-                        TreeNode tableNode = new TreeNode(tableName);
-                        _properties.SelectedNode.Nodes.Add(tableNode);
-                        _properties.SelectedNode.Expand();
-
-                        var project = _properties.ProjectData.Find(p => p.Name == _properties.SelectedNode.Text);
-                        if (project != null)
+                        if (Directory.Exists(tableDirectoryPath))
                         {
-                            project.Tables.Add(tableName);
-                            _properties.HomeForm.SaveProjectData();
+                            Directory.Delete(tableDirectoryPath, true); // The 'true' argument ensures recursive deletion
                         }
+                        MessageBox.Show("No relations were given", "Error");
 
-                        this.DialogResult = DialogResult.OK;
-                        this.Hide();
                     }
                     else
                     {
-                        try
+                        // Define the Python script path for the checkbox-checked scenario
+                        string savePythonScriptName = "ImportRelatedSqlDataConnection.py";
+                        string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+                        string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
+                        string savePythonResponse = pythonService.SendSqlDataToPython(projectName, server, DatabaseName, userId, password, TableName, jsonData, Enterno, savePythonScriptPath);
+
+                        if (savePythonResponse.ToLower().Contains("success"))
                         {
-                            if (Directory.Exists(tableDirectoryPath))
+
+                            string directoryPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool\{projectName}\{tableName}\LogFile";
+
+                            File.AppendAllLines(tableNamesFile, new[] { enteredTableName });
+
+
+                            MessageBox.Show(" Related Data saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Add the table to the selected node in the TreeView
+                            TreeNode tableNode = new TreeNode(tableName);
+                            _properties.SelectedNode.Nodes.Add(tableNode);
+                            _properties.SelectedNode.Expand();
+
+                            var project = _properties.ProjectData.Find(p => p.Name == _properties.SelectedNode.Text);
+                            if (project != null)
                             {
-                                Directory.Delete(tableDirectoryPath, true); // The 'true' argument ensures recursive deletion
+                                project.Tables.Add(tableName);
+                                _properties.HomeForm.SaveProjectData();
                             }
+
+                            this.DialogResult = DialogResult.OK;
+                            this.Hide();
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            MessageBox.Show("Failed to delete table directory. Error: " + ex.Message, "Error");
+                            try
+                            {
+                                if (Directory.Exists(tableDirectoryPath))
+                                {
+                                    Directory.Delete(tableDirectoryPath, true); // The 'true' argument ensures recursive deletion
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Failed to delete table directory. Error: " + ex.Message, "Error");
+                            }
+                            MessageBox.Show(savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
                         }
-                        MessageBox.Show("Failed to import related", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+
                     }
+
+                    
                 }
                 else
                 {
@@ -315,9 +329,6 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     if (importPythonResponse.ToLower().Contains("success"))
                     {
-
-                        
-
                         if (_properties.SelectedNode == null)
                         {
                             MessageBox.Show("Selected node is null", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -337,7 +348,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                         }
                         File.AppendAllLines(tableNamesFile, new[] { enteredTableName });
 
-                        
+
 
                         TreeNode tableNode = new TreeNode(tableName);
                         _properties.SelectedNode.Nodes.Add(tableNode);
