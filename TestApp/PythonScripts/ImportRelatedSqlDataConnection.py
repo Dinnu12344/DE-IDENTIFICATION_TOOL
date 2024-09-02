@@ -11,12 +11,12 @@ import sys
 import json
 
 def validate_relationships_list(relationshipsList):
-    required_keys = ["Existing Table", "Existing Column", "SourceTable", "SourceColumn"]
+    required_keys = ["ExistingTable", "ExistingColumn", "SourceTable", "SourceColumn"]
 
     try:
         # Load the JSON string into a Python list of dictionaries
         relationshipsList = json.loads(relationshipsList)
-        print("Parsed relationships list:", relationshipsList)
+        #print("Parsed relationships list:", relationshipsList)
 
         # Ensure it's a list
         if not isinstance(relationshipsList, list):
@@ -37,7 +37,7 @@ def validate_relationships_list(relationshipsList):
         print(str(ve))
         return "Failed", str(ve)
     except Exception as e:
-        print("Relations fields are not filled properly:", e)
+        print("validate_relationships_list Relations fields are not filled properly:", e)
         return "Failed", "Relations fields are not filled properly."
 
     return "Success", "All relationships are valid."
@@ -89,8 +89,8 @@ def keep_n_rows_in_table(db_path, table_name, n):
         ids_to_keep = ', '.join(map(str, rows_to_keep))
 
         cursor.execute(f"DELETE FROM {table_name} WHERE rowid NOT IN ({ids_to_keep})")
-        df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
-        print(df2)
+        #df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
+        #print(df2)
 
         conn.commit()
         conn.close()
@@ -138,12 +138,15 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
 
     if isinstance(relationshipsList, str):
         try:
-            relationshipsList = json.loads(relationshipsList)
-            print(relationshipsList)
+            #relationshipsList = json.loads(relationshipsList)
+            #print("Printing relationshipsList ")
+            #print(relationshipsList)
             status, message = validate_relationships_list(relationshipsList)
-            print(status, message) 
+            #print(status, message) 
             if(status!="Success"):
                 return status, message
+            #print("contineue")
+            relationshipsList = json.loads(relationshipsList)
 
         except Exception as e:
             print("Relations fields are not filled properly.")
@@ -151,14 +154,14 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
 
     #sqlite_table_name = table_name.split('.')[1]
     
-
+    
     while batchRowCount < rowCount:
         df = fetch_data_from_sql_server(server, database, table_name, batch_size, offset, username, password)
         batchRowCount += len(df)
         if df.empty:
-            print("DataFrame is empty")
+            #print("Table is empty")
             break
-        print(df)
+        #print(df)
 
         res = insert_data_into_sqlite(db_file_path, df, table_name, 'append')
         if res != "success":
@@ -184,13 +187,17 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
         except Exception:
             print("Relations are not correct!")
             return "Failed","Relations are not correct!"
-             
-        res = insert_data_into_sqlite(db_file_path, df, table_name, 'replace')
-        if res != "success":
-            return "Failed","Failed inserting the data into SQLite"
+        if(df.empty!=True):   
+            res = insert_data_into_sqlite(db_file_path, df, table_name, 'replace')
+            if res != "success":
+                
+                return "Failed","Failed inserting the data into SQLite"
+        else:
+            print("There is no relation between tables") 
+            return "Failed","Failed to import the table as the there is no relational data!"
 
-        df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn_sqlite)
-        print(df2)
+        #df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn_sqlite)
+        #print(df2)
 
         conn_sqlite.commit()
         conn_sqlite.close()
@@ -252,4 +259,4 @@ if __name__ == "__main__":
 
     mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_start, run_end=run_end, status=Status, duration=run_time, comment=Comment)
 
-    print(Status)
+    print(Status,Comment )
