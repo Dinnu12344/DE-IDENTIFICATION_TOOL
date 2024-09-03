@@ -277,7 +277,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Failed to save data\n " + savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Schemas of de-identified tables and destination tables are not matching", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return; // Exit the method if it fails to save data
                 }
 
@@ -311,7 +311,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Failed to save data\n " + savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Schema of de-identified table and destination table are not matching", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return; // Exit the method if it fails to save data
                 }
 
