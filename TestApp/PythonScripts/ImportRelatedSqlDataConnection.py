@@ -31,13 +31,13 @@ def validate_relationships_list(relationshipsList):
                     raise ValueError(f"Missing or empty value for key '{key}' in relationship: {relationship}")
 
     except json.JSONDecodeError as e:
-        #print("Invalid JSON format:", e)
+        print("Invalid JSON format:", e)
         return "Failed", "Invalid JSON format."
     except ValueError as ve:
-        #print(str(ve))
+        print(str(ve))
         return "Failed", str(ve)
     except Exception as e:
-        #print("validate_relationships_list Relations fields are not filled properly:", e)
+        print("validate_relationships_list Relations fields are not filled properly:", e)
         return "Failed", "Relations fields are not filled properly."
 
     return "Success", "All relationships are valid."
