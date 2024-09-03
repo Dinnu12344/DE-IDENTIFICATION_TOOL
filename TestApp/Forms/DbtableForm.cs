@@ -255,7 +255,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     }
 
                     string jsonData = JsonConvert.SerializeObject(selectedData);
-                    //MessageBox.Show(jsonData);
+                    MessageBox.Show(jsonData);
                     if (jsonData == "[]")
                     {
                         if (Directory.Exists(tableDirectoryPath))

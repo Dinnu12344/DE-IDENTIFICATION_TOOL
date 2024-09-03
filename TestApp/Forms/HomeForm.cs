@@ -458,12 +458,12 @@ namespace DE_IDENTIFICATION_TOOL
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
-                        MessageBox.Show("Project " + selectedNode.Text + " deleted successfully");
+                        MessageBox.Show("Python response is" + pythonResponse);
                         projectData.Remove(project);
                     }
                     else
                     {
-                        MessageBox.Show("Faied to delete"+selectedNode.Text+" project " + pythonResponse);
+                        MessageBox.Show("Python response is not deidentified :" + pythonResponse);
                     }
                 }
             }
@@ -503,7 +503,7 @@ namespace DE_IDENTIFICATION_TOOL
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
-                        MessageBox.Show($"Table {selectedNode.Text} deleted successfully.");
+                        MessageBox.Show("table is deleted Successfully : " + pythonResponse);
                         project.Tables.Remove(selectedNode.Text);
                         if (File.Exists(tableNamesFile))
                         {
