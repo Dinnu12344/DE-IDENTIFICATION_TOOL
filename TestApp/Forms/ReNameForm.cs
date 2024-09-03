@@ -134,7 +134,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
 
-                    string pythonResponse = pythonService.RenameTableDataToPython(parentName, oldTableName , newTableName, pythonScriptPath);
+                    string pythonResponse = pythonService.RenameTableDataToPython(parentName, oldTableName, newTableName, pythonScriptPath);
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
@@ -145,7 +145,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     }
                     else
                     {
-                        MessageBox.Show("Rename Unsuccess"+pythonResponse);
+                        MessageBox.Show("Rename Unsuccess" + pythonResponse);
                     }
                 }
             }

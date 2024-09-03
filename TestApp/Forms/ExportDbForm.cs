@@ -147,7 +147,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
 
-        
+
         {
             _properties.dbName = cmbDatabases.SelectedItem.ToString();
 
@@ -175,16 +175,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         }
 
         private void UpdateFinishButtonVisibility()
-        
-        
-        
+
+
+
         {
             if (_properties.check != true)
             {
                 btnForFinish.Enabled = !string.IsNullOrEmpty(_properties.dbName) &&
                                        !string.IsNullOrEmpty(_properties.tableName);
             }
-                                   
+
         }
 
         private void LoadTables(string database)
@@ -284,10 +284,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
 
             }
-            else {
+            else
+            {
                 string projectName = _projectName;
                 string mainTableName = _tableName;
-                
+
                 string server = txtForServer.Text;
                 string UserId = txtForUsername.Text;
                 string password = txtForPassword.Text;
