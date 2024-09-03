@@ -181,7 +181,7 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
                 ON {source_table}.{source_column} = {existing_table}.{existing_column}
                 """
 
-        print(join_query)
+        #print(join_query)
         try:
             df = pd.read_sql_query(join_query, conn_sqlite)
         except Exception:
@@ -193,7 +193,7 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
                 
                 return "Failed","Failed inserting the data into SQLite"
         else:
-            print("There is no relation between tables") 
+            #print("There is no relation between tables") 
             return "Failed","Failed to import the table as the there is no relational data!"
 
         #df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn_sqlite)
