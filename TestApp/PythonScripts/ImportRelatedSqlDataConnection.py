@@ -37,11 +37,7 @@ def validate_relationships_list(relationshipsList):
         #print(str(ve))
         return "Failed", str(ve)
     except Exception as e:
-<<<<<<< HEAD
         #print("validate_relationships_list Relations fields are not filled properly:", e)
-=======
-        print("Relations fields are not filled properly:", e)
->>>>>>> parent of f1791e1 (import relational sql changes)
         return "Failed", "Relations fields are not filled properly."
 
     return "Success", "All relationships are valid."
