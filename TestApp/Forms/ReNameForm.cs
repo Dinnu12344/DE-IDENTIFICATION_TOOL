@@ -86,7 +86,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     }
                 }
 
-                MessageBox.Show("Name updated successfully.");
+                //MessageBox.Show("Name updated successfully.");
                 this.Close();
             }
             else
@@ -103,6 +103,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 if (Directory.Exists(oldFolderPath))
                 {
                     Directory.Move(oldFolderPath, newFolderPath);
+
+                    MessageBox.Show($"Project name '{oldName}' has been replaced with '{newName}'.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -132,18 +134,18 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                     string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
 
 
-                    string pythonResponse = pythonService.RenameTableDataToPython(parentName, oldTableName , newTableName, pythonScriptPath);
+                    string pythonResponse = pythonService.RenameTableDataToPython(parentName, oldTableName, newTableName, pythonScriptPath);
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
                         Directory.Move(oldFolderPath, newFolderPath);
-                        MessageBox.Show("Renamed success");
+                        //MessageBox.Show("Renamed success");
                         this.Close();
                         return "Success";
                     }
                     else
                     {
-                        MessageBox.Show("rRename Unsuccess"+pythonResponse);
+                        MessageBox.Show("Rename Unsuccess" + pythonResponse);
                     }
                 }
             }

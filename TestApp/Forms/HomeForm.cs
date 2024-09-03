@@ -125,7 +125,7 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode selectedNode = treeViewPanel.SelectedNode;
             DbtableFormModel dbtableFormModel = new DbtableFormModel();
             //dbtableFormModel.exportAll = true;
-            ExportForm exportForm = new ExportForm(selectedNode.Text,selectedNode.Text,true);
+            ExportForm exportForm = new ExportForm(selectedNode.Text, selectedNode.Text, true);
             exportForm.Show();
 
         }
@@ -136,7 +136,7 @@ namespace DE_IDENTIFICATION_TOOL
             if (selectedNode != null)
             {
                 TreeNode parentNode = selectedNode.Parent;
-                if (parentNode != null) 
+                if (parentNode != null)
                 {
                     string pythonScriptName = "TableColumnsConnection.py";
                     string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
@@ -170,7 +170,7 @@ namespace DE_IDENTIFICATION_TOOL
         {
             TreeNode selectedNode = treeViewPanel.SelectedNode;
             ReNameForm reNameForm = new ReNameForm(selectedNode);
-            reNameForm.ShowDialog(); 
+            reNameForm.ShowDialog();
         }
 
         private void ReNameTableItem_Click(object sender, EventArgs e)
@@ -178,7 +178,7 @@ namespace DE_IDENTIFICATION_TOOL
             TreeNode selectedNode = treeViewPanel.SelectedNode;
             TreeNode parentNode = selectedNode.Parent;
             ReNameForm reNameForm = new ReNameForm(selectedNode, parentNode);
-            reNameForm.ShowDialog(); 
+            reNameForm.ShowDialog();
         }
 
         private void DeIdentifyMenuItem_Click(object sender, EventArgs e)
@@ -188,7 +188,7 @@ namespace DE_IDENTIFICATION_TOOL
             if (selectedNode != null)
             {
                 string pythonScriptName = "DeidentificationConnection.py";
-                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); 
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory();
                 string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
                 string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
                 if (getpythonResponse.ToLower().Contains("success"))
@@ -219,7 +219,7 @@ namespace DE_IDENTIFICATION_TOOL
             }
 
             string pythonScriptName = "ViewSourceDataConnection.py";
-            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); 
+            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory();
             string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
             string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
             Console.WriteLine("Python Response: " + getpythonResponse);
@@ -251,7 +251,7 @@ namespace DE_IDENTIFICATION_TOOL
             }
 
             string savePythonScriptName = "checkDeidentifiedTable.py";
-            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); 
+            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory();
             string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
             string savePythonResponse = pythonService.checkDeidentifiedTable(selectedNode.Text, parentnode.Text, savePythonScriptPath);
 
@@ -260,7 +260,7 @@ namespace DE_IDENTIFICATION_TOOL
 
 
                 string pythonScriptName = "ViewDeidentifiedDataConnection.py";
-                projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); 
+                projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory();
                 string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
                 string getpythonResponse = pythonService.SendDataToPython(selectedNode.Text, parentnode.Text, pythonScriptPath);
                 Console.WriteLine("Python Response: " + getpythonResponse);
@@ -428,7 +428,7 @@ namespace DE_IDENTIFICATION_TOOL
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading data: {ex.Message}");
-                projectData = new List<ProjectData>(); 
+                projectData = new List<ProjectData>();
             }
         }
 
@@ -458,12 +458,12 @@ namespace DE_IDENTIFICATION_TOOL
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
-                        MessageBox.Show("Python response is" + pythonResponse);
+                        MessageBox.Show("Project " + selectedNode.Text + " deleted successfully");
                         projectData.Remove(project);
                     }
                     else
                     {
-                        MessageBox.Show("Python response is not deidentified :" + pythonResponse);
+                        MessageBox.Show("Faied to delete" + selectedNode.Text + " project " + pythonResponse);
                     }
                 }
             }
@@ -486,7 +486,7 @@ namespace DE_IDENTIFICATION_TOOL
                 string enteredTableName = selectedNode.Text.Trim();
 
                 // Check if the table name exists in the current project (case-insensitive comparison)
-                
+
 
                 var project = projectData.Find(p => p.Name == selectedNode.Parent.Text);
 
@@ -503,7 +503,7 @@ namespace DE_IDENTIFICATION_TOOL
 
                     if (pythonResponse.ToLower().Contains("success"))
                     {
-                        MessageBox.Show("table is deleted Successfully : " + pythonResponse);
+                        MessageBox.Show($"Table {selectedNode.Text} deleted successfully.");
                         project.Tables.Remove(selectedNode.Text);
                         if (File.Exists(tableNamesFile))
                         {
@@ -565,7 +565,7 @@ namespace DE_IDENTIFICATION_TOOL
             {
 
 
-                ExportForm deIdentifyForm = new ExportForm(tablename, projectName,false);
+                ExportForm deIdentifyForm = new ExportForm(tablename, projectName, false);
                 deIdentifyForm.ShowDialog();
             }
             else

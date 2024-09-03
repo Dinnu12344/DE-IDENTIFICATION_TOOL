@@ -208,7 +208,7 @@ namespace DE_IDENTIFICATION_TOOL
                     {
                         tableNameExists = true;
                     }
-                } 
+                }
 
                 // If table name exists, prompt and return
                 if (tableNameExists)

@@ -171,6 +171,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                     DbtableForm dbTableForm = new DbtableForm(model, this);
                     dbTableForm.ShowDialog();
+                    this.Hide();
                 }
                 catch (Exception ex)
                 {
@@ -211,4 +212,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         }
     }
 }
+
+
+
+
+
 

@@ -147,7 +147,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         private void cmbDatabases_SelectedIndexChanged(object sender, EventArgs e)
 
-        
+
         {
             _properties.dbName = cmbDatabases.SelectedItem.ToString();
 
@@ -175,16 +175,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         }
 
         private void UpdateFinishButtonVisibility()
-        
-        
-        
+
+
+
         {
             if (_properties.check != true)
             {
                 btnForFinish.Enabled = !string.IsNullOrEmpty(_properties.dbName) &&
                                        !string.IsNullOrEmpty(_properties.tableName);
             }
-                                   
+
         }
 
         private void LoadTables(string database)
@@ -277,17 +277,18 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Failed to save data\n " + savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Schemas of de-identified tables and destination tables are not matching", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return; // Exit the method if it fails to save data
                 }
 
 
 
             }
-            else {
+            else
+            {
                 string projectName = _projectName;
                 string mainTableName = _tableName;
-                
+
                 string server = txtForServer.Text;
                 string UserId = txtForUsername.Text;
                 string password = txtForPassword.Text;
@@ -311,7 +312,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Failed to save data\n " + savePythonResponse, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Schema of de-identified table and destination table are not matching", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return; // Exit the method if it fails to save data
                 }
 

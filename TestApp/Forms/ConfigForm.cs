@@ -54,7 +54,7 @@ namespace DE_IDENTIFICATION_TOOL
 
             Button clearButton = new Button();
             clearButton.Text = "Clear All";
-            clearButton.Anchor = AnchorStyles.Bottom| AnchorStyles.Right;
+            clearButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             clearButton.Click += new EventHandler(ClearBtn_Click);
             clearButton.Location = new Point(650, 10);
             buttonPanel.Controls.Add(clearButton);
@@ -219,10 +219,10 @@ namespace DE_IDENTIFICATION_TOOL
         private void TechniqueComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
-            if (comboBox == null) return; 
+            if (comboBox == null) return;
 
             string selectedValue = comboBox.SelectedItem?.ToString();
-            if (selectedValue == null) return; 
+            if (selectedValue == null) return;
 
             Technique selectedTechnique;
             if (!Enum.TryParse(selectedValue, out selectedTechnique))
@@ -231,7 +231,7 @@ namespace DE_IDENTIFICATION_TOOL
             }
 
             TableLayoutPanel tableLayoutPanel = comboBox.Parent as TableLayoutPanel;
-            if (tableLayoutPanel == null) return; 
+            if (tableLayoutPanel == null) return;
 
             int row = tableLayoutPanel.GetRow(comboBox);
 
