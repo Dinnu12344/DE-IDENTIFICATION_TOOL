@@ -195,6 +195,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.txtBoxFoeExistingTblKey.Name = "txtBoxFoeExistingTblKey";
             this.txtBoxFoeExistingTblKey.Size = new System.Drawing.Size(100, 23);
             this.txtBoxFoeExistingTblKey.TabIndex = 5;
+            this.txtBoxFoeExistingTblKey.ReadOnly = true;
+            
             // 
             // textBoxForSourceTbl
             // 

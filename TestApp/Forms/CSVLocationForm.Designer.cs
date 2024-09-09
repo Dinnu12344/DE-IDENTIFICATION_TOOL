@@ -103,6 +103,7 @@ namespace DE_IDENTIFICATION_TOOL
             this.textBoxForHoldingFilePath.Location = new System.Drawing.Point(158, 126);
             this.textBoxForHoldingFilePath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxForHoldingFilePath.Name = "textBoxForHoldingFilePath";
+            this.textBoxForHoldingFilePath.ReadOnly = true;  // Make the text box read-only
             this.textBoxForHoldingFilePath.Size = new System.Drawing.Size(392, 23);
             this.textBoxForHoldingFilePath.TabIndex = 2;
             // 
@@ -169,10 +170,10 @@ namespace DE_IDENTIFICATION_TOOL
             this.DelimeterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DelimeterComboBox.FormattingEnabled = true;
             this.DelimeterComboBox.Items.AddRange(new object[] {
-            ",",
-            ";",
-            "|",
-            "\\t"});
+    ",",
+    ";",
+    "|",
+    "\\t"});
             this.DelimeterComboBox.Location = new System.Drawing.Point(158, 178);
             this.DelimeterComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DelimeterComboBox.Name = "DelimeterComboBox";
@@ -195,8 +196,8 @@ namespace DE_IDENTIFICATION_TOOL
             this.QuoteComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.QuoteComboBox.FormattingEnabled = true;
             this.QuoteComboBox.Items.AddRange(new object[] {
-            "\"",
-            "\'"});
+    "\"",
+    "\'"});
             this.QuoteComboBox.Location = new System.Drawing.Point(158, 219);
             this.QuoteComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.QuoteComboBox.Name = "QuoteComboBox";
@@ -276,9 +277,10 @@ namespace DE_IDENTIFICATION_TOOL
 
         }
 
-    #endregion
 
-    private Panel panel1;
+        #endregion
+
+        private Panel panel1;
         private Label label2;
         private Label label1;
         private Label label3;

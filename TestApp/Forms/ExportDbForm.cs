@@ -18,6 +18,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private PythonService pythonService;
         private Dictionary<string, string> tableSchemas = new Dictionary<string, string>();
         private Dictionary<string, List<string>> tableColumns = new Dictionary<string, List<string>>();
+
+
         //private bool _check;
 
         public ExportDbForm(string projectName, string tableName)
@@ -48,6 +50,17 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             txtForServer.TextChanged += new EventHandler(ValidateInputFields);
             txtForUsername.TextChanged += new EventHandler(ValidateInputFields);
             txtForPassword.TextChanged += new EventHandler(ValidateInputFields);
+
+            //btnForCancelInJdbcFrm.Click += new EventHandler(btnForCancel_Click); ;
+
+            
+
+
+        }
+
+        private void btnForCancel_Click(object sender, EventArgs e)
+        {
+           this.Close();
         }
 
         public ExportDbForm(string projectName, bool check)

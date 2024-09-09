@@ -53,6 +53,7 @@ namespace DE_IDENTIFICATION_TOOL
 
             // Set the width of the textbox, making sure it doesn't exceed the maximum allowed width
             textBoxForHoldingFilePath.Width = Math.Min(MaxTextBoxWidth, availableWidth);
+            textBoxForHoldingFilePath.ReadOnly= true;
 
             // Adjust the width of other controls similarly if necessary
             DelimeterComboBox.Width = textBoxForHoldingFilePath.Width;
@@ -79,7 +80,9 @@ namespace DE_IDENTIFICATION_TOOL
 
                 // Update the model with the selected file path
                 csvLocationFormModel.SelectedCsvFilePath = openFileDialog.FileName;
+                textBoxForHoldingFilePath.ReadOnly = true;
                 textBoxForHoldingFilePath.Text = csvLocationFormModel.SelectedCsvFilePath;
+
 
                 // Show other controls
                 delimiterLabel.Visible = true;
@@ -92,6 +95,7 @@ namespace DE_IDENTIFICATION_TOOL
                 txtForTblName.Visible = true;
             }
         }
+
 
         private void ClearFormFields()
         {
