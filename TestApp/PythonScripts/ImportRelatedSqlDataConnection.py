@@ -11,12 +11,12 @@ import sys
 import json
 
 def validate_relationships_list(relationshipsList):
-    required_keys = ["ExistingTable", "ExistingColumn", "SourceTable", "SourceColumn"]
+    required_keys = ["Existing Table", "Existing Column", "SourceTable", "SourceColumn"]
 
     try:
         # Load the JSON string into a Python list of dictionaries
         relationshipsList = json.loads(relationshipsList)
-        #print("Parsed relationships list:", relationshipsList)
+        print("Parsed relationships list:", relationshipsList)
 
         # Ensure it's a list
         if not isinstance(relationshipsList, list):
@@ -31,13 +31,17 @@ def validate_relationships_list(relationshipsList):
                     raise ValueError(f"Missing or empty value for key '{key}' in relationship: {relationship}")
 
     except json.JSONDecodeError as e:
-        print("Invalid JSON format:", e)
+        #print("Invalid JSON format:", e)
         return "Failed", "Invalid JSON format."
     except ValueError as ve:
-        print(str(ve))
+        #print(str(ve))
         return "Failed", str(ve)
     except Exception as e:
-        print("validate_relationships_list Relations fields are not filled properly:", e)
+<<<<<<< HEAD
+        #print("validate_relationships_list Relations fields are not filled properly:", e)
+=======
+        print("Relations fields are not filled properly:", e)
+>>>>>>> parent of f1791e1 (import relational sql changes)
         return "Failed", "Relations fields are not filled properly."
 
     return "Success", "All relationships are valid."
@@ -89,8 +93,8 @@ def keep_n_rows_in_table(db_path, table_name, n):
         ids_to_keep = ', '.join(map(str, rows_to_keep))
 
         cursor.execute(f"DELETE FROM {table_name} WHERE rowid NOT IN ({ids_to_keep})")
-        #df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
-        #print(df2)
+        df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
+        print(df2)
 
         conn.commit()
         conn.close()
@@ -138,15 +142,12 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
 
     if isinstance(relationshipsList, str):
         try:
-            #relationshipsList = json.loads(relationshipsList)
-            #print("Printing relationshipsList ")
-            #print(relationshipsList)
+            relationshipsList = json.loads(relationshipsList)
+            print(relationshipsList)
             status, message = validate_relationships_list(relationshipsList)
-            #print(status, message) 
+            print(status, message) 
             if(status!="Success"):
                 return status, message
-            #print("contineue")
-            relationshipsList = json.loads(relationshipsList)
 
         except Exception as e:
             print("Relations fields are not filled properly.")
@@ -154,14 +155,14 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
 
     #sqlite_table_name = table_name.split('.')[1]
     
-    
+
     while batchRowCount < rowCount:
         df = fetch_data_from_sql_server(server, database, table_name, batch_size, offset, username, password)
         batchRowCount += len(df)
         if df.empty:
-            #print("Table is empty")
+            print("DataFrame is empty")
             break
-        #print(df)
+        print(df)
 
         res = insert_data_into_sqlite(db_file_path, df, table_name, 'append')
         if res != "success":
@@ -181,23 +182,19 @@ def process_batches(server, database, table_name, batch_size, db_file_path, user
                 ON {source_table}.{source_column} = {existing_table}.{existing_column}
                 """
 
-        #print(join_query)
+        print(join_query)
         try:
             df = pd.read_sql_query(join_query, conn_sqlite)
         except Exception:
             print("Relations are not correct!")
             return "Failed","Relations are not correct!"
-        if(df.empty!=True):   
-            res = insert_data_into_sqlite(db_file_path, df, table_name, 'replace')
-            if res != "success":
-                
-                return "Failed","Failed inserting the data into SQLite"
-        else:
-            #print("There is no relation between tables") 
-            return "Failed","Failed to import the table as the there is no relational data!"
+             
+        res = insert_data_into_sqlite(db_file_path, df, table_name, 'replace')
+        if res != "success":
+            return "Failed","Failed inserting the data into SQLite"
 
-        #df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn_sqlite)
-        #print(df2)
+        df2 = pd.read_sql_query(f"SELECT * FROM {table_name}", conn_sqlite)
+        print(df2)
 
         conn_sqlite.commit()
         conn_sqlite.close()
@@ -259,4 +256,4 @@ if __name__ == "__main__":
 
     mf.append_logs_to_file(file_path=filename, job_name="Import", run_start=run_start, run_end=run_end, status=Status, duration=run_time, comment=Comment)
 
-    print(Status,Comment )
+    print(Status)
