@@ -85,12 +85,47 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         {
             _properties.tableName = cmbTables.SelectedItem.ToString();
+            
+            HideNewAndDeleteButtons();
+            ClearDynamicControls();
+            checkBoxforPullreleateddata.Checked = false;
             UpdateFinishButtonVisibility();
         }
 
         private void txtForNoofColumns_TextChanged(object sender, EventArgs e)
         {
             _properties.rowCount = txtForNoofColumns.Text;
+            //UpdateFinishButtonVisibility();
+
+
+
+            txtForNoofColumns.TextChanged -= txtForNoofColumns_TextChanged;
+
+            bool isValid = true;
+            string errorMessage = string.Empty;
+
+            if (!int.TryParse(txtForNoofColumns.Text, out int value))
+            {
+                errorMessage = "Please enter a valid number.";
+                isValid = false;
+            }
+            else if (value < 1 || value > 10000)
+            {
+                errorMessage = "Please enter a number between 1 and 10000.";
+                isValid = false;
+            }
+
+            if (!isValid)
+            {
+                MessageBox.Show(errorMessage, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtForNoofColumns.Text = "";
+            }
+            else
+            {
+                _properties.rowCount = txtForNoofColumns.Text;
+            }
+
+            txtForNoofColumns.TextChanged += txtForNoofColumns_TextChanged;
             UpdateFinishButtonVisibility();
         }
 
@@ -115,7 +150,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 {
                     myConnection.Open();
                     string query = @"
-                        SELECT TABLE_SCHEMA,TABLE_NAME,COLUMN_NAME 
+                        SELECT TABLE_SCHEMA,TABLE_NAME,COLUMN_NAME
                         FROM INFORMATION_SCHEMA.COLUMNS 
                         WHERE TABLE_NAME IN 
                         (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')";
@@ -225,6 +260,9 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             try
             {
+                
+
+
                 if (checkBoxforPullreleateddata.Checked)
                 {
                     var selectedData = new List<SelectedTableData>();
@@ -469,13 +507,15 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             List<string> existingTables = GetAllTablesFromJson(jsonFilePath, projectName);
 
+
+            
             string selectedTable = existingTables.FirstOrDefault();
 
             if (selectedTable != null)
 
             {
 
-                UpdateKeysForSelectedTable(selectedTable);
+                UpdateKeysForExistingSelectedTable(selectedTable);
 
             }
 
@@ -641,21 +681,164 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
         {
 
+
+            
             ComboBox cbExistingTable = sender as ComboBox;
 
             if (cbExistingTable != null)
+            {
+                // Get the associated Key ComboBox using the Tag property
+                ComboBox cbKey = cbExistingTable.Tag as ComboBox;
+                string selectedTable = cbExistingTable.SelectedItem.ToString();
+
+
+
+                string projectName = _properties.ProjectName;
+
+                string username = Environment.UserName;
+
+                string pythonScriptName = "TableColumnsConnection.py";
+
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+
+                string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+
+                string pythonResponse = pythonService.SendDataToPython(selectedTable, projectName, pythonScriptPath);
+
+                //List<string> result = pythonResponse.Split(',').ToList();
+
+                // Clean up the response string
+
+                pythonResponse = pythonResponse = pythonResponse.Replace("[", "").Replace("]", "").Replace("'", "").Trim();
+
+                // Split the cleaned string into a list of values
+
+                List<string> result = pythonResponse.Split(new char[] { ',' }).Select(s => s.Trim()).ToList();
+
+                List<string> keys = result;
+
+
+                if (cbKey != null)
+                {
+                    // Clear only the items of the related Key ComboBox
+                    cbKey.Items.Clear();
+                    if (keys != null && keys.Count > 0)
+                    {
+                        cbKey.Items.AddRange(keys.ToArray());
+                    }
+                }
+
+
+                
+
+             }
+
+        }
+
+        private void CbSourceTable_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            
+
+            ComboBox cbSourceTable = sender as ComboBox;
+            string selectedTable = cbSourceTable.SelectedItem.ToString();
+
+            if (cbSourceTable != null)
+            {
+                // Get the associated Key ComboBox using the Tag property
+                ComboBox cbKey = cbSourceTable.Tag as ComboBox;
+
+                string projectName = _properties.ProjectName;
+
+                string username = Environment.UserName;
+
+                string pythonScriptName = "TableColumnsConnection.py";
+
+                string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+
+                string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+
+                string pythonResponse = pythonService.SendDataToPython(selectedTable, projectName, pythonScriptPath);
+
+                //List<string> result = pythonResponse.Split(',').ToList();
+
+                // Clean up the response string
+
+                pythonResponse = pythonResponse = pythonResponse.Replace("[", "").Replace("]", "").Replace("'", "").Trim();
+
+                // Split the cleaned string into a list of values
+
+                List<string> result = pythonResponse.Split(new char[] { ',' }).Select(s => s.Trim()).ToList();
+
+                List<string> keys = result;
+
+                // Update the key ComboBoxes with the new keys
+
+
+
+
+                if (cbKey != null)
+                {
+                    // Clear only the items of the related Key ComboBox
+                    cbKey.Items.Clear();
+                    if (keys != null && keys.Count > 0)
+                    {
+                        cbKey.Items.AddRange(keys.ToArray());
+                    }
+                }
+
+                // Now update keys for the selected table
+
+                //UpdateKeysForSourceSelectedTable(selectedTable);
+            }
+
+        }
+
+        private void UpdateKeysForSourceSelectedTable(string tableName)
+
+        {
+
+            string projectName = _properties.ProjectName;
+
+            string username = Environment.UserName;
+
+            string pythonScriptName = "TableColumnsConnection.py";
+
+            string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
+
+            string pythonScriptPath = Path.Combine(projectRootDirectory, pythonScriptName);
+
+            string pythonResponse = pythonService.SendDataToPython(tableName, projectName, pythonScriptPath);
+
+            //List<string> result = pythonResponse.Split(',').ToList();
+
+            // Clean up the response string
+
+            pythonResponse = pythonResponse = pythonResponse.Replace("[", "").Replace("]", "").Replace("'", "").Trim();
+
+            // Split the cleaned string into a list of values
+
+            List<string> result = pythonResponse.Split(new char[] { ',' }).Select(s => s.Trim()).ToList();
+
+            List<string> keys = result;
+
+            // Update the key ComboBoxes with the new keys
+
+
+            foreach (var SourceKeyCb in _properties.SourceKeyCombos)
 
             {
 
-                string selectedTable = cbExistingTable.SelectedItem.ToString();
+                //SourceKeyCb.Items.Clear();
 
-                UpdateKeysForSelectedTable(selectedTable);
+
+                SourceKeyCb.Items.AddRange(keys.ToArray());
 
             }
 
         }
 
-        private void UpdateKeysForSelectedTable(string tableName)
+        private void UpdateKeysForExistingSelectedTable(string tableName)
 
         {
 
@@ -689,7 +872,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             {
 
-                keyCombo.Items.Clear();
+                //keyCombo.Items.Clear();
+                
 
                 keyCombo.Items.AddRange(keys.ToArray());
 
@@ -721,7 +905,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 Location = new Point(142, startPositionY),
 
-                Size = new Size(100, 22)
+                Size = new Size(100, 22),
+                 DropDownStyle = ComboBoxStyle.DropDownList
 
             };
 
@@ -735,22 +920,21 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 Location = new Point(311, startPositionY),
 
-                Size = new Size(70, 22)
+                Size = new Size(70, 22),
+                 DropDownStyle = ComboBoxStyle.DropDownList
 
             };
+            cbExistingTable.Tag = cbKey;
 
             cbKey.Items.AddRange(keys.ToArray());
 
             TextBox txtSourceTable = new TextBox
-
             {
-
                 Location = new Point(478, startPositionY),
-
                 Size = new Size(100, 22),
-
-                Text = sourceColumns
-
+                Text = sourceColumns,
+                ReadOnly = true,
+                Enabled = false // Disables user interaction, including hiding the cursor
             };
 
             ComboBox cbSourceKey = new ComboBox
@@ -759,9 +943,12 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 Location = new Point(682, startPositionY),
 
-                Size = new Size(70, 22)
-
+                Size = new Size(70, 22),
+                 DropDownStyle = ComboBoxStyle.DropDownList
             };
+            txtSourceTable.Tag = cbSourceKey;
+
+
 
             cbSourceKey.Items.AddRange(sourceTblKey.ToArray());
 
@@ -819,7 +1006,8 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 Location = new Point(142, startY),
 
-                Size = new Size(100, 22)
+                Size = new Size(100, 22),
+                DropDownStyle = ComboBoxStyle.DropDownList
 
             };
 
@@ -833,9 +1021,13 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 Location = new Point(311, startY),
 
-                Size = new Size(70, 22)
+                Size = new Size(70, 22),
+                DropDownStyle = ComboBoxStyle.DropDownList
 
             };
+
+            cbExistingTable.Tag = cbKey;
+
 
             cbKey.Items.AddRange(_properties.KeyCombos[0].Items.Cast<string>().ToArray());
 
@@ -847,11 +1039,15 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 Size = new Size(100, 22),
 
-                Tag = newIndex
+                Tag = newIndex,
+                DropDownStyle = ComboBoxStyle.DropDownList
 
             };
 
             cbSourceTable.Items.AddRange(_properties.ExistingTableCombos[0].Items.Cast<string>().ToArray());
+
+            cbSourceTable.SelectedIndexChanged += CbSourceTable_SelectedIndexChanged;
+
 
             ComboBox cbSourceKey = new ComboBox
 
@@ -861,9 +1057,11 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
                 Size = new Size(70, 22),
 
-                Tag = newIndex
+                Tag = newIndex,
+                DropDownStyle = ComboBoxStyle.DropDownList
 
             };
+            cbSourceTable.Tag = cbSourceKey;
 
             cbSourceKey.Items.AddRange(_properties.KeyCombos[0].Items.Cast<string>().ToArray());
 

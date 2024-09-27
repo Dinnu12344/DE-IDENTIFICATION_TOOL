@@ -83,85 +83,82 @@ def Import_SqlServer_Data_To_SqLite(server,database,table_name,n, db_file_path,p
 #-------------------------------------------------------------------------------------------------------
     
 #Function for importing the CSV data to the DataFrame
+import pandas as pd
+import random
 
-def Import_CSV_Data_To_SqLite(db_file_path,path,n,table_name,table_name_folder_path,delimiter,quotechar,project_name):
-    # print("SqLite Function")
-    n=int(n)
+def Import_CSV_Data_To_SqLite(db_file_path, path, n, table_name, table_name_folder_path, delimiter, quotechar, project_name):
+    n = int(n)
     try:
         # Get the total number of rows in the CSV file
         total_rows = sum(1 for _ in open(path))
 
-        # Calculate the rows to skip
-        skip_rows = sorted(random.sample(range(1, total_rows + 1), total_rows - n))
-        
-        if(delimiter==","):
+        # If n is greater than or equal to the total number of rows, import all rows
+        if n >= total_rows:
+            skip_rows = []  # No rows to skip
+        else:
+            # Calculate the rows to skip
+            skip_rows = sorted(random.sample(range(1, total_rows + 1), total_rows - n))
+
+        # Handle delimiters
+        if delimiter == ",":
             delimiter = ","
-
-        if(delimiter==";"):
+        elif delimiter == ";":
             delimiter = ";"
-
-        if delimiter == "tab":
+        elif delimiter == "tab":
             delimiter = "\t"  # For tab
-
-        if delimiter == "|":
+        elif delimiter == "|":
             delimiter = "|"
 
-        if(quotechar=="\""):
+        # Handle quote characters
+        if quotechar == "\"":
             quotechar = "\""
-        
-        if(quotechar=="\'"):
+        elif quotechar == "\'":
             quotechar = "\'"
 
+        # Read the sample or full CSV file depending on the condition above
+        df = pd.read_csv(path, skiprows=skip_rows, delimiter=delimiter, quotechar=quotechar)
 
-        
-        # Read the sample of the CSV file
-        df = pd.read_csv(path, skiprows=skip_rows,delimiter=delimiter,quotechar=quotechar)
-       
         df.replace('    ', pd.NA, inplace=True)
+        df = df.drop(columns=['Index'])
 
         # Handle nulls and convert data types
         for column in df.columns:
-            
             if df[column].dtype == 'object':  # Handle object (string) columns
                 df[column].fillna('NA', inplace=True)  # Fill nulls with 'NA' for string columns
-
             elif df[column].dtype == 'int64':  # Handle integer columns
                 df[column].fillna(0, inplace=True)  # Fill nulls with 0 for integer columns
-
             elif df[column].dtype == 'float64':  # Handle float columns
                 df[column].fillna(0.0, inplace=True)  # Fill nulls with 0.0 for float columns
                 # Convert float columns to integer if all values are integers
                 if df[column].apply(lambda x: x.is_integer()).all():
                     df[column] = df[column].astype(int)
-
             elif df[column].dtype == 'datetime64':  # Handle datetime columns
                 df[column].fillna(pd.to_datetime('1900-01-01'), inplace=True)  # Fill nulls with a default date
         
-            # Add more conditions for handling other data types as needed
-        
-                
-        response=mf.Df_Data_To_Sqlite(db_file_path,df,table_name)
-        if response!="success":
-            
+        # Call the function to save the DataFrame to SQLite
+        response = mf.Df_Data_To_Sqlite(db_file_path, df, table_name)
+        if response != "success":
             return response
-        
-        # print(df)
+
+        # Create necessary folders and logs
         Comment = f"Successfully imported file : {path} as a table : {table_name} inside the project : {project_name}"
         mf.create_path(table_name_folder_path)
 
-        config_files_path=table_name_folder_path+'\\ConfigFile'
+        config_files_path = table_name_folder_path + '\\ConfigFile'
         mf.create_path(config_files_path)
 
-        log_files_path=table_name_folder_path+"\\LogFile"
+        log_files_path = table_name_folder_path + "\\LogFile"
         mf.create_path(log_files_path)
+
         Status = "success"
-        # print(Comment,Status)
-        return Status,Comment
+        
+        return Status, Comment
 
     except Exception as e:
         Status = "Import Failed"
-        Comment = f"Import failed : {db_file_path} Failed with one or more data exception : {e}"
-        return Status+f"{e}",Comment
+        Comment = f"{e}"
+        return Status + f"{e}", Comment
+
 #-------------------------------------------------------------------------------------------------------------
 
 def Import_JSON_Data_To_SqLite(db_file_path, path, n, table_name, project_name):

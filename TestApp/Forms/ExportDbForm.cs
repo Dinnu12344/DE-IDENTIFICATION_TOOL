@@ -7,6 +7,10 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using DE_IDENTIFICATION_TOOL.CustomAction;
 
 namespace DE_IDENTIFICATION_TOOL.Forms
 {
@@ -18,6 +22,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
         private PythonService pythonService;
         private Dictionary<string, string> tableSchemas = new Dictionary<string, string>();
         private Dictionary<string, List<string>> tableColumns = new Dictionary<string, List<string>>();
+        private PictureBox picEye;
 
 
         //private bool _check;
@@ -38,6 +43,22 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             txtForPassword.Visible = false;
 
             btnForNext.Enabled = false;
+            // Initialize and configure the eye icon
+            picEye = new PictureBox
+            {
+                Size = new System.Drawing.Size(20, 20),
+                Location = new System.Drawing.Point(txtForPassword.Width - 25, 3), // Adjust the position
+                Cursor = Cursors.Hand,
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Image = Properties.Resources.visible, // Assuming you have an image resource for the eye icon
+                Visible = false // Initially hidden
+            };
+            txtForPassword.Controls.Add(picEye); // Add the eye icon inside the password box
+
+            // Add event handlers for the eye icon
+            picEye.MouseEnter += PicEye_MouseEnter;
+            picEye.MouseLeave += PicEye_MouseLeave;
+            dbTyped.SelectedIndexChanged += dbTyped_SelectedIndexChanged;
 
             labelForDatabase.Visible = false;
             cmbDatabases.Visible = false;
@@ -50,12 +71,24 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             txtForServer.TextChanged += new EventHandler(ValidateInputFields);
             txtForUsername.TextChanged += new EventHandler(ValidateInputFields);
             txtForPassword.TextChanged += new EventHandler(ValidateInputFields);
+            
 
             //btnForCancelInJdbcFrm.Click += new EventHandler(btnForCancel_Click); ;
 
-            
+
+        }
 
 
+        private void PicEye_MouseEnter(object sender, EventArgs e)
+        {
+            // Show the password when the mouse enters the eye icon
+            txtForPassword.UseSystemPasswordChar = false;
+        }
+
+        private void PicEye_MouseLeave(object sender, EventArgs e)
+        {
+            // Hide the password when the mouse leaves the eye icon
+            txtForPassword.UseSystemPasswordChar = true;
         }
 
         private void btnForCancel_Click(object sender, EventArgs e)
@@ -86,6 +119,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             cmbTables.Visible = false;
 
             btnForFinish.Enabled = false;
+            ComboBoxHelper.PreventScroll(this.dbTyped);
 
             // Attach event handlers to text changed events
             txtForServer.TextChanged += new EventHandler(ValidateInputFields);
@@ -112,6 +146,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 txtForUsername.Visible = true;
                 lblForPassword.Visible = true;
                 txtForPassword.Visible = true;
+                picEye.Visible = !string.IsNullOrEmpty(txtForPassword.Text);
             }
             else if (selectedItem == "Oracle")
             {
@@ -264,6 +299,70 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             }
         }
 
+
+
+
+
+
+
+        static void ValidateTables(string sqliteDbPath, string projectName)
+        {
+            // Connect to SQLite database
+            using (var sqliteConn = new SQLiteConnection($"Data Source={sqliteDbPath};Version=3;"))
+            {
+                sqliteConn.Open();
+
+                // Fetch all table names from SQLite
+                var sqliteTables = new List<string>();
+                using (var cmd = new SQLiteCommand("SELECT name FROM sqlite_master WHERE type='table';", sqliteConn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        sqliteTables.Add(reader.GetString(0));
+                    }
+                }
+
+                // Validation: Check if there are no tables in the project
+                if (sqliteTables.Count == 0)
+                {
+                    throw new Exception($"There are no tables in the project '{projectName}'");
+                }
+
+                // Separate table names into two lists
+                var nonDeidentifiedTables = new List<string>();
+                var deidentifiedTables = new List<string>();
+
+                foreach (var table in sqliteTables)
+                {
+                    if (table.StartsWith("de_identified_"))
+                    {
+                        deidentifiedTables.Add(table);
+                    }
+                    else
+                    {
+                        nonDeidentifiedTables.Add(table);
+                    }
+                }
+
+                // Check if all non-deidentified table names are present in the deidentified tables list
+                foreach (var table in nonDeidentifiedTables)
+                {
+                    if (!deidentifiedTables.Contains($"de_identified_{table}"))
+                    {
+                        throw new Exception($"De-identified version of table {table} is missing");
+                    }
+                }
+
+                Console.WriteLine("Validation passed: All tables are present and de-identified tables are matched.");
+            }
+        }
+
+
+
+
+
+
         private void btnForFinish_Click(object sender, EventArgs e)
         {
 
@@ -276,9 +375,21 @@ namespace DE_IDENTIFICATION_TOOL.Forms
                 string password = txtForPassword.Text;
                 string database = cmbDatabases.Text;
 
+
+                string username = Environment.UserName;
+                string toolPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool";
+                string projectPath = System.IO.Path.Combine(toolPath, projectName);
+                string tablesDataPath = System.IO.Path.Combine(projectPath, "TablesData");
+                string dbFilePath = System.IO.Path.Combine(tablesDataPath, "Data.db");
+
+                ValidateTables(dbFilePath, projectName);
+
+
                 string savePythonScriptName = "EportAllConnection.py";
                 string projectRootDirectory = PythonScriptFilePath.FindProjectRootDirectory(); // Use the class name to call the static method
                 string savePythonScriptPath = Path.Combine(projectRootDirectory, savePythonScriptName);
+
+                
 
                 // Send data to Python script and capture the response
                 string savePythonResponse = pythonService.SendSqlExportAllDataToPython(server, database, password, UserId, projectName, savePythonScriptPath);
@@ -331,6 +442,12 @@ namespace DE_IDENTIFICATION_TOOL.Forms
 
             }
             // Finish button logic
+        }
+
+        private void txtForPassword_TextChanged(object sender, EventArgs e)
+        {
+            _properties.password = txtForPassword.Text;
+            UpdateFinishButtonVisibility();
         }
     }
 }

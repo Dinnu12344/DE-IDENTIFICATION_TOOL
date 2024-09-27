@@ -14,6 +14,7 @@ namespace DE_IDENTIFICATION_TOOL
 
             // Event handler for when text changes in the project name text box
             txtProjectName.TextChanged += TxtProjName_TextChanged;
+            
 
             // Initially disable the Create Project button until valid input is provided
             btnCreateProject.Enabled = false;

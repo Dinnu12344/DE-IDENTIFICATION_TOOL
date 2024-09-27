@@ -67,6 +67,11 @@ def migrate_sqlite_to_sqlserver(sqlite_db_path, sql_server_conn_str):
         non_deidentified_tables = [table for table in sqlite_tables if not table.startswith("de_identified_")]
         deidentified_tables = [table for table in sqlite_tables if table.startswith("de_identified_")]
 
+        # Validation: Check if there are no tables in the project
+        if not sqlite_tables:
+            raise ValueError(f"There are no tables in the project")
+        
+
         # Check if all non-deidentified table names are present in the deidentified tables list
         for table in non_deidentified_tables:
             if f"de_identified_{table}" not in deidentified_tables:

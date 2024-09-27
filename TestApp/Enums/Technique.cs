@@ -11,7 +11,6 @@ namespace DE_IDENTIFICATION_TOOL.Enums
         Pseudonymization,
         Anonymization,
         Masking,
-        Generalization,
         DateTo20_30Years,
         DateTimeAddRange
     }

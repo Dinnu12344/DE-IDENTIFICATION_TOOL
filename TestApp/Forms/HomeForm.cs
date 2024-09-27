@@ -9,6 +9,10 @@ using System.Runtime.InteropServices;
 using System.Linq;
 using DE_IDENTIFICATION_TOOL.Pythonresponse;
 using System.Diagnostics;
+using System.Windows.Forms;
+using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
 
 namespace DE_IDENTIFICATION_TOOL
 {
@@ -120,13 +124,92 @@ namespace DE_IDENTIFICATION_TOOL
             tableContextMenu.Items.Add(renameMenuItem);
         }
 
+
+
+        static string ValidateTables(string sqliteDbPath, string projectName)
+        {
+            // Connect to SQLite database
+            using (var sqliteConn = new SQLiteConnection($"Data Source={sqliteDbPath};Version=3;"))
+            {
+                sqliteConn.Open();
+
+                // Fetch all table names from SQLite
+                var sqliteTables = new List<string>();
+                using (var cmd = new SQLiteCommand("SELECT name FROM sqlite_master WHERE type='table';", sqliteConn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        sqliteTables.Add(reader.GetString(0));
+                    }
+                }
+
+                // Validation: Check if there are no tables in the project
+                if (sqliteTables.Count == 0)
+                {
+                    return $"There are no tables in the project '{projectName}'";
+                }
+
+                // Separate table names into two lists
+                var nonDeidentifiedTables = new List<string>();
+                var deidentifiedTables = new List<string>();
+
+                foreach (var table in sqliteTables)
+                {
+                    if (table.StartsWith("de_identified_"))
+                    {
+                        deidentifiedTables.Add(table);
+                    }
+                    else
+                    {
+                        nonDeidentifiedTables.Add(table);
+                    }
+                }
+
+                // Check if all non-deidentified table names are present in the deidentified tables list
+                foreach (var table in nonDeidentifiedTables)
+                {
+                    if (!deidentifiedTables.Contains($"de_identified_{table}"))
+                    {
+                        return($"De-identified version of table {table} is missing");
+                    }
+                }
+
+                Console.WriteLine("Validation passed: All tables are present and de-identified tables are matched.");
+            }
+            return "true";
+        }
+
         private void ExportAllProjectItem_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = treeViewPanel.SelectedNode;
-            DbtableFormModel dbtableFormModel = new DbtableFormModel();
-            //dbtableFormModel.exportAll = true;
-            ExportForm exportForm = new ExportForm(selectedNode.Text, selectedNode.Text, true);
-            exportForm.Show();
+            string projectName = selectedNode.Text;
+
+            //string server = txtForServer.Text;
+           // string UserId = txtForUsername.Text;
+            //string password = txtForPassword.Text;
+            //string database = cmbDatabases.Text;
+
+
+            string username = Environment.UserName;
+            string toolPath = $@"C:\Users\{username}\AppData\Roaming\DeidentificationTool";
+            string projectPath = System.IO.Path.Combine(toolPath, projectName);
+            string tablesDataPath = System.IO.Path.Combine(projectPath, "TablesData");
+            string dbFilePath = System.IO.Path.Combine(tablesDataPath, "Data.db");
+
+            string res = ValidateTables(dbFilePath, projectName);
+            if (res == "true")
+            {
+                DbtableFormModel dbtableFormModel = new DbtableFormModel();
+                //dbtableFormModel.exportAll = true;
+                ExportForm exportForm = new ExportForm(selectedNode.Text, selectedNode.Text, true);
+                exportForm.Show();
+            }
+            else
+            {
+                MessageBox.Show(res);
+            }
+           
 
         }
 
@@ -197,7 +280,7 @@ namespace DE_IDENTIFICATION_TOOL
                 }
                 else
                 {
-                    MessageBox.Show(getpythonResponse);
+                    MessageBox.Show("Please select appropriate data types and fields in config.\n"+getpythonResponse);
                 }
             }
         }

@@ -75,6 +75,9 @@
             this.textBoxForHoldingFilePath.Name = "textBoxForHoldingFilePath";
             this.textBoxForHoldingFilePath.Size = new System.Drawing.Size(448, 27);
             this.textBoxForHoldingFilePath.TabIndex = 14;
+            this.textBoxForHoldingFilePath.ReadOnly = true;
+
+           
             // 
             // label3
             // 

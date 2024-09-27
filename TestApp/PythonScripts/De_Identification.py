@@ -4,6 +4,7 @@ import pandas as pd
 import hashlib
 from datetime import datetime
 import numpy as np
+from sqlalchemy import column
 import Miscellaneous_Functions as mf
 import re
 from faker import Faker
@@ -100,6 +101,7 @@ def pseudonymization(column_name, df,hippa_related_column):
     else:
         print(f"Faker method '{hippa_related_column}' not found.")
     print("pseduo ending")
+    print(df)
     return df
 
 
@@ -156,27 +158,34 @@ def masking(column_name, df):
     df[column_name] = df[column_name].map(masking_map)
 
     return df
+#--------------------------------------------------------------------------------------------------
 
-
-def masking(column_name, df):
-    df[column_name]= df[column_name].astype(str)
-    masked_df = masking(column_name, df)
-
-    return masked_df
+#def masking(column_name, df):
+#   df[column_name]= df[column_name].astype(str)
+#   masked_df = masking(column_name, df)
+#
+#    return masked_df
 
 
 
 #-----------------------------------------------------------------------------------------------------------
 #anonymization
 
-def anonymization(column_name,df):
-#     hashed_value = hashlib.sha256(name.encode()).hexdigest()
-    distinct_names = df[column_name].unique()
-    anonymization_map = {name: hashlib.sha256(name.encode()).hexdigest()  for i, name in enumerate(distinct_names)}
 
-    df[column_name] = df[column_name].map(anonymization_map) 
-    ("anonymization fun")
+import hashlib
+
+def anonymization(column_name, df):
+    # Get distinct values in the column (whether they are strings or integers)
+    distinct_names = df[column_name].unique()
+
+    # Create an anonymization map, converting each value to a string before hashing
+    anonymization_map = {name: hashlib.sha256(str(name).encode()).hexdigest() for name in distinct_names}
+
+    # Replace the original column with the hashed values
+    df[column_name] = df[column_name].map(anonymization_map)
+    
     return df
+
 #-----------------------------------------------------------------------------------------------------------
 #generalization
 
@@ -221,7 +230,7 @@ def dateTo20_30years(column_name, df):
 
     # Display the resulting DataFrame
     # print(df[['DateOfBirth', 'AgeRange']])
-    return df
+    return df 
 
 #-----------------------------------------------------------------------------------------------------------
 #month_year_generalization
@@ -265,7 +274,7 @@ def dateTimeAddRange(column_name,df):
 
 
 def replace_dates_within_range(df, date_column, start_date, end_date):
-    df[date_column] = pd.to_datetime(df[date_column])  # Ensure the date column is in datetime format
+    #df[date_column] = pd.to_datetime(df[date_column])  # Ensure the date column is in datetime format
     start_date = datetime.strptime(start_date, "%Y-%m-%d")
     end_date = datetime.strptime(end_date, "%Y-%m-%d")
     
@@ -288,7 +297,7 @@ def generate_hash(value,key):
 
 #This function maps the each column to the respective technique function
 def process_column_info(column_name, data_type, technique, df,HippaRelatedColumn, primaryKey,keys_path):
-    print("Process Fun")
+    #print("Process Fun")
     if(primaryKey=="Yes"):
         
         key=""
@@ -300,7 +309,37 @@ def process_column_info(column_name, data_type, technique, df,HippaRelatedColumn
         df[f'{column_name}_hash_key'] = df[column_name].apply(lambda x: generate_hash(x, key))
 
     if technique == "Pseudonymization":
+        df = pseudonymization(column_name, df,HippaRelatedColumn)
+    elif technique == "Masking":
+        df = masking(column_name, df)
+    elif technique == "Anonymization":
+        df = anonymization(column_name, df)
+    elif technique == 'DateTo20_30years':
+        df = dateTo20_30years(column_name, df)
+    elif technique == 'DateToMonth,Year':
+        df = month_year_generalization(column_name, df)
+    else:
+        #print("pROCESS FUN GEN CONDITION")
+        #df = generalization(column_name, data_type, df)
+        return df
+
+    return df
+
+#------------------------------------------------------------------------------------------------------------
+
+#Date Time Add Range
+def process_column_info1(column_name, data_type, technique, df,HippaRelatedColumn,startDate,endDate, primaryKey,keys_path):
+    if(primaryKey=="Yes"):
         
+        key=""
+        print(keys_path)
+        # Open and read the file
+        with open(keys_path, 'r') as file:
+            key = file.read()
+        print(key)
+        df[f'{column_name}_hash_key'] = df[column_name].apply(lambda x: generate_hash(x, key))
+
+    if technique == "Pseudonymization":
         df = pseudonymization(column_name, df,HippaRelatedColumn)
     elif technique == "Masking":
         df = masking(column_name, df)
@@ -312,21 +351,17 @@ def process_column_info(column_name, data_type, technique, df,HippaRelatedColumn
         df = month_year_generalization(column_name, df)
     elif technique == 'DateToAddRange':
         df = dateTimeAddRange(column_name, df)
-    elif technique == 'replace_dates_within_range':
-        df = replace_dates_within_range(df, column_name, start_date, end_date)
-    elif technique == 'add_days':
-        df = add_days(df, date_column, n)
-    elif technique == 'add_months':
-        df = add_months(df, date_column, n)
-    elif technique == 'add_years':
-        df = add_years(df, date_column, n)
+    elif technique == 'DateTimeAddRange':
+        df = replace_dates_within_range(df, column_name, startDate, endDate)
+    
     else:
-        print("pROCESS FUN GEN CONDITION")
-        df = generalization(column_name, data_type, df)
+        #print("pROCESS FUN GEN CONDITION")
+        #df = generalization(column_name, data_type, df)
+        return df
 
     return df
 
-#------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 #This is the main function for the total procass of deidentification process
 def de_Identification_Main(config_files_path,table_name,db_file_path,keys_path):
@@ -350,20 +385,33 @@ def de_Identification_Main(config_files_path,table_name,db_file_path,keys_path):
                     data_type = column_info["DataType"]
                     technique = column_info["Technique"]
                     HippaRelatedColumn=column_info["HippaRelatedColumn"]
+                    startDate=column_info["StartDate"]
+                    endDate=column_info["EndDate"]
                     primaryKey = column_info["Keys"]
                     
-                    print(HippaRelatedColumn)
-                    df = process_column_info(column_name, data_type, technique, df,HippaRelatedColumn, primaryKey,keys_path)
+                    #print("Start Date:"+startDate)
+                    if startDate is None:
+                        df = process_column_info(column_name, data_type, technique, df,HippaRelatedColumn, primaryKey,keys_path)
+                    else:
+                        df = process_column_info1(column_name, data_type, technique, df,HippaRelatedColumn,startDate,endDate, primaryKey,keys_path)
+                    #if(startDate=='null')
+                    #df = process_column_info(column_name, data_type, technique, df,HippaRelatedColumn, primaryKey,keys_path)
 
             # Display the DataFrame
-            # print(df)
-            df = df.convert_dtypes()
+            print(df)
+            #df = df.convert_dtypes()
             # print("Deidentification Sucess")
-            mf.Df_Data_To_Sqlite(db_file_path,df,"de_identified_"+table_name)
+            res=mf.Df_Data_To_Sqlite(db_file_path,df,"de_identified_"+table_name)
+            if(res=="success"):
 
-            Status = "Success"
-            Comment = f"Successfully De-identified the data for the table : '{table_name}'"
-            return Status,Comment
+
+                Status = "Success"
+                Comment = f"Successfully De-identified the data for the table : '{table_name}'"
+                return Status,Comment
+            else:
+                Status = "Falied"
+                Comment = f"De-identified failed: '{res}\t{table_name}'"
+                return Status,Comment
         
     except Exception as e:
 

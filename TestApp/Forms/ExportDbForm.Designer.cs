@@ -1,4 +1,6 @@
-﻿namespace DE_IDENTIFICATION_TOOL.Forms
+﻿using System.Windows.Forms;
+
+namespace DE_IDENTIFICATION_TOOL.Forms
 {
     partial class ExportDbForm
     {
@@ -104,7 +106,10 @@
             this.dbTyped.Name = "dbTyped";
             this.dbTyped.Size = new System.Drawing.Size(508, 31);
             this.dbTyped.TabIndex = 2;
+
+            this.dbTyped.DropDownStyle = ComboBoxStyle.DropDownList;
             this.dbTyped.SelectedIndexChanged += new System.EventHandler(this.dbTyped_SelectedIndexChanged);
+            
             // 
             // panelHoldingButtonsInJdbcWindow
             // 
@@ -257,6 +262,7 @@
             this.Controls.Add(this.lblForUserName);
             this.Controls.Add(this.lblForServer);
             this.Controls.Add(this.panelHoldingButtonsInJdbcWindow);
+           
             this.Controls.Add(this.dbTyped);
             this.Controls.Add(this.lblForTypeInJdbcFrm);
             this.Controls.Add(this.panelInDBLocationForm);

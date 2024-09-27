@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
@@ -150,6 +151,7 @@ namespace DE_IDENTIFICATION_TOOL
                     dataTypeComboBox.Dock = DockStyle.Fill;
                     tableLayoutPanel.Controls.Add(dataTypeComboBox, 2, row);
                     ComboBoxHelper.PreventScroll(dataTypeComboBox);
+                    dataTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList; 
 
                     ComboBox techniqueComboBox = new ComboBox();
                     techniqueComboBox.Items.AddRange(Enum.GetNames(typeof(Technique)));
@@ -157,6 +159,7 @@ namespace DE_IDENTIFICATION_TOOL
                     techniqueComboBox.SelectedIndexChanged += TechniqueComboBox_SelectedIndexChanged;
                     tableLayoutPanel.Controls.Add(techniqueComboBox, 3, row);
                     ComboBoxHelper.PreventScroll(techniqueComboBox);
+                    techniqueComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
                     ComboBox techniqueComboBoxForData = new ComboBox();
                     techniqueComboBoxForData.Items.AddRange(Enum.GetNames(typeof(AdditionalTechnique)));
@@ -165,6 +168,8 @@ namespace DE_IDENTIFICATION_TOOL
                     techniqueComboBoxForData.Enabled = false;
                     tableLayoutPanel.Controls.Add(techniqueComboBoxForData, 4, row);
                     ComboBoxHelper.PreventScroll(techniqueComboBoxForData);
+                    techniqueComboBoxForData.DropDownStyle = ComboBoxStyle.DropDownList;
+
 
                     CustomDatePicker startDatePicker = new CustomDatePicker();
                     startDatePicker.Enabled = false;
@@ -180,6 +185,8 @@ namespace DE_IDENTIFICATION_TOOL
                     keysComboBox.Dock = DockStyle.Fill;
                     tableLayoutPanel.Controls.Add(keysComboBox, 7, row);
                     ComboBoxHelper.PreventScroll(keysComboBox);
+                    keysComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+
 
 
                     // Load existing configuration if available
@@ -393,6 +400,13 @@ namespace DE_IDENTIFICATION_TOOL
             string project = projectName.Text;
             var selectedData = new List<object>();
 
+            //Enum values
+            List<string> intNumericValuesAsStrings = new List<string>(Enum.GetNames(typeof(IntNumericValues)));
+            List<string> floatNumericValuesAsStrings = new List<string>(Enum.GetNames(typeof(FloatNumericValues)));
+            List<string> stringValuesAsStrings = new List<string>(Enum.GetNames(typeof(StringValues)));
+            List<string> dateTimeValuesAsStrings = new List<string>(Enum.GetNames(typeof(DateTimeValues)));
+            List<string> allValuesAsStrings = new List<string>(Enum.GetNames(typeof(All)));
+
             foreach (CheckBox checkBox in checkBoxes)
             {
                 if (checkBox.Checked)
@@ -407,14 +421,103 @@ namespace DE_IDENTIFICATION_TOOL
                     var keysComboBox = (ComboBox)controls[6];
 
                     string techniqueValue = techniqueComboBox.SelectedItem?.ToString();
+                    string dataType= dataTypeComboBox.SelectedItem?.ToString();
                     string techniqueDataValue = null;
                     string startDateValue = null;
                     string endDateValue = null;
+
+
+
+
+
+                    int flag = 0;
+
+                    //config form validations
+                    switch (dataType)
+                    {
+                        case "Int":
+                            if (techniqueValue == "Pseudonymization" && intNumericValuesAsStrings.Contains(techniqueComboBoxForData.SelectedItem?.ToString()))
+                            {
+                               continue;
+
+                            }
+                            else if(techniqueValue== "Anonymization" || techniqueValue == "Masking")
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                flag = 1;
+                                MessageBox.Show("Invalid Data type and Technique is selected");
+                                return;
+                                
+                            }
+                           
+                           //break;
+                        case "String":
+                            
+                            if(techniqueValue == "Anonymization" || techniqueValue== "Masking")
+                            {
+                                continue;
+                            }
+                            else if (techniqueValue== "Pseudonymization" && stringValuesAsStrings.Contains(techniqueComboBoxForData.SelectedItem?.ToString()))
+                            {
+                                continue;
+
+                            }
+                            else
+                            {
+                                flag = 1;
+                                MessageBox.Show("Invalid Data type and Technique is selected");
+                                return;
+                                
+                            }
+                            //break;
+                        case "Float":
+                            if(techniqueValue== "Pseudonymization" && floatNumericValuesAsStrings.Contains(techniqueComboBoxForData.SelectedItem?.ToString()))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                flag = 1;
+                                MessageBox.Show("Invalid Data type and Technique is selected");
+                                return;
+                                
+                            }
+                            //break;
+                        case "DateTime":
+                            if(techniqueValue == "DateTimeAddRange" || techniqueValue== "Anonymization" || techniqueValue== "Masking" || techniqueValue=="DateTo20_30Years")
+                            {
+                                continue;
+
+                            }
+                            if(techniqueValue== "Pseudonymization" && dateTimeValuesAsStrings.Contains(techniqueComboBoxForData.SelectedItem?.ToString()))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                flag = 1;
+                                MessageBox.Show("Invalid Data type and Technique is selected");
+                                return;
+                            }
+                            //break;
+                       default:
+                            break;
+                    }
+
+                    //if (flag == 1) {
+                    //    this.Close();
+                    //}
+
+
 
                     if (techniqueValue == "Pseudonymization")
                     {
                         techniqueDataValue = techniqueComboBoxForData.SelectedItem?.ToString();
                     }
+
                     else if (techniqueValue == "DateTimeAddRange")
                     {
                         startDateValue = startDatePicker.Value.ToString("yyyy-MM-dd");
@@ -441,6 +544,7 @@ namespace DE_IDENTIFICATION_TOOL
             string filePath = Path.Combine(directoryPath, $"{table}.json");
             Directory.CreateDirectory(directoryPath);
             File.WriteAllText(filePath, json);
+            
             MessageBox.Show("Config filed has saved successfully");
             this.Close();
         }

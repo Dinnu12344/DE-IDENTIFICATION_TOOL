@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace DE_IDENTIFICATION_TOOL
@@ -177,6 +178,7 @@ namespace DE_IDENTIFICATION_TOOL
                                                       !string.IsNullOrEmpty(csvLocationFormModel.SelectedQuote) &&
                                                       !string.IsNullOrEmpty(csvLocationFormModel.EnteredText) &&
                                                       !string.IsNullOrEmpty(csvLocationFormModel.TableName);
+
         }
 
         private void FinishButtonInCsvlocationWindow_Click(object sender, EventArgs e)
@@ -199,6 +201,11 @@ namespace DE_IDENTIFICATION_TOOL
 
                 // Ensure the table name is trimmed of leading/trailing whitespace
                 string enteredTableName = csvLocationFormModel.TableName.Trim();
+                if (!Regex.IsMatch(enteredTableName, @"[A-Za-z]"))
+                {
+                    MessageBox.Show("Table name must contain at least one alphabetic character and cannot be only numeric.", "Invalid Table Name", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Prevent the form from proceeding
+                }
 
                 // Check if the table name already exists in the current project (case-insensitive comparison)
                 bool tableNameExists = false;

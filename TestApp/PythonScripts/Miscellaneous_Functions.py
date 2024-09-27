@@ -40,25 +40,50 @@ def SqlLite_Data_To_Df(db_file_path,table_name):
 #------------------------------------------------------------------------------------------------------------------
 
 #*****************  This funtion is used for saving the DF data into the SqlLite  ********************
-def Df_Data_To_Sqlite(db_file_path,df,table_name):
+
+import sqlite3
+import pandas as pd
+import decimal
+
+def Df_Data_To_Sqlite(db_file_path, df, table_name):
+    state = "Failed"
+    
     try:
+        print("Df_Data_To_Sqlite")
+        print(df)
+
+        # Convert any decimal.Decimal columns to float inside try-except
+        try:
+            for column in df.select_dtypes(include=['object']):
+                df[column] = df[column].apply(lambda x: float(x) if isinstance(x, decimal.Decimal) else x)
+            print("Data conversion is successful.")
+        except Exception as e:
+            print(f"Error in data conversion: {e}")
+            return f"Conversion failed: {e}"
+
         # Connect to SQLite database
         conn = sqlite3.connect(f'{db_file_path}')
+        
         # Write DataFrame to SQLite table
         df.to_sql(f"{table_name}", conn, if_exists='replace', index=False)
 
         # Commit changes
         conn.commit()
-        # print("Df_Data_To_Sqlite")
-        return "success"
+        print("Df_Data_To_Sqlite is working right")
+        state = "success"
+        return state
 
-    except sqlite3.Error as e:
-        return "SQLite error:", e
+    except Exception as e:
+        print(f"Error in Df_Data_To_Sqlite: {e}")
+        return f"{state} Error: {e}"
 
     finally:
         # Close connection
-        if conn:
+        if 'conn' in locals():  # Ensure the connection exists
             conn.close()
+        return state
+
+
 
 #------------------------------------------------------------------------------------------------------------------
 

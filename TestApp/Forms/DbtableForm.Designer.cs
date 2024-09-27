@@ -34,6 +34,7 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.txtboxForTblName = new System.Windows.Forms.TextBox();
             this.txtBoxFoeExistingTblKey = new System.Windows.Forms.TextBox();
+            //this.txtBoxFoeExistingTblKey
             this.textBoxForSourceTbl = new System.Windows.Forms.TextBox();
             this.textBoxForSourceTblKey = new System.Windows.Forms.TextBox();
             this.panelForPullreleatedData = new System.Windows.Forms.Panel();
@@ -303,10 +304,16 @@ namespace DE_IDENTIFICATION_TOOL.Forms
             this.Controls.Add(this.txtForNoofColumns);
             this.Controls.Add(this.lblForNoofColumns);
             this.Controls.Add(this.panelForPullreleatedData);
+            this.textBoxForSourceTblKey.ReadOnly = true;
             this.Controls.Add(this.textBoxForSourceTblKey);
+           
+            this.textBoxForSourceTbl.ReadOnly = true;
             this.Controls.Add(this.textBoxForSourceTbl);
+            this.txtBoxFoeExistingTblKey.ReadOnly = true;
             this.Controls.Add(this.txtBoxFoeExistingTblKey);
+            this.txtboxForTblName.ReadOnly = true;
             this.Controls.Add(this.txtboxForTblName);
+
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
