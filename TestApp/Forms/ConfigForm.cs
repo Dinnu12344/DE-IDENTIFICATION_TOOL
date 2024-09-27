@@ -430,7 +430,7 @@ namespace DE_IDENTIFICATION_TOOL
 
 
 
-                    int flag = 0;
+                    //int flag = 0;
 
                     //config form validations
                     switch (dataType)
@@ -447,7 +447,7 @@ namespace DE_IDENTIFICATION_TOOL
                             }
                             else
                             {
-                                flag = 1;
+                                //flag = 1;
                                 MessageBox.Show("Invalid Data type and Technique is selected");
                                 return;
                                 
@@ -467,7 +467,7 @@ namespace DE_IDENTIFICATION_TOOL
                             }
                             else
                             {
-                                flag = 1;
+                                //flag = 1;
                                 MessageBox.Show("Invalid Data type and Technique is selected");
                                 return;
                                 
@@ -480,7 +480,7 @@ namespace DE_IDENTIFICATION_TOOL
                             }
                             else
                             {
-                                flag = 1;
+                                //flag = 1;
                                 MessageBox.Show("Invalid Data type and Technique is selected");
                                 return;
                                 
@@ -498,7 +498,7 @@ namespace DE_IDENTIFICATION_TOOL
                             }
                             else
                             {
-                                flag = 1;
+                                //flag = 1;
                                 MessageBox.Show("Invalid Data type and Technique is selected");
                                 return;
                             }
